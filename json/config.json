@@ -1,0 +1,10 @@
+{
+  "config": {
+    "langs": {
+      "fr": "Français",
+      "en": "English",
+      "nl": "Nederlands"
+    },
+    "titleWebSite": ["KIEVU.COM — Création de sites internet"]
+  }
+}
