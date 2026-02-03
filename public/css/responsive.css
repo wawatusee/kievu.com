@@ -1,0 +1,122 @@
+/* Mobile First — jusqu'à 768px */
+@media (max-width: 768px) {
+    :root {
+        --font-size-sm: 0.75rem;
+        --font-size-md: 0.875rem;
+        --font-size-lg: 1rem;
+        --font-size-xl: 1.25rem;
+        --font-size-xxl: 1.5rem;
+        --spacing-xs: 0.25rem;
+        --spacing-sm: 0.5rem;
+        --spacing-md: 0.75rem;
+        --spacing-lg: 1rem;
+        --spacing-xl: 1.5rem;
+        --spacing-xxl: 2rem;
+        --container-padding: 0.5rem;
+    }
+
+    header nav {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        padding: 0;
+    }
+
+    header ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    main {
+        padding: var(--spacing-md);
+    }
+
+    .gallery,
+    .component {
+        padding: var(--spacing-sm);
+        margin: var(--spacing-md) 0;
+    }
+}
+
+/* Tablet — 769px à 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+    :root {
+        --font-size-sm: 0.875rem;
+        --font-size-md: 1rem;
+        --font-size-lg: 1.125rem;
+        --font-size-xl: 1.375rem;
+        --font-size-xxl: 1.75rem;
+        --spacing-xs: 0.25rem;
+        --spacing-sm: 0.5rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 1.5rem;
+        --spacing-xl: 2rem;
+        --spacing-xxl: 3rem;
+        --container-padding: 1rem;
+    }
+
+    header nav {
+        padding: 0 var(--container-padding);
+    }
+
+    main {
+        padding: var(--spacing-lg);
+    }
+
+    .gallery,
+    .component {
+        padding: var(--spacing-md);
+        margin: var(--spacing-lg) 0;
+    }
+}
+
+/* Desktop — à partir de 1025px */
+@media (min-width: 1025px) {
+    :root {
+        --font-size-sm: 0.875rem;
+        --font-size-md: 1rem;
+        --font-size-lg: 1.25rem;
+        --font-size-xl: 1.5rem;
+        --font-size-xxl: 2rem;
+        --spacing-xs: 0.25rem;
+        --spacing-sm: 0.5rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 1.5rem;
+        --spacing-xl: 2rem;
+        --spacing-xxl: 3rem;
+        --container-padding: 1rem;
+    }
+
+    header nav {
+        padding: 0 var(--container-padding);
+    }
+
+    main {
+        padding: var(--spacing-lg);
+    }
+
+    .gallery,
+    .component {
+        padding: var(--spacing-md);
+        margin: var(--spacing-lg) 0;
+    }
+}
+
+/* Imprimante */
+@media print {
+    body {
+        font-size: 12pt;
+        color: #000;
+        background: #fff;
+    }
+
+    header,
+    footer,
+    .gallery,
+    .component {
+        display: none;
+    }
+
+    main {
+        padding: 0;
+    }
+}
