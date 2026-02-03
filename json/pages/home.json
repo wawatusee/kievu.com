@@ -1,0 +1,25 @@
+{
+  "type": "page",
+  "meta": {
+    "id": "home",
+    "title": {
+      "fr": "Accueil",
+      "en": "Home",
+      "nl": "Startpagina"
+    }
+  },
+  "content": [
+    {
+      "type": "article",
+      "ref": "intro"
+    },
+    {
+      "type": "gallery",
+      "ref": "projects"
+    },
+    {
+      "type": "component",
+      "name": "contact"
+    }
+  ]
+}
