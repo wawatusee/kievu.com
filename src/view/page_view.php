@@ -1,8 +1,9 @@
 <?php
-function renderPageView($page) {
-    require_once __DIR__ . '/../inc/head.php';
-    require_once __DIR__ . '/../inc/header.php';
-    require_once __DIR__ . '/../inc/main.php';
-    require_once __DIR__ . '/../inc/footer.php';
+function renderPageView($page, $lang, $configModel)
+{
+    require_once INC_PATH . DIRECTORY_SEPARATOR . 'head.php';
+    require_once INC_PATH . DIRECTORY_SEPARATOR . 'header.php';
+    require_once INC_PATH . DIRECTORY_SEPARATOR . 'main.php';
+    require_once INC_PATH . DIRECTORY_SEPARATOR . 'footer.php';
 }
 ?>

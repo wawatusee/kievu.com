@@ -1,5 +1,6 @@
 <?php
-function renderBlock($block, $lang) {
+function renderBlock($block, $lang)
+{
     switch ($block['type']) {
         case 'title':
             echo '<h' . $block['level'] . '>' . htmlspecialchars($block['text'][$lang]) . '</h' . $block['level'] . '>';
