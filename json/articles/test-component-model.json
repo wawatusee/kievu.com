@@ -1,0 +1,26 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "test-component-model",
+        "created": "2026-02-10",
+        "status": "draft",
+        "updated": "2026-02-10"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Titre de test",
+                "en": "Test title"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Contenu français",
+                "en": "English content"
+            }
+        }
+    ]
+}

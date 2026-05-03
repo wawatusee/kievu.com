@@ -1,0 +1,18 @@
+{
+    "type": "page",
+    "meta": {
+        "id": "contact",
+        "status": "draft",
+        "updated": "2026-04-13"
+    },
+    "layout": [
+        {
+            "type": "article_ref",
+            "filename": "contact-coordonnees.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "contact-reseaux-sociaux.json"
+        }
+    ]
+}

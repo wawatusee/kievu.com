@@ -1,0 +1,45 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "social-equipe-et-moyens",
+        "created": "2026-04-13",
+        "updated": "2026-04-13",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": { "fr": "NOS MOYENS", "en": "" }
+        },
+        {
+            "type": "list",
+            "data": {
+                "fr": [
+                    "Moyens humains : Membres issus d'univers professionnels variés, fonctionnement horizontal sans hiérarchie.",
+                    "Moyens techniques : Système de son complet et partenariats logistiques (Décathlon Bègles).",
+                    "Moyens financiers : Revenus des prestations et soutien de la Mairie de Bordeaux."
+                ],
+                "en": []
+            }
+        },
+        {
+            "type": "title",
+            "level": 2,
+            "data": { "fr": "L'ÉQUIPE", "en": "" }
+        },
+        {
+            "type": "list",
+            "data": {
+                "fr": [
+                    "Présidente: Priscillia HONORE",
+                    "Trésorier: Edouard LABARRERE",
+                    "Secrétaire: Patrick DORVAL",
+                    "Conseil d'administration: Yannig PLESSIS, Yaël LAPORTE, Anaëlle ROLLE TESSON, Olivier CELMA, Thierno BALDE, Marie-Lou GATKOVIC",
+                    "Membres Actifs: Rémi SEMPERE, Clément BEAUMONT, Nathan BECHET, Thomas Brugière"
+                ],
+                "en": []
+            }
+        }
+    ]
+}

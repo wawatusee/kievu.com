@@ -1,25 +1,18 @@
 {
-  "type": "page",
-  "meta": {
-    "id": "home",
-    "title": {
-      "fr": "Accueil",
-      "en": "Home",
-      "nl": "Startpagina"
-    }
-  },
-  "content": [
-    {
-      "type": "article",
-      "ref": "intro"
+    "type": "page",
+    "meta": {
+        "id": "home",
+        "status": "draft",
+        "updated": "2026-04-13"
     },
-    {
-      "type": "gallery",
-      "ref": "projects"
-    },
-    {
-      "type": "component",
-      "name": "contact"
-    }
-  ]
+    "layout": [
+        {
+            "type": "article_ref",
+            "filename": "home-introduction.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "home-actualites.json"
+        }
+    ]
 }

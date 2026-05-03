@@ -1,0 +1,190 @@
+/* =====================================================
+   FOOTER — Style pour le pied de page Mascarade
+===================================================== */
+
+footer {
+  /* === Harmonie avec le header === */
+  background: var(--color-primary);
+  color: white;
+
+  /* === Structure et espacement === */
+  padding: var(--spacing-lg) var(--spacing-sm);
+  text-align: center; /* Centre le logo et les RS par défaut */
+}
+
+/* ---------------------------------
+   Navigation principale du footer
+---------------------------------- */
+.footerNav {
+  display: flex;
+  justify-content: space-around; /* Espace les blocs équitablement */
+  align-items: flex-start; /* Aligne les blocs par le haut */
+  flex-wrap: wrap; /* Permet aux blocs de passer à la ligne sur mobile */
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  max-width: 800px; /* Limite la largeur pour ne pas trop écarter les colonnes */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.navfooterbloc {
+  text-align: left; /* Réinitialise l'alignement pour le contenu des colonnes */
+  min-width: 220px; /* Empêche les blocs de devenir trop étroits */
+}
+
+/* Titres des blocs (Contacts, Menu) */
+.navfooterbloc h2 {
+  color: white;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  opacity: 0.8;
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Liens dans les blocs */
+.navfooterbloc a {
+  display: block; /* Pour qu'ils s'empilent verticalement */
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0.3rem 0;
+  transition: color var(--transition), transform var(--transition);
+  font-family: var(--font-base);
+}
+
+.navfooterbloc a:hover {
+  color: var(--color-accent); /* La touche d'énergie orange ! */
+  transform: translateX(4px);
+}
+
+/* Style de l'adresse (pour enlever l'italique) */
+address {
+  font-style: normal;
+}
+
+
+/* ---------------------------------
+   Icônes des Réseaux Sociaux
+---------------------------------- */
+#menuRS {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+#menuRS a {
+  display: block;
+}
+
+/* Style de base des icônes */
+.rs {
+  width: 32px;
+  height: 32px;
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: all var(--transition);
+  /* La technique moderne pour les icônes SVG monochromes */
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* Application des icônes SVG */
+.rs.facebook {
+  -webkit-mask-image: url('../img/icons/facebook.svg');
+  mask-image: url('../img/icons/facebook.svg');
+}
+
+.rs.instagram {
+  -webkit-mask-image: url('../img/icons/instagram.svg');
+  mask-image: url('../img/icons/instagram.svg');
+}
+
+/* Effet au survol */
+#menuRS a:hover .rs {
+  background-color: var(--color-accent);
+  transform: scale(1.1);
+}
+
+/* Pour cacher le texte (déjà présent dans le HTML) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+
+/* ---------------------------------
+   Logo dans le footer
+---------------------------------- */
+.footer-logo {
+  display: inline-block;
+  max-height: 50px;
+  opacity: 0.9;
+  margin-top: var(--spacing-sm);
+}
+
+
+/* ===============================
+   Responsive
+================================ */
+@media (max-width: 768px) {
+  .footerNav {
+    flex-direction: column; /* Empile les blocs verticalement */
+    align-items: center; /* Centre les blocs empilés */
+    gap: var(--spacing-lg);
+  }
+
+  .navfooterbloc {
+    text-align: center; /* Centre le contenu des blocs sur mobile */
+    width: 100%;
+  }
+
+  .navfooterbloc a:hover {
+    transform: translateX(0); /* Désactive le décalage sur mobile */
+  }
+
+  .navfooterbloc h2 {
+    border-bottom: none; /* Le soulignement est moins pertinent quand c'est centré */
+  }
+}
+.navfooterbloc a { /* Le sélecteur peut être différent : nav a, .menu-principal a, etc. */
+  display: inline-block;
+  color: white;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem; /* Le padding peut varier */
+  transition: color var(--transition);
+  /* AJOUTE LA LIGNE SUIVANTE : */
+  border-bottom: 2px solid transparent; /* On réserve l'espace pour le trait */
+}
+
+/* ENSUITE, MODIFIE LA RÈGLE :hover */
+.navfooterbloc a:hover {
+  color: var(--color-accent);
+  /* REMPLACE L'ANCIENNE RÈGLE DE SOULIGNEMENT PAR CELLE-CI : */
+  border-bottom-color: var(--color-accent); /* On colore la bordure existante */
+}
+/* Dans public/css/footer.css */
+
+/* ---------------------------------
+   Logo dans le footer
+---------------------------------- */
+.footer-logo {
+  display: block; /* Important pour que margin: auto fonctionne */
+  max-height: 50px;
+  width: auto; /* Garde les proportions */
+  margin: var(--spacing-sm) auto 0; /* Centre horizontalement, avec marge en haut */
+  opacity: 0.9;
+  color: white; /* Assure que le SVG est blanc */
+}

@@ -1,32 +1,34 @@
 <?php
-// Définir les constantes de chemin
-define('ROOT_PATH', dirname(__DIR__));
-define('PUBLIC_PATH', ROOT_PATH . DIRECTORY_SEPARATOR . 'public');
-define('SRC_PATH', ROOT_PATH . DIRECTORY_SEPARATOR . 'src');
-define('INC_PATH', ROOT_PATH . DIRECTORY_SEPARATOR . 'inc');
-define('JSON_PATH', ROOT_PATH . DIRECTORY_SEPARATOR . 'json');
-define('ADMIN_PATH', ROOT_PATH . DIRECTORY_SEPARATOR . 'admin');
+require_once "../config/config.php";
 
-// Démarrer la session si besoin (pour l'admin plus tard)
-// session_start();
-
-// Charger ConfigModel
-require_once SRC_PATH . DIRECTORY_SEPARATOR . 'model' . DIRECTORY_SEPARATOR . 'config_model.php';
-
-// Instancier ConfigModel avec le chemin du JSON
-$configModel = new ConfigModel(JSON_PATH . DIRECTORY_SEPARATOR . 'config.json'); // ✅ On donne le chemin ici
-
-// Charger le contrôleur de page
-require_once SRC_PATH . DIRECTORY_SEPARATOR . 'controller' . DIRECTORY_SEPARATOR . 'page_controller.php';
-
-$pageController = new PageController($configModel); // ✅ On passe la config au contrôleur
-
-$lang = $_GET['lang'] ?? 'fr';
-if (!in_array($lang, ['fr', 'en', 'nl'])) {
-    $lang = 'fr';
+// =========================================================
+// LANGUE
+// =========================================================
+if (isset($_GET['lang']) && in_array($_GET['lang'], array_column($langs, 'code'))) {
+    $lang = $_GET['lang'];
+} else {
+    $lang = LANG_DEFAULT;
 }
+define('APP_LANG', $lang);
 
-$pageId = $_GET['page'] ?? 'home';
-
-$pageController->renderPage($pageId, $lang);
+// =========================================================
+// PAGE
+// =========================================================
+$defaultPage = $pagesDuMenus[0];
+if (isset($_GET['page']) && in_array($_GET['page'], PAGE_ARRAY)) {
+    $page = htmlspecialchars($_GET['page']);
+} else {
+    $page = $defaultPage;
+}
 ?>
+<!DOCTYPE html>
+<html lang="<?= htmlspecialchars(APP_LANG, ENT_QUOTES, 'UTF-8') ?>" prefix="og:http://ogp.me/ns#">
+    <?php require_once "../inc/head.php"; ?>
+    <body>
+        <?php
+        require_once "../inc/header.php";
+        require_once "../inc/main.php";
+        require_once "../inc/footer.php";
+        ?>
+    </body>
+</html>

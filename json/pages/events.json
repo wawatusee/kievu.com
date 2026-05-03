@@ -1,0 +1,11 @@
+{
+    "type": "page",
+    "meta": {
+        "id": "events",
+        "status": "draft",
+        "updated": "2026-04-13"
+    },
+    "layout": [
+        { "type": "article_ref", "filename": "events-nos-activites.json" }
+    ]
+}

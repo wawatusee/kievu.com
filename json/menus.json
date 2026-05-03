@@ -1,0 +1,42 @@
+{
+	"Main_menu": [
+				{
+			"page": "home",
+			"titre": {
+				"fr": "Accueil",
+				"en": "Home"
+			}
+		},
+		{
+			"page": "events",
+			"titre": {
+				"fr": "Événements",
+				"en": "Events"
+			}
+		},
+		{
+			"page": "social",
+			"titre": {
+				"fr": "Social",
+				"en": "Social"
+			}
+		},
+		{
+			"page": "contact",
+			"titre": {
+				"fr": "Contact",
+				"en": "Contact"
+			}
+		}
+	],
+	"RS_menu": [
+		{
+			"page": "https://www.facebook.com/thisismascarade",
+			"titre": "facebook"
+		},
+		{
+			"page": "https://www.instagram.com/thisismascarade/",
+			"titre": "instagram"
+		}
+	]
+}

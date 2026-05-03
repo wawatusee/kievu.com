@@ -1,80 +1,111 @@
 <?php
+/**
+ * ConfigModel - Gestion de la configuration globale
+ * Nucleus CMS
+ * 
+ * Utilisable en contexte admin (ROOT_PATH défini par config_admin.php)
+ * et en contexte public (ROOT_PATH défini par config/config.php)
+ */
+
 class ConfigModel
 {
-    private $config = null;
-    private $filePath;
+    private static ?array $langs = null;
+    private static ?array $config = null;
 
-    /**
-     * Constructeur : charge la config depuis un fichier JSON
-     */
-    public function __construct($filePath = null)
+    // =========================================================
+    // ACCÈS À LA CONFIG BRUTE
+    // =========================================================
+
+    private static function loadConfig(): void
     {
-        $this->filePath = $filePath ?? JSON_PATH . DIRECTORY_SEPARATOR . 'config.json';
+        $configPath = ROOT_PATH . 'json/config.json';
 
-        if (!file_exists($this->filePath)) {
-            throw new Exception("Fichier config introuvable : " . $this->filePath);
+        if (!file_exists($configPath)) {
+            self::$config = [];
+            self::$langs = ['fr' => 'Français'];
+            return;
         }
 
-        $json = file_get_contents($this->filePath);
-        $this->config = json_decode($json, true);
+        $content = file_get_contents($configPath);
+        self::$config = json_decode($content, true) ?? [];
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception("Erreur JSON dans " . $this->filePath . " : " . json_last_error_msg());
+        // Construction du tableau de langues [['code' => 'fr', 'label' => 'Français']]
+        self::$langs = [];
+        if (isset(self::$config['langs']) && is_array(self::$config['langs'])) {
+            foreach (self::$config['langs'] as $langItem) {
+                if (isset($langItem['code'], $langItem['label'])) {
+                    self::$langs[] = [
+                        'code' => $langItem['code'],
+                        'label' => $langItem['label']
+                    ];
+                }
+            }
         }
 
-        if (!isset($this->config['config']) || !is_array($this->config['config'])) {
-            throw new Exception("Structure invalide dans " . $this->filePath . " : clé 'config' manquante ou non-array.");
+        if (empty(self::$langs)) {
+            self::$langs = [['code' => 'fr', 'label' => 'Français']];
         }
     }
 
-    /**
-     * Retourne la configuration complète
-     */
-    public function getConfig()
+    private static function getConfig(): array
     {
-        return $this->config;
+        if (self::$config === null) {
+            self::loadConfig();
+        }
+        return self::$config;
+    }
+
+    // =========================================================
+    // LANGUES — utilisé par l'admin et le public
+    // =========================================================
+
+    /**
+     * Retourne les langues disponibles
+     * @return array ['code' => 'Label', ...]
+     */
+    public static function getLangs(): array
+    {
+        if (self::$langs === null) {
+            self::loadConfig();
+        }
+        return self::$langs;
     }
 
     /**
-     * Retourne les langues configurées
+     * Retourne la langue par défaut (première de la liste)
      */
-    public function getLangs()
+    public static function getDefaultLang(): string
     {
-        return $this->config['config']['langs'] ?? [];
+        $langs = self::getLangs();
+        return $langs[0]['code'] ?? 'fr';
     }
 
-    /**
-     * Retourne les clés des langues
-     */
-    public function getLangKeys()
-    {
-        return array_keys($this->getLangs());
-    }
+    // =========================================================
+    // SITE — utilisé par le public
+    // =========================================================
 
     /**
      * Retourne le titre du site
+     * config.json : "titleWebsite": ["mascarade", "-bdx", ".fr"]
      */
-    public function getSiteTitle()
+    public static function getTitle(): string
     {
-        return $this->config['config']['titleWebSite'][0] ?? 'KIEVU.COM';
+        $cfg = self::getConfig();
+        $parts = $cfg['titleWebsite'] ?? ['Site'];
+        return is_array($parts) ? implode('', $parts) : (string) $parts;
     }
+
+
+    // =========================================================
+    // UTILITAIRES
+    // =========================================================
 
     /**
-     * Retourne une valeur par clé (ex: config.config.langs.fr)
+     * Reset du cache (utile pour les tests)
      */
-    public function get($key, $default = null)
+    public static function clearCache(): void
     {
-        $keys = explode('.', $key);
-        $value = $this->config;
-
-        foreach ($keys as $k) {
-            if (!isset($value[$k])) {
-                return $default;
-            }
-            $value = $value[$k];
-        }
-
-        return $value;
+        self::$langs = null;
+        self::$config = null;
     }
 }
-?>

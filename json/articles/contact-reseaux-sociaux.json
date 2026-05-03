@@ -1,0 +1,51 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "contact-reseaux-sociaux",
+        "created": "2026-04-13",
+        "updated": "2026-04-13",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Suivez-nous",
+                "en": ""
+            }
+        },
+        {
+            "type": "link",
+            "url": "https://www.facebook.com/thisismascarade",
+            "data": {
+                "fr": "Facebook - thisismascarade",
+                "en": ""
+            }
+        },
+        {
+            "type": "link",
+            "url": "https://www.instagram.com/thisismascarade",
+            "data": {
+                "fr": "Instagram - thisismascarade",
+                "en": ""
+            }
+        },
+        {
+            "type": "link",
+            "url": "https://twitter.com/thisismascarade",
+            "data": {
+                "fr": "Twitter - thisismascarade",
+                "en": ""
+            }
+        },
+        {
+            "type": "link",
+            "url": "https://www.linkedin.com/company/association-mascarade",
+            "data": {
+                "fr": "LinkedIn - Association Mascarade",
+                "en": ""
+            }
+        }
+    ]
+}

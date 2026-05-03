@@ -1,26 +1,43 @@
-<!DOCTYPE html>
-<html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- OG / Réseaux sociaux — TODO: alimenter depuis JSON page/article -->
+    <meta property="og:title"       content="">
+    <meta property="og:description" content="">
+    <meta property="og:type"        content="">
+    <meta property="og:url"         content="">
+    <meta property="og:image"       content="">
+    <meta property="og:site_name"   content="<?= htmlspecialchars($str_titleWebSite) ?>">
+
+    <!-- CSS génériques -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/footer.css">
+
+    <!-- CSS spécifique à la page -->
     <?php
-    // Charger ConfigModel (déjà fait dans index.php)
-    // $configModel est disponible
-
-    $title = $page['meta']['title'][$lang] ?? 'Page';
-    $siteTitle = $configModel->getSiteTitle();
-
-    // Récupérer l'ID de la page (ex: 'home', 'about')
-    $pageId = $page['meta']['id'] ?? 'default';
-
-    // Chemin de la feuille de style de la page
-    $pageCssPath = PUBLIC_PATH . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'pages' . DIRECTORY_SEPARATOR . $pageId . '.css';
-    $pageCssUrl = '/css/pages/' . $pageId . '.css';
+    $cssFile    = "css/pages/{$page}.css";
+    $cssFileAbs = ROOT_PATH . "public/{$cssFile}";
+    if (file_exists($cssFileAbs)) {
+        echo '<link rel="stylesheet" href="' . $cssFile . '">';
+    }
     ?>
-    <title><?= htmlspecialchars($title) ?> | <?= htmlspecialchars($siteTitle) ?></title>
-    <link rel="stylesheet" href="/css/style.css">
-    <?php if (file_exists($pageCssPath)) : ?>
-        <link rel="stylesheet" href="<?= htmlspecialchars($pageCssUrl) ?>">
-    <?php endif; ?>
+
+    <!-- JS générique -->
+    <script src="js/menu.js" defer></script>
+
+    <!-- JS spécifique à la page -->
+    <?php
+    $jsFile    = "js/pages/{$page}.js";
+    $jsFileAbs = ROOT_PATH . "public/{$jsFile}";
+    if (file_exists($jsFileAbs)) {
+        echo '<script src="' . $jsFile . '" defer></script>';
+    }
+    ?>
+
+    <link rel="shortcut icon" type="image/png" href="favicon.ico">
+    <title><?= htmlspecialchars($str_titleWebSite) ?></title>
 </head>
-<body>

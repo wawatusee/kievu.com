@@ -1,10 +1,10 @@
 {
-  "config": {
-    "langs": {
-      "fr": "Français",
-      "en": "English",
-      "nl": "Nederlands"
-    },
-    "titleWebSite": ["KIEVU.COM — Création de sites internet"]
-  }
+    "singlepage": false,
+    "titleWebsite": ["mascarade", "-bdx", ".fr"],
+    "repImg": "content",
+    "repImgDeco": "deco",
+    "langs": [
+        {"code": "fr", "label": "Français"},
+        {"code": "en", "label": "Anglais"}
+    ]
 }
