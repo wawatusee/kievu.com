@@ -1,18 +1,18 @@
 {
     "type": "page",
     "meta": {
-        "id": "home",
+        "id": "contact",
         "status": "draft",
         "updated": "2026-04-13"
     },
     "layout": [
         {
             "type": "article_ref",
-            "filename": "home-introduction.json"
+            "filename": "contact-coordonnees.json"
         },
         {
             "type": "article_ref",
-            "filename": "home-actualites.json"
+            "filename": "contact-reseaux-sociaux.json"
         }
     ]
 }

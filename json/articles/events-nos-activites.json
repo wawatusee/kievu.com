@@ -1,0 +1,52 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "events-nos-activites",
+        "created": "2026-04-13",
+        "updated": "2026-04-13",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 1,
+            "data": { "fr": "NOS ACTIVITÉS", "en": "" }
+        },
+        {
+            "type": "title",
+            "level": 2,
+            "data": { "fr": "Projet 360°", "en": "" }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Ateliers autour de la pratique sportive et de l’art graphique au travers de séjours itinérants. L’objectif est de se surpasser et de renforcer la solidarité collective.",
+                "en": ""
+            }
+        },
+        {
+            "type": "title",
+            "level": 2,
+            "data": { "fr": "Mascarade Events", "en": "" }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Organisation d’événements culturels innovants et participatifs en Nouvelle-Aquitaine, incluant les jeunes dans toutes les étapes (conception, logistique, bilan).",
+                "en": ""
+            }
+        },
+        {
+            "type": "title",
+            "level": 2,
+            "data": { "fr": "Ateliers Création Artistique", "en": "" }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Utilisation de la musique et de l'écriture comme supports ludiques pour favoriser l'expression verbale et l'estime de soi.",
+                "en": ""
+            }
+        }
+    ]
+}

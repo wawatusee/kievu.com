@@ -1,0 +1,44 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "social-nos-valeurs",
+        "created": "2026-04-13",
+        "updated": "2026-04-13",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 1,
+            "data": { "fr": "NOTRE DÉMARCHE & NOS VALEURS", "en": "" }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Nous défendons des valeurs humanistes qui considèrent que la Culture et l’Éducation sont des biens en soi. Nous voyons l’action comme un moyen pour faire quelque chose, de faire évoluer une situation, d’obtenir une transformation.",
+                "en": ""
+            }
+        },
+        {
+            "type": "list",
+            "data": {
+                "fr": [
+                    "La liberté de conscience",
+                    "Le respect du principe de non-discrimination",
+                    "Un fonctionnement démocratique",
+                    "Une transparence dans notre gestion",
+                    "L’égal accès des hommes et des femmes",
+                    "Favoriser l'émancipation"
+                ],
+                "en": []
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "« Personne ne libère personne, personne ne se libère seul, les hommes se libèrent ensemble par l’intermédiaire du monde » (P. Freire, 1974).",
+                "en": ""
+            }
+        }
+    ]
+}

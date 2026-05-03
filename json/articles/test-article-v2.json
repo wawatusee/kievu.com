@@ -1,0 +1,33 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "test-article-v2",
+        "created": "2026-02-10",
+        "updated": "2026-02-10",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Pas d'onglet anglais",
+                "en": ""
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "L'éditeur de texte est fonctionnel mais les onglets pour passer d'une langue à l'autre se limitent au français.",
+                "en": ""
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Dans un prochain temps nous aimerions voir apparaitre l'anglais.",
+                "en": ""
+            }
+        }
+    ]
+}

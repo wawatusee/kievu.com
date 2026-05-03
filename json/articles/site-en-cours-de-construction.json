@@ -1,0 +1,34 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "site-en-cours-de-construction",
+        "created": "2026-04-13",
+        "updated": "2026-04-13",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "text",
+            "data": {
+                "fr": "Ce site est en cours de construction.\nPendant cette période, vous trouverez sur nos réseaux sociaux l'essentiel de notre actualité.\nSi besoin, vous pouvez nous contacter via ces réseaux sociaux ou en nous envoyant un mail à l'adresse : contact@mascarede-bdx.fr.",
+                "en": ""
+            }
+        },
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Liste de nos réseaux sociaux",
+                "en": ""
+            }
+        },
+        {
+            "type": "link",
+            "url": "https://www.instagram.com/thisismascarade/",
+            "data": {
+                "fr": "Instagram-thisismascarade",
+                "en": ""
+            }
+        }
+    ]
+}

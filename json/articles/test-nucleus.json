@@ -1,0 +1,34 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "test-nucleus",
+        "created": "2025-01-15",
+        "updated": "2026-02-10",
+        "status": "draft",
+        "author": "admin"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Test Nucleus",
+                "en": "Nucleus Test"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Ceci est un paragraphe de test.",
+                "en": "This is a test paragraph."
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Bloc ajouté par le test",
+                "en": "Block added by test"
+            }
+        }
+    ]
+}
