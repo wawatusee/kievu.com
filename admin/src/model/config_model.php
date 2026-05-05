@@ -28,7 +28,7 @@ class ConfigModel
     public static function getDefaultLang(): string
     {
         $langs = self::getLangs();
-        return array_key_first($langs) ?? 'fr';
+        return $langs[0]['code'] ?? 'fr';
     }
 
     /**
@@ -37,37 +37,30 @@ class ConfigModel
     private static function loadConfig(): void
     {
         $configPath = ROOT_PATH . 'json/config.json';
-//$configPath = '../../json/config.json';
-        // DEBUG - À retirer après
-        error_log('ConfigModel: Chemin = ' . $configPath);
-        error_log('ConfigModel: Existe = ' . (file_exists($configPath) ? 'OUI' : 'NON'));
 
         if (!file_exists($configPath)) {
-            self::$langs = ['fr' => 'Français', 'en' => 'English'];
+            self::$langs = [['code' => 'fr', 'label' => 'Français']];
             return;
         }
 
         $content = file_get_contents($configPath);
         $data = json_decode($content, true);
 
-        // DEBUG - À retirer après
-        error_log('ConfigModel: langs brut = ' . print_r($data['langs'], true));
-
         self::$langs = [];
 
         if (isset($data['langs']) && is_array($data['langs'])) {
             foreach ($data['langs'] as $langItem) {
-                foreach ($langItem as $code => $label) {
-                    self::$langs[$code] = $label;
+                if (isset($langItem['code'], $langItem['label'])) {
+                    self::$langs[] = [
+                        'code' => $langItem['code'],
+                        'label' => $langItem['label']
+                    ];
                 }
             }
         }
 
-        // DEBUG - À retirer après
-        error_log('ConfigModel: langs final = ' . print_r(self::$langs, true));
-
         if (empty(self::$langs)) {
-            self::$langs = ['fr' => 'Français', 'en' => 'English'];
+            self::$langs = [['code' => 'fr', 'label' => 'Français']];
         }
     }
 

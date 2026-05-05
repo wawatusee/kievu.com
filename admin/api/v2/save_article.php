@@ -21,7 +21,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit;
 }
 
-$langs = array_keys(ConfigModel::getLangs());
+$langs = array_column(ConfigModel::getLangs(), 'code');
 $model = new ComponentModel(JSON_ARTICLES_DIR, $langs, 'article');
 
 $result = $model->save($data);

@@ -23,7 +23,7 @@ if (!$filename) {
     exit;
 }
 
-$langs = array_keys(ConfigModel::getLangs());
+$langs = array_column(ConfigModel::getLangs(), 'code');
 $model = new ComponentModel(JSON_ARTICLES_DIR, $langs, 'article');
 
 $result = $model->delete($filename);

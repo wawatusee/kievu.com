@@ -15,7 +15,7 @@ header('Content-Type: application/json; charset=utf-8');
 
 $withMeta = isset($_GET['meta']) && $_GET['meta'] === '1';
 
-$langs = array_keys(ConfigModel::getLangs());
+$langs = array_column(ConfigModel::getLangs(), 'code');
 $model = new ComponentModel(JSON_ARTICLES_DIR, $langs, 'article');
 
 $list = $model->listAll($withMeta);
