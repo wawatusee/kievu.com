@@ -17,26 +17,16 @@
 
 ```
 admin/
-├── api/                  ← Ancienne API (à supprimer après migration)
+├── api/                  ← Endpoints API actifs
 │   ├── delete_article.php
+│   ├── delete_page.php
 │   ├── galleries_api.php
 │   ├── get_article.php
-│   ├── get_articles_list.php
-│   ├── get_contacts_list.php
+│   ├── get_page.php
+│   ├── list_articles.php
+│   ├── list_pages.php
 │   ├── save_article.php
-│   ├── save_contact.php
-│   ├── save_page.php
-│   └── v2/               ← API active (migration → racine api/ prévue session 5)
-│       ├── delete_article.php
-│       ├── delete_page.php
-│       ├── get_article.php
-│       ├── get_page.php
-│       ├── list_articles.php
-│       ├── list_pages.php
-│       ├── page_model.php    ← vestige — actif dans src/core/
-│       ├── save_article.php
-│       ├── save_page.php
-│       └── archives/         ← à supprimer
+│   └── save_page.php
 ├── inc/
 │   ├── footer.php
 │   ├── head.php
@@ -44,14 +34,9 @@ admin/
 │   └── main.php
 ├── js/
 │   ├── article_editor.js
-│   ├── article_editor.old.js   ← vestige
-│   ├── contact_editor.js
-│   ├── page_builder.js
-│   ├── page_builder copy.js    ← vestige
-│   └── page_builder.old.js     ← vestige
+│   └── page_builder.js
 ├── pages/
 │   ├── articles.php
-│   ├── contacts.php
 │   ├── dashboard.php
 │   ├── galleries.php
 │   └── pages.php
@@ -59,13 +44,11 @@ admin/
 │   ├── gallery_manager.class.php
 │   ├── image_uploader.class.php
 │   └── model/
-│       ├── admin_article_model.php  ← vestige — remplacé par src/core/component_model.php
-│       └── config_model.php         ← doublon de src/model/config_model.php — à clarifier
+│       └── admin_article_model.php  ← vestige — à supprimer
 ├── config_admin.php
 ├── index.php
-├── login.php / login.class.php
-├── register.php / register.class.php
-└── save_article.php      ← vestige racine admin — doublon api/v2/
+├── login.php
+└── login.class.php
 ```
 
 **Fichiers partagés front/admin (dans `src/`) :**
@@ -75,8 +58,6 @@ admin/
 - `src/model/config_model.php` — source unique pour les langues et la config
 - `src/utils/json_handler.php` — lecture/écriture JSON atomique
 
-> `admin/api/v2/` sera migré vers `admin/api/` en session 5. L'ancienne `admin/api/` sera supprimée.
-
 ---
 
 ## Configuration — `config_admin.php`
@@ -85,10 +66,10 @@ Responsabilités :
 - Inclure `config.php` (socle front — chemins, modèles, langues, menus)
 - Définir les chemins propres à l'admin (`ADMIN_PATH`, `JSON_PAGES_DIR`, `JSON_ARTICLES_DIR`, `GALLERIES_DIR`)
 - Déclarer la whitelist des pages admin (`ADMIN_PAGES`)
-- Configurer la session PHP
+- Configurer et démarrer la session PHP
 - Définir les limites et types d'upload autorisés
 
-**Convention** : tout fichier admin charge `config_admin.php` — jamais `config.php` directement.
+**Convention** : tout fichier admin charge `config_admin.php` en première ligne — jamais `config.php` directement, jamais après une vérification de session.
 
 ### Constantes exposées
 
@@ -115,7 +96,7 @@ Partagé avec le front. Utilisable dans les deux contextes — `ROOT_PATH` est d
 - `getDefaultLang()` → `$langs[0]['code'] ?? 'fr'`
 - `clearCache()` disponible pour les tests
 
-> `admin/src/model/config_model.php` est un doublon — à supprimer, utiliser uniquement `src/model/config_model.php`.
+> `admin/src/model/admin_article_model.php` est un vestige — à supprimer.
 
 ### `ComponentModel` — `src/core/component_model.php`
 CRUD générique pour les composants (articles, contacts, tout futur type).
@@ -125,22 +106,20 @@ CRUD générique pour les composants (articles, contacts, tout futur type).
 - Délègue la validation à `BlockRegistry`
 - Sauvegarde atomique via `JsonHandler`
 
-> `admin/src/model/admin_article_model.php` est un vestige — remplacé par `ComponentModel`.
-
 ### `PageModel` — `src/core/page_model.php`
 CRUD pour les layouts de pages.
 
 - Types de références autorisés : `article_ref`, `gallery_ref`
 - Validation du layout à la sauvegarde
-- `admin/api/v2/page_model.php` est un vestige — actif uniquement dans `src/core/`
 
 ---
 
-## API — `admin/api/v2/`
+## API — `admin/api/`
 
 Tous les endpoints suivent le même contrat :
 
-- Auth vérifiée en tête (`$_SESSION['user']`)
+- `config_admin.php` chargé en **première ligne**
+- Auth vérifiée immédiatement après (`$_SESSION['user']`)
 - `Content-Type: application/json` systématique
 - Réponse unifiée `['success' => bool, ...]`
 - Erreurs explicites avec code HTTP approprié
@@ -162,6 +141,22 @@ Tous les endpoints suivent le même contrat :
 | `get_page.php` | GET | Charge un layout (`?file=nom.json`) |
 | `save_page.php` | POST | Crée ou met à jour un layout |
 | `delete_page.php` | POST | Supprime un layout |
+
+---
+
+## Module contacts — décision de fermeture
+
+Le module contacts est fermé. Les coordonnées de contact sont des articles comme les autres — `contact-coordonnees.json` fonctionne via `ArticleRenderer` avec des blocs `text` et `link`. Le footer et la page contact le consomment sans friction.
+
+**Supprimé :**
+- `json/contacts/`
+- `admin/api/get_contacts_list.php` et `save_contact.php`
+- `admin/pages/contacts.php`
+- `admin/js/contact_editor.js`
+
+**Non concerné :** `ADMIN_PAGES` ne contenait pas `contacts` — aucune modification nécessaire.
+
+**Exception future :** si un formulaire d'envoi de message est envisagé, il nécessitera un composant dédié avec traitement PHP — hors périmètre actuel.
 
 ---
 
@@ -197,11 +192,30 @@ $langs[0]['code'] ?? 'fr';
 
 ---
 
+## Sessions
+
+Gérées exclusivement dans `config_admin.php` :
+
+```php
+ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_samesite', 'Strict');
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+```
+
+**Règles :**
+- `config_admin.php` toujours en première ligne de chaque fichier admin
+- Ne jamais appeler `session_start()` dans les endpoints ou pages
+- `login.class.php` utilise `session_status() === PHP_SESSION_NONE` pour éviter le double démarrage
+
+---
+
 ## JavaScript
 
 ### `article_editor.js`
 - `SUPPORTED_LANGS` alimenté depuis `data-config` du DOM — produit par `articles.php`
-- `API_BASE = 'api/v2/'` — à mettre à jour lors de la migration
+- `API_BASE = 'api/'` — mis à jour lors de la migration session 5
 - `addEventListener` uniquement — zéro `onclick` inline
 - `escapeHtml()` via `textContent` — pas de regex
 - Gestion des erreurs sur chaque `fetch` avec `try/catch`
@@ -210,34 +224,7 @@ $langs[0]['code'] ?? 'fr';
 - Architecture orientée classe — `PageEditor`
 - Registry pattern pour les types de blocs (`article_ref`, `gallery_ref`, `ui_component`)
 - `window.availableGalleries` injecté par `pages.php` via `json_encode`
-- URLs `api/v2/` en dur dans chaque méthode — pas de constante centralisée, à corriger lors de la migration
-
----
-
-## Sessions
-
-Gérées dans `config_admin.php` — ne pas appeler `session_start()` dans les endpoints ni dans `index.php`.
-
-```php
-ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_samesite', 'Strict');
-session_start();
-```
-
-> `index.php` appelle actuellement `session_start()` avant `config_admin.php` — doublon à régler.
-
----
-
-## Fichiers non lus — à auditer
-
-| Fichier | Priorité |
-|---|---|
-| `admin/inc/main.php` | Haute — routing des pages admin |
-| `src/core/block_registry.php` | Haute — utilisé par `ComponentModel` |
-| `admin/pages/contacts.php` | Moyenne |
-| `admin/pages/galleries.php` | Moyenne |
-| `admin/login.php` / `login.class.php` | Moyenne |
-| `admin/js/contact_editor.js` | Basse |
+- URLs `api/` — mis à jour lors de la migration session 5
 
 ---
 
@@ -253,44 +240,73 @@ session_start();
 - Cartographie complète de l'arborescence — vestiges et doublons identifiés
 - Création de ce fichier de documentation
 
+### Session 5 — 2026-05-10
+
+- `config_admin.php` corrigé — `config.php` inclus, session centralisée, chemins dérivés de `DIR_*`
+- `config_model.php` corrigé — `$config` statique supprimé, `clearCache()` nettoyé, `getTitle()` ajouté
+- Migration langue `delete_article.php` — `array_keys` → `array_column`
+- Résolution double `session_start()` — `session_status()` dans `config_admin.php` et `login.class.php`
+- Correction ordre `config_admin.php` / vérification session dans `index.php` et tous les endpoints
+- Suppression `admin/src/model/config_model.php` — doublon
+- Suppression `require_once config_model.php` redondants dans les endpoints
+- Migration `admin/api/v2/` → `admin/api/` — chemins d'include mis à jour
+- `API_BASE` mis à jour dans `article_editor.js` et `page_builder.js`
+- Suppression `admin/api/v2/` et `archives/`
+- Tests complets articles et pages — get, save, delete ✅
+- Fermeture module contacts — suppression API, page, JS, json/contacts/
+
 ---
 
 ## Ce qu'il reste à faire
 
-### Court terme
-
-- [ ] Corriger `delete_article.php` — `array_keys` → `array_column`
-- [ ] Corriger `config_model.php` — fallback `$langs` ancienne forme (ligne 20) + docblock `getLangs()`
-- [ ] Appliquer la version corrigée de `config_admin.php`
-- [ ] Régler le double `session_start()` entre `index.php` et `config_admin.php`
-
-### Migration v2 → racine (session 5)
-
-- [ ] Supprimer les `session_start()` en dur dans les 5 endpoints articles + pages
-- [ ] Supprimer les `require_once config_model.php` redondants dans les endpoints articles
-- [ ] `API_BASE = 'api/v2/'` → `'api/'` dans `article_editor.js`
-- [ ] Corriger les URLs `api/v2/` en dur dans `page_builder.js`
-- [ ] Mettre à jour les chemins d'include (`__DIR__ . '/../../config_admin.php'` → à recalculer)
-- [ ] Supprimer `admin/api/v2/page_model.php` — vestige
-- [ ] Supprimer `admin/api/v2/archives/`
-- [ ] Supprimer l'ancienne `admin/api/` après validation
-
 ### Nettoyage vestiges
 
-- [ ] Supprimer `admin/save_article.php` (racine)
-- [ ] Supprimer `admin/src/model/admin_article_model.php`
-- [ ] Supprimer `admin/js/article_editor.old.js`, `page_builder copy.js`, `page_builder.old.js`
-- [ ] Clarifier `admin/src/model/config_model.php` — doublon de `src/model/config_model.php`
+- [x] `admin/src/model/admin_article_model.php` supprimé
+- [x] Tests déplacés dans `admin/tests/` — audit prévu après les révisions en cours
+- [ ] Nettoyer `admin/pages/galleries.php` — bloc session commenté
 
 ### Moyen terme
 
-- [ ] Auditer `admin/inc/main.php`, `block_registry.php`, pages contacts et galleries
+- [ ] Auditer `admin/pages/galleries.php` et les classes `gallery_manager` / `image_uploader`
 - [ ] Migrer le CSS inline de `showNotification()` vers des classes
 - [ ] Sécuriser les uploads — vérification MIME réelle, pas seulement l'extension
-- [ ] Module contacts — `json/contacts/` vide, API non migrée en v2
-- [ ] Module galleries — `gallery_manager.class.php` et `image_uploader.class.php` à auditer
+- [ ] `login.php` — nettoyer le HTML, passer en français
 
 ---
 
-*Dernière mise à jour : session 4 — 2026-05-08*  
-*Prochaine session : corrections restantes + migration v2 → racine.*
+*Dernière mise à jour : session 5 — 2026-05-10*  
+*Prochaine session : nettoyage vestiges + audit galleries.*
+
+---
+
+## Ambitions — pistes ouvertes
+
+### Routing automatique
+Aujourd'hui chaque page nécessite deux fichiers : `json/pages/{page}.json` (admin) et `inc/pages/{page}.php` (front). Piste : fallback automatique dans `inc/main.php` — si aucun fichier `.php` dédié n'existe, `PageRenderer` prend le relais. Les fichiers PHP resteraient optionnels, réservés aux pages avec logique spécifique.
+
+### Éditeur de menus
+`menus.json` est édité à la main. Un éditeur admin permettrait de créer une page et l'ajouter au menu en une seule opération — cohérence garantie entre navigation et contenu.
+
+### Types de pages
+- Pages pilotées par JSON — modèle actuel via `PageRenderer`
+- Pages statiques PHP — pour les cas avec logique spécifique
+- Les deux peuvent coexister avec le fallback routing
+
+### Brouillons
+`status: draft` est déjà présent dans le modèle JSON des pages et articles. Il manque la logique qui l'exploite côté front — ne pas rendre une page ou un article en `draft`. L'admin pourrait filtrer l'affichage par statut.
+
+> Ces pistes sont ouvertes — à trancher quand le socle est stabilisé.
+
+---
+
+## Tests — `admin/tests/`
+
+Fichiers déplacés depuis la racine admin en session 5. À auditer après les révisions en cours.
+
+| Fichier | Composant testé |
+|---|---|
+| `test_api_v2.php` | Endpoints API |
+| `test_audit.php` | Audit général |
+| `test_block_registry.php` | `BlockRegistry` |
+| `test_component_model.php` | `ComponentModel` |
+| `test_json_handler.php` | `JsonHandler` |
