@@ -1,190 +1,192 @@
 /* =====================================================
-   FOOTER — Style pour le pied de page Mascarade
+   NUCLEUS — FOOTER
+   Structure souple — modifier les variables pour reconfigurer
 ===================================================== */
 
-footer {
-  /* === Harmonie avec le header === */
-  background: var(--color-primary);
-  color: white;
+/* ---------------------------------
+   Variables locales footer
+---------------------------------- */
 
-  /* === Structure et espacement === */
-  padding: var(--spacing-lg) var(--spacing-sm);
-  text-align: center; /* Centre le logo et les RS par défaut */
+:root {
+  --footer-bg:          var(--color-primary);
+  --footer-color:       white;
+  --footer-link-color:  rgba(255, 255, 255, 0.8);
+  --footer-logo-height: 64px;
+  --footer-padding:     var(--spacing-lg) var(--spacing-md);
+  --footer-gap:         var(--spacing-lg);
+  --footer-col-min:     200px;
 }
 
 /* ---------------------------------
-   Navigation principale du footer
+   Block principal
 ---------------------------------- */
-.footerNav {
-  display: flex;
-  justify-content: space-around; /* Espace les blocs équitablement */
-  align-items: flex-start; /* Aligne les blocs par le haut */
-  flex-wrap: wrap; /* Permet aux blocs de passer à la ligne sur mobile */
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
-  max-width: 800px; /* Limite la largeur pour ne pas trop écarter les colonnes */
-  margin-left: auto;
-  margin-right: auto;
+
+.site-footer {
+  background: var(--footer-bg);
+  color:      var(--footer-color);
+  padding:    var(--footer-padding);
+  display:    flex;
+  flex-direction: column;
+  align-items:    center;
+  gap:        var(--footer-gap);
 }
 
-.navfooterbloc {
-  text-align: left; /* Réinitialise l'alignement pour le contenu des colonnes */
-  min-width: 220px; /* Empêche les blocs de devenir trop étroits */
+/* ---------------------------------
+   Grille des blocs
+   Auto-répartition selon l'espace disponible
+---------------------------------- */
+
+.site-footer__grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--footer-col-min), 1fr));
+  gap:                   var(--footer-gap);
+  width:                 100%;
+  max-width:             var(--width-wide);
 }
 
-/* Titres des blocs (Contacts, Menu) */
-.navfooterbloc h2 {
-  color: white;
-  font-size: var(--fs-sm);
-  font-weight: 600;
+/* ---------------------------------
+   Bloc générique
+---------------------------------- */
+
+.site-footer__bloc {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--spacing-xs);
+}
+
+.site-footer__title {
+  font-family:   var(--font-title);
+  font-size:     var(--fs-sm);
+  font-weight:   600;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
-  opacity: 0.8;
-  margin-bottom: var(--spacing-sm);
+  letter-spacing: 1px;
+  color:         var(--footer-color);
+  margin-bottom: var(--spacing-xs);
   padding-bottom: var(--spacing-xs);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Liens dans les blocs */
-.navfooterbloc a {
-  display: block; /* Pour qu'ils s'empilent verticalement */
-  color: rgba(255, 255, 255, 0.85);
-  padding: 0.3rem 0;
-  transition: color var(--transition), transform var(--transition);
-  font-family: var(--font-base);
+.site-footer__text {
+  color:     var(--footer-link-color);
+  font-size: var(--fs-sm);
+  margin:    0;
 }
 
-.navfooterbloc a:hover {
-  color: var(--color-accent); /* La touche d'énergie orange ! */
-  transform: translateX(4px);
+.site-footer__link {
+  color:           var(--footer-link-color);
+  font-size:       var(--fs-sm);
+  text-decoration: none;
+  transition:      color var(--transition);
 }
 
-/* Style de l'adresse (pour enlever l'italique) */
-address {
-  font-style: normal;
-}
-
-
-/* ---------------------------------
-   Icônes des Réseaux Sociaux
----------------------------------- */
-#menuRS {
-  display: flex;
-  justify-content: center;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-md);
-}
-
-#menuRS a {
-  display: block;
-}
-
-/* Style de base des icônes */
-.rs {
-  width: 32px;
-  height: 32px;
-  background-color: rgba(255, 255, 255, 0.9);
-  transition: all var(--transition);
-  /* La technique moderne pour les icônes SVG monochromes */
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-}
-
-/* Application des icônes SVG */
-.rs.facebook {
-  -webkit-mask-image: url('../img/icons/facebook.svg');
-  mask-image: url('../img/icons/facebook.svg');
-}
-
-.rs.instagram {
-  -webkit-mask-image: url('../img/icons/instagram.svg');
-  mask-image: url('../img/icons/instagram.svg');
-}
-
-/* Effet au survol */
-#menuRS a:hover .rs {
-  background-color: var(--color-accent);
-  transform: scale(1.1);
-}
-
-/* Pour cacher le texte (déjà présent dans le HTML) */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-
-/* ---------------------------------
-   Logo dans le footer
----------------------------------- */
-.footer-logo {
-  display: inline-block;
-  max-height: 50px;
-  opacity: 0.9;
-  margin-top: var(--spacing-sm);
-}
-
-
-/* ===============================
-   Responsive
-================================ */
-@media (max-width: 768px) {
-  .footerNav {
-    flex-direction: column; /* Empile les blocs verticalement */
-    align-items: center; /* Centre les blocs empilés */
-    gap: var(--spacing-lg);
-  }
-
-  .navfooterbloc {
-    text-align: center; /* Centre le contenu des blocs sur mobile */
-    width: 100%;
-  }
-
-  .navfooterbloc a:hover {
-    transform: translateX(0); /* Désactive le décalage sur mobile */
-  }
-
-  .navfooterbloc h2 {
-    border-bottom: none; /* Le soulignement est moins pertinent quand c'est centré */
-  }
-}
-.navfooterbloc a { /* Le sélecteur peut être différent : nav a, .menu-principal a, etc. */
-  display: inline-block;
+.site-footer__link:hover {
   color: white;
-  text-transform: uppercase;
-  padding: 0.5rem 1rem; /* Le padding peut varier */
-  transition: color var(--transition);
-  /* AJOUTE LA LIGNE SUIVANTE : */
-  border-bottom: 2px solid transparent; /* On réserve l'espace pour le trait */
 }
-
-/* ENSUITE, MODIFIE LA RÈGLE :hover */
-.navfooterbloc a:hover {
-  color: var(--color-accent);
-  /* REMPLACE L'ANCIENNE RÈGLE DE SOULIGNEMENT PAR CELLE-CI : */
-  border-bottom-color: var(--color-accent); /* On colore la bordure existante */
-}
-/* Dans public/css/footer.css */
 
 /* ---------------------------------
-   Logo dans le footer
+   Menu footer
+   Vertical, discret — différent du header
 ---------------------------------- */
-.footer-logo {
-  display: block; /* Important pour que margin: auto fonctionne */
-  max-height: 50px;
-  width: auto; /* Garde les proportions */
-  margin: var(--spacing-sm) auto 0; /* Centre horizontalement, avec marge en haut */
-  opacity: 0.9;
-  color: white; /* Assure que le SVG est blanc */
+
+.site-footer__bloc .nav__link {
+  color:           var(--footer-link-color);
+  font-size:       var(--fs-sm);
+  text-transform:  none;
+  letter-spacing:  0;
+  font-weight:     400;
+  padding:         0.3rem 0;
+  text-decoration: none;
+  transition:      color var(--transition);
+  position:        static;
+}
+
+.site-footer__bloc .nav__link::after {
+  display: none;
+}
+
+.site-footer__bloc .nav__link:hover {
+  color: white;
+}
+
+/* ---------------------------------
+   Réseaux sociaux
+---------------------------------- */
+
+.site-footer__rs {
+  display:     flex;
+  align-items: center;
+  gap:         var(--spacing-sm);
+}
+
+.rs-link {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  width:           40px;
+  height:          40px;
+  border-radius:   50%;
+  border:          1px solid rgba(255, 255, 255, 0.3);
+  color:           var(--footer-link-color);
+  text-decoration: none;
+  transition:      all var(--transition);
+}
+
+.rs-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: white;
+  color: white;
+}
+
+.rs-icon {
+  width:  20px;
+  height: 20px;
+  background-size:     contain;
+  background-repeat:   no-repeat;
+  background-position: center;
+}
+
+/* Icônes RS — remplacer par les SVG disponibles */
+.rs-icon--facebook {
+  background-image: url("../img/deco/icon-facebook.svg");
+}
+
+.rs-icon--instagram {
+  background-image: url("../img/deco/icon-instagram.svg");
+}
+
+/* ---------------------------------
+   Logo centré
+---------------------------------- */
+
+.site-footer__logo {
+  display:     flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.site-footer__logo img {
+  height:  var(--footer-logo-height);
+  width:   auto;
+  opacity: 0.85;
+  transition: opacity var(--transition);
+}
+
+.site-footer__logo img:hover {
+  opacity: 1;
+}
+
+/* =================================
+   MOBILE
+================================= */
+
+@media (max-width: 768px) {
+
+  .site-footer {
+    padding: var(--spacing-md) var(--spacing-sm);
+    gap:     var(--spacing-md);
+  }
+
+  .site-footer__grid {
+    grid-template-columns: 1fr;
+  }
 }
