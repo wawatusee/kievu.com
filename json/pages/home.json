@@ -3,16 +3,12 @@
     "meta": {
         "id": "home",
         "status": "draft",
-        "updated": "2026-04-13"
+        "updated": "2026-05-10"
     },
     "layout": [
         {
             "type": "article_ref",
             "filename": "home-introduction.json"
-        },
-        {
-            "type": "article_ref",
-            "filename": "home-actualites.json"
         }
     ]
 }

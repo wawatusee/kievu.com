@@ -3,19 +3,22 @@
     "meta": {
         "id": "home-introduction",
         "created": "2026-04-13",
-        "updated": "2026-04-13",
+        "updated": "2026-05-10",
         "status": "draft"
     },
     "content": [
         {
             "type": "title",
             "level": 1,
-            "data": { "fr": "ACCUEIL", "en": "" }
+            "data": {
+                "fr": "ACCUEIL",
+                "en": ""
+            }
         },
         {
             "type": "text",
             "data": {
-                "fr": "L’association socio-culturelle Mascarade est née en mars 2017 de la rencontre de personnalités évoluant professionnellement dans les domaines de l’événementiel, de la musique et du social.\nSon but : développer des projets culturels, promouvoir la scène artistique locale, et participer à l’émancipation d’un jeune public.",
+                "fr": "L’association socio-culturelle Mascarade est née en mars 2017 de la rencontre de personnalités évoluant professionnellement dans les domaines de l’événementiel, de la musique et du social.\nSon but : développer des projets culturels, promouvoir la scène artistique locale, et participer à l’émancipation d’un jeune publics.",
                 "en": ""
             }
         },

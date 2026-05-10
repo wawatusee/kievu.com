@@ -29,11 +29,11 @@ require_once ROOT_PATH . 'src/utils/json_loader.php';
 // =========================================================
 // SESSION
 // =========================================================
-/*ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_httponly', 1);
 ini_set('session.cookie_samesite', 'Strict');
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
-}*/
+}
 
 // =========================================================
 // UPLOAD

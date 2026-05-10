@@ -3,7 +3,7 @@
     "meta": {
         "id": "test-article-v2",
         "created": "2026-02-10",
-        "updated": "2026-02-10",
+        "updated": "2026-05-10",
         "status": "draft"
     },
     "content": [
@@ -25,7 +25,7 @@
         {
             "type": "text",
             "data": {
-                "fr": "Dans un prochain temps nous aimerions voir apparaitre l'anglais.",
+                "fr": "Dans un prochain temps si cela s'avairait nécessaire, nous aimerions voir apparaitre l'anglais.",
                 "en": ""
             }
         }

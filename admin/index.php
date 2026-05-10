@@ -1,9 +1,10 @@
 <?php
 // admin/index.php
 //session_start();
+require_once __DIR__ . '/config_admin.php'; 
 
 // --- sécurité admin simple ---
-/*if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
 }
@@ -13,10 +14,10 @@ if (isset($_GET['logout'])) {
     unset($_SESSION['user']);
     header("Location: login.php");
     exit();
-}*/
+}
+?>
 
 
-require_once __DIR__ . '/config_admin.php'; ?>
 <!DOCTYPE html>
 <html lang="fr">
 <?php require_once __DIR__ . '/inc/head.php'; ?>
