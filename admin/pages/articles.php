@@ -38,24 +38,19 @@ $existingArticles = array_diff(scandir($articlesDir), array('..', '.'));
     <main class="admin-content">
 
         <?php
-        // Inclusion explicite selon vos règles 
-        if (defined('ADMIN_PATH')) {
-            require_once ADMIN_PATH . 'src/model/config_model.php';
-        } else {
-            // Fallback ou erreur explicite
-            die("Erreur système : ADMIN_PATH non définie.");
-        }
+
         // Utilisation du modèle pour récupérer les langues configurées
-        $langs = ConfigModel::getLangs(); // Récupère { "fr": "Français", ... }
-        $langKeys = array_keys($langs);
+        $langs = ConfigModel::getLangs();
+        // Extraire code et label depuis la nouvelle structure
+        $langKeys = array_column($langs, 'code');
         ?>
         <div class="lang-tabs-wrapper">
             <nav class="lang-tabs-container" id="editor-langs" data-config='<?= json_encode($langKeys) ?>'>
 
-                <?php foreach ($langs as $code => $label): ?>
-                    <button type="button" class="tab-btn <?= $code === 'fr' ? 'active' : '' ?>" data-lang="<?= $code ?>"
-                        onclick="switchEditorLang('<?= $code ?>')">
-                        <?= $label ?>
+                <?php foreach ($langs as $langue): ?>
+                    <button type="button" class="tab-btn <?= $langue['code'] === 'fr' ? 'active' : '' ?>"
+                        data-lang="<?= $langue['code'] ?>" onclick="switchEditorLang('<?= $langue['code'] ?>')">
+                        <?= htmlspecialchars($langue['label']) ?>
                     </button>
                 <?php endforeach; ?>
             </nav>

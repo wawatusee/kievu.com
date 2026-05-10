@@ -1,20 +1,26 @@
-<?php require("login.class.php") ?>
-<?php 
-	if(isset($_POST['submit'])){
-		$user = new LoginUser($_POST['username'], $_POST['password']);
-	}
+<?php
+require_once __DIR__ . '/config_admin.php';
+require_once __DIR__ . '/login.class.php';
+
+if (isset($_POST['submit'])) {
+	$user = new LoginUser($_POST['username'], $_POST['password']);
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	 <link rel="stylesheet" href="styles.css">
-	 <link rel="stylesheet" href="css/login.css">
+	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="css/login.css">
 	<title>Log in form</title>
 </head>
+
 <body>
-	<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+
+	<form action="" method="post" autocomplete="off">
 		<h2>Login form</h2>
 		<h4>Both fields are <span>required</span></h4>
 
@@ -31,4 +37,5 @@
 	</form>
 
 </body>
+
 </html>

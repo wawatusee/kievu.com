@@ -10,7 +10,7 @@
 // === CONFIGURATION ===
 const configEl = document.getElementById('editor-langs');
 const SUPPORTED_LANGS = JSON.parse(configEl.dataset.config);
-const API_BASE = 'api/v2/';
+const API_BASE = 'api/';
 
 let activeLang = 'fr';
 let originalCreationDate = null;

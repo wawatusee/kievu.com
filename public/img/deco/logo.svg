@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="178.75838mm"
+   height="168.44725mm"
+   viewBox="0 0 178.75838 168.44725"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer4"
+     transform="translate(0.49999986,-39.615239)">
+    <rect
+       style="fill:#140e0e;fill-opacity:1;stroke:#080404;stroke-width:0.64966"
+       id="rect4"
+       width="178.1087"
+       height="4.0306373"
+       x="-0.17516989"
+       y="183.0121" />
+    <path
+       style="fill:#140e0e;fill-opacity:1;stroke:#080404;stroke-width:1"
+       d="M 32.985877,167.82156 143.3948,167.45353 v 0 0 l 21.34572,13.24907 v 0 l -153.468399,0.36803 v 0"
+       id="path5" />
+  </g>
+  <g
+     id="layer1"
+     style="display:inline"
+     transform="translate(0.49999986,-39.615239)">
+    <rect
+       style="fill:#ffffff;stroke:#080404;stroke-width:1"
+       id="rect1"
+       width="110.40892"
+       height="110.40892"
+       x="33.674721"
+       y="52.260223" />
+    <rect
+       style="fill:#ffffff;stroke:#080404;stroke-width:1"
+       id="rect2"
+       width="40.851299"
+       height="94.951675"
+       x="40.483273"
+       y="58.148697" />
+    <path
+       style="fill:#ffffff;stroke:#080404;stroke-width:1"
+       d="M 88.511148,51.892191 C 89.247206,162.30111 89.247206,161.56505 89.247206,161.56505"
+       id="path2" />
+  </g>
+  <g
+     id="layer6"
+     transform="translate(0.49999986,-39.615239)">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#080404;stroke-width:1"
+       id="rect5"
+       width="3.6802974"
+       height="145.73978"
+       x="158.25279"
+       y="40.115242" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#080404;stroke-width:1"
+       d="m 158.25279,40.483271 -19.50558,11.40892 0.36803,110.040889 19.50558,23.18588 v -0.36803"
+       id="path6" />
+    <g
+       id="layer7">
+      <path
+         style="fill:none;fill-opacity:1;stroke:#080404;stroke-width:1"
+         d="m 142.42751,56.67658 12.88104,-6.256506 V 172.23792 l -12.51301,-12.51301 z"
+         id="path7" />
+    </g>
+  </g>
+</svg>

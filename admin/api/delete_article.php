@@ -1,27 +1,31 @@
 <?php
-// Inclusion de ton fichier de config ou d'initialisation pour charger les constantes
-require_once '../config_admin.php';
-
-header('Content-Type: application/json');
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = json_decode(file_get_contents('php://input'), true);
-    $filename = $data['filename'] ?? '';
-
-    // Sécurité : basename empêche la manipulation de chemin
-    $filename = basename($filename);
-
-    // Utilisation de ta constante globale
-    $path = JSON_ARTICLES_DIR . $filename;
-
-    if (file_exists($path)) {
-        if (unlink($path)) {
-            echo json_encode(['success' => true]);
-        } else {
-            echo json_encode(['success' => false, 'error' => 'Erreur de permission lors de la suppression']);
-        }
-    } else {
-        echo json_encode(['success' => false, 'error' => 'Fichier introuvable : ' . $filename]);
-    }
+//session_start();
+require_once __DIR__ . '/../config_admin.php';
+if (!isset($_SESSION['user'])) {
+    http_response_code(401);
+    echo json_encode(['success' => false, 'error' => 'Non authentifié']);
     exit;
 }
+
+
+//require_once ADMIN_PATH . 'src/model/config_model.php';
+require_once ROOT_PATH . 'src/core/component_model.php';
+
+header('Content-Type: application/json; charset=utf-8');
+
+$jsonInput = file_get_contents('php://input');
+$data = json_decode($jsonInput, true);
+
+$filename = $data['filename'] ?? null;
+
+if (!$filename) {
+    echo json_encode(['success' => false, 'error' => 'Nom de fichier manquant']);
+    exit;
+}
+
+$langs = array_column(ConfigModel::getLangs(), 'code');
+$model = new ComponentModel(JSON_ARTICLES_DIR, $langs, 'article');
+
+$result = $model->delete($filename);
+
+echo json_encode($result);

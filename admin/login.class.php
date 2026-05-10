@@ -1,5 +1,6 @@
-<?php 
-class LoginUser{
+<?php
+class LoginUser
+{
 	// class properties
 	private $username;
 	private $password;
@@ -9,7 +10,8 @@ class LoginUser{
 	private $stored_users;
 
 	// class methods
-	public function __construct($username, $password){
+	public function __construct($username, $password)
+	{
 		$this->username = $username;
 		$this->password = $password;
 		$this->stored_users = json_decode(file_get_contents($this->storage), true);
@@ -17,11 +19,16 @@ class LoginUser{
 	}
 
 
-	private function login(){
+	private function login()
+	{
 		foreach ($this->stored_users as $user) {
-			if($user['username'] == $this->username){
-				if(password_verify($this->password, $user['password'])){
-					session_start();
+			if ($user['username'] == $this->username) {
+				if (password_verify($this->password, $user['password'])) {
+
+					if (session_status() === PHP_SESSION_NONE) {
+						session_start();
+					}
+
 					$_SESSION['user'] = $this->username;
 					header("location: index.php");
 					exit();

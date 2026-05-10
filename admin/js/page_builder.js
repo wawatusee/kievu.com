@@ -121,7 +121,7 @@ class PageEditor {
     // --- Actions ---
     async loadResources() {
         try {
-            const res = await fetch('api/v2/list_articles.php?meta=1');
+            const res = await fetch('api/list_articles.php?meta=1');
             const articles = await res.json();
             this.resources.articles = Array.isArray(articles) ? articles : [];
         } catch (e) {
@@ -138,7 +138,7 @@ class PageEditor {
 
     async loadPageLayout(filename) {
         try {
-            const res = await fetch(`api/v2/get_page.php?file=${encodeURIComponent(filename)}`);
+            const res = await fetch(`api/get_page.php?file=${encodeURIComponent(filename)}`);
             if (!res.ok) throw new Error("Réponse serveur invalide");
 
             const data = await res.json();
@@ -190,7 +190,7 @@ class PageEditor {
         };
 
         try {
-            const res = await fetch('api/v2/save_page.php', {
+            const res = await fetch('api/save_page.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -218,7 +218,7 @@ class PageEditor {
         if (!confirm(`Supprimer la page "${filename}" ?`)) return;
 
         try {
-            const res = await fetch('api/v2/delete_page.php', {
+            const res = await fetch('api/delete_page.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ filename })

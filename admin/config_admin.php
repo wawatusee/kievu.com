@@ -1,24 +1,42 @@
 <?php
-// Racine absolue du projet (remonte d'un niveau depuis /admin)
-define('ROOT_PATH', realpath(__DIR__ . '/../') . DIRECTORY_SEPARATOR);
+// =========================================================
+// SOCLE FRONT
+// =========================================================
+require_once realpath(__DIR__ . '/../config/config.php');
 
-// Racine de l'administration
-define('ADMIN_PATH', __DIR__ . DIRECTORY_SEPARATOR);
-// Dans config_admin.php
-define('GALLERIES_DIR', ROOT_PATH . 'public/img/content/galleries' . DIRECTORY_SEPARATOR);
+// =========================================================
+// CHEMINS ADMIN
+// =========================================================
+define('ADMIN_PATH',        __DIR__ . DIRECTORY_SEPARATOR);
+define('JSON_PAGES_DIR',    DIR_JSON . 'pages'    . DIRECTORY_SEPARATOR);
+define('JSON_ARTICLES_DIR', DIR_JSON . 'articles' . DIRECTORY_SEPARATOR);
+define('GALLERIES_DIR',     DIR_IMG_CONTENT . 'galleries' . DIRECTORY_SEPARATOR);
 
-// Pages accessibles dans l’admin
+// =========================================================
+// PAGES ACCESSIBLES (whitelist admin)
+// =========================================================
 define('ADMIN_PAGES', [
     'dashboard',
     'pages',
     'articles'
 ]);
 
-// Dossiers JSON des contenus (Utilisation de ROOT_PATH pour la clarté)
-define('JSON_PAGES_DIR', ROOT_PATH . 'json/pages' . DIRECTORY_SEPARATOR);
-define('JSON_ARTICLES_DIR', ROOT_PATH . 'json/articles' . DIRECTORY_SEPARATOR);
+// =========================================================
+// UTILITAIRES
+// =========================================================
+require_once ROOT_PATH . 'src/utils/json_loader.php';
 
-// Chemin vers le loader et les modèles
-define('JSON_LOADER', ROOT_PATH . 'src/utils/json_loader.php');
-// Charger automatiquement les outils de base pour toute l'admin
-require_once JSON_LOADER;
+// =========================================================
+// SESSION
+// =========================================================
+ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_samesite', 'Strict');
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// =========================================================
+// UPLOAD
+// =========================================================
+define('UPLOAD_MAX_SIZE',      2 * 1024 * 1024);
+define('UPLOAD_ALLOWED_TYPES', ['image/jpeg', 'image/png', 'image/webp']);

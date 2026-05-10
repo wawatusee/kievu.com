@@ -29,6 +29,9 @@
     <!-- JS générique -->
     <script src="js/menu.js" defer></script>
 
+    <!--JS du menu-->
+    <script src="/public/js/nav.js" defer></script>
+
     <!-- JS spécifique à la page -->
     <?php
     $jsFile    = "js/pages/{$page}.js";

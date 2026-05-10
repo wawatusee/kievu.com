@@ -3,19 +3,25 @@
     "meta": {
         "id": "events-nos-activites",
         "created": "2026-04-13",
-        "updated": "2026-04-13",
+        "updated": "2026-05-10",
         "status": "draft"
     },
     "content": [
         {
             "type": "title",
             "level": 1,
-            "data": { "fr": "NOS ACTIVITÉS", "en": "" }
+            "data": {
+                "fr": "NOS ACTIVITÉS",
+                "en": "Activities"
+            }
         },
         {
             "type": "title",
             "level": 2,
-            "data": { "fr": "Projet 360°", "en": "" }
+            "data": {
+                "fr": "Projet 360°",
+                "en": "360 PROJECT"
+            }
         },
         {
             "type": "text",
@@ -27,7 +33,10 @@
         {
             "type": "title",
             "level": 2,
-            "data": { "fr": "Mascarade Events", "en": "" }
+            "data": {
+                "fr": "Mascarade Events",
+                "en": ""
+            }
         },
         {
             "type": "text",
@@ -39,7 +48,10 @@
         {
             "type": "title",
             "level": 2,
-            "data": { "fr": "Ateliers Création Artistique", "en": "" }
+            "data": {
+                "fr": "Ateliers de Création Artistique",
+                "en": ""
+            }
         },
         {
             "type": "text",
