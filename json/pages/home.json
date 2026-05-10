@@ -9,6 +9,10 @@
         {
             "type": "article_ref",
             "filename": "home-introduction.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "events-nos-activites.json"
         }
     ]
 }

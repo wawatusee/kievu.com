@@ -1,6 +1,6 @@
 <?php
-//session_start();
-require_once __DIR__ . '/../../config_admin.php';
+
+require_once __DIR__ . '/../config_admin.php';
 if (!isset($_SESSION['user'])) {
     http_response_code(401);
     echo json_encode(['success' => false, 'error' => 'Non authentifié']);
@@ -8,8 +8,7 @@ if (!isset($_SESSION['user'])) {
 }
 
 
-//require_once ADMIN_PATH . 'src/model/config_model.php';
-require_once ROOT_PATH . 'src/core/component_model.php';
+require_once ROOT_PATH . 'src/core/page_model.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -23,9 +22,7 @@ if (!$filename) {
     exit;
 }
 
-$langs = array_column(ConfigModel::getLangs(), 'code');
-$model = new ComponentModel(JSON_ARTICLES_DIR, $langs, 'article');
-
+$model = new PageModel(JSON_PAGES_DIR);
 $result = $model->delete($filename);
 
 echo json_encode($result);
