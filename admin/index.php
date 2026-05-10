@@ -1,9 +1,9 @@
 <?php
 // admin/index.php
-session_start();
+//session_start();
 
 // --- sécurité admin simple ---
-if (!isset($_SESSION['user'])) {
+/*if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
 }
@@ -13,7 +13,7 @@ if (isset($_GET['logout'])) {
     unset($_SESSION['user']);
     header("Location: login.php");
     exit();
-}
+}*/
 
 
 require_once __DIR__ . '/config_admin.php'; ?>

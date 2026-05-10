@@ -38,13 +38,7 @@ $existingArticles = array_diff(scandir($articlesDir), array('..', '.'));
     <main class="admin-content">
 
         <?php
-        // Inclusion explicite selon vos règles 
-        if (defined('ADMIN_PATH')) {
-            require_once ADMIN_PATH . 'src/model/config_model.php';
-        } else {
-            // Fallback ou erreur explicite
-            die("Erreur système : ADMIN_PATH non définie.");
-        }
+
         // Utilisation du modèle pour récupérer les langues configurées
         $langs = ConfigModel::getLangs();
         // Extraire code et label depuis la nouvelle structure

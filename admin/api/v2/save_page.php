@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 
 if (!isset($_SESSION['user'])) {
     http_response_code(401);
