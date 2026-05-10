@@ -64,6 +64,9 @@ Supprimé : `json/contacts/`, `admin/api/get_contacts_list.php`, `admin/api/save
 
 Exception future : si un formulaire d'envoi de message est envisagé, il nécessitera un composant dédié avec traitement PHP.
 
+### Hiérarchie des titres
+Les articles commencent à `h2` — le `h1` appartient à la page, pas aux articles. Le niveau est piloté par le JSON (`"level": 2`). Le CSS qualifie par niveau HTML (`h2.nucleus-title`, `h3.nucleus-title`) pour préserver l'indépendance de chaque niveau.
+
 ### Tests
 Pas de framework de test. Convention : un fichier `tests/test_*.php` par composant critique, écrit au moment de la correction. Zéro dépendance externe.
 
@@ -214,7 +217,7 @@ if (in_array($page, PAGE_ARRAY)) {
 --header-bg:          var(--color-primary);
 ```
 
-Modifier ces variables pour reconfigurer sans réécrire — ex: `--header-direction: row-reverse` pour passer le logo à droite.
+Modifier ces variables pour reconfigurer sans réécrire.
 
 ### Logo
 Fichier : `public/img/deco/logo.svg`  
@@ -241,7 +244,7 @@ Animé en CSS pur (trois `<span>` → croix). Le JS toggle uniquement les classe
 ```css
 --footer-bg:          var(--color-primary);
 --footer-color:       white;
---footer-link-color:  rgba(255, 255, 255, 0.8);  ← isolé pour changement rapide
+--footer-link-color:  rgba(255, 255, 255, 0.8);
 --footer-logo-height: 64px;
 --footer-padding:     var(--spacing-lg) var(--spacing-md);
 --footer-gap:         var(--spacing-lg);
@@ -332,12 +335,24 @@ new ViewMenu(APP_LANG, '')      // footer — pas de lien actif
 |---|---|---|
 | 1 | `style.css` | Variables globales, reset, typo, utilitaires |
 | 2 | `header.css` | Header + nav |
-| 2 | `main.css` | Contenant principal, sections |
+| 2 | `main.css` | Contenant principal + blocs nucleus |
 | 2 | `footer.css` | Pied de page |
 | 3 | `pages/{page}.css` | Surcharges spécifiques à une page |
 
-Chaque niveau 2 et 3 **pioche dans les variables** de `style.css` — jamais de valeurs codées en dur.  
-Chaque fichier de niveau 2 expose ses propres **variables locales** en tête — un seul endroit à modifier pour reconfigurer.
+Chaque niveau 2 expose ses **variables locales** en tête — un seul endroit à modifier pour reconfigurer.
+
+### Classes nucleus — produites par `ArticleRenderer`
+
+| Classe | Rôle |
+|---|---|
+| `.nucleus-article` | Conteneur article |
+| `h1.nucleus-title` | Titre niveau 1 — accent border-bottom |
+| `h2.nucleus-title` | Titre niveau 2 |
+| `h3.nucleus-title` | Titre niveau 3 |
+| `h4-6.nucleus-title` | Titres mineurs |
+| `.nucleus-text` | Paragraphe |
+| `.nucleus-link` | Lien ou bouton |
+| `.nucleus-list` | Liste à puces — marker accent |
 
 ### Variables globales clés — `style.css`
 
@@ -404,6 +419,7 @@ php -S localhost:8000 -t public
 - **Chemins** : toujours des constantes `DIR_*` (absolus) ou `PUBLIC_*` (navigateur) — jamais de `../` en dur
 - **Nommage CSS** : BEM — `.block__element--modifier`
 - **Variables CSS** : chaque composant expose ses variables locales en tête de fichier
+- **Titres** : les articles commencent à `h2` — `h1` appartient à la page
 - **Nommage JS** : `camelCase`, `addEventListener` uniquement — pas de `onclick` inline
 - **Sécurité** : toujours `htmlspecialchars()` sur les variables affichées, whitelist sur `$page`
 - **Config** : une seule source de vérité — `config.json` pour le métier, `config.php` dérive les constantes
@@ -417,10 +433,11 @@ php -S localhost:8000 -t public
 
 ### Court terme
 
-- [ ] **CSS `nucleus-article`** — styler les classes produites par `ArticleRenderer`
 - [ ] **Bloc `image`** — ajouter le type dans `ArticleRenderer` et `article_editor.js`
+- [ ] **Icônes RS** — SVG facebook et instagram dans `public/img/deco/`
 - [ ] **Balises OG** — alimentées depuis le JSON de la page ou de l'article courant
 - [ ] **`.htaccess`** — sécuriser `/config/`, `/json/`, `/src/`
+- [ ] **Pages spécifiques** — vérifier si `events`, `social`, `contact` nécessitent du CSS dédié
 
 ### Moyen terme
 
@@ -440,5 +457,5 @@ php -S localhost:8000 -t public
 
 ---
 
-*Dernière mise à jour : session 6 — 2026-05-10*  
-*Prochaine session : CSS nucleus-article + bloc image.*
+*Dernière mise à jour : session 6 — 2026-05-11*  
+*Prochaine session : bloc image + icônes RS + pages spécifiques.*

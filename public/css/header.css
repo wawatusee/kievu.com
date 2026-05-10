@@ -1,31 +1,52 @@
 /* =====================================================
-   KIEVU — HEADER & NAV
-   Un seul bloc, responsive
+   NUCLEUS — HEADER & NAV
+   Structure souple — modifier les variables pour reconfigurer
 ===================================================== */
+
+/* ---------------------------------
+   Variables locales header
+   Toucher ici pour reconfigurer sans réécrire
+---------------------------------- */
+
+:root {
+  --header-direction:   row;
+  --header-justify:     space-between;
+  --header-align:       center;
+  --header-gap:         var(--spacing-sm);
+  --header-padding:     var(--spacing-xs) var(--spacing-md);
+  --header-logo-height: 52px;
+  --header-bg:          var(--color-primary);
+}
 
 /* ---------------------------------
    Block principal
 ---------------------------------- */
 
 .site-header {
-  background: var(--color-primary);
-  color: white;
-  width: 100%;              /* ← pleine largeur */
-  padding: var(--spacing-sm) var(--spacing-sm);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-sm);
+  background:      var(--header-bg);
+  display:         flex;
+  flex-direction:  var(--header-direction);
+  justify-content: var(--header-justify);
+  align-items:     var(--header-align);
+  gap:             var(--header-gap);
+  padding:         var(--header-padding);
+  width:           100%;
 }
 
 /* ---------------------------------
    Logo
 ---------------------------------- */
 
+.site-header__logo {
+  display:     flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .site-header__logo img {
-  height: 85px;
-  width: auto;
-  display: block;
+  height:     var(--header-logo-height);
+  width:      auto;
+  display:    block;
   transition: transform var(--transition);
 }
 
@@ -38,22 +59,23 @@
 ---------------------------------- */
 
 .site-nav {
-  display: flex;
+  display:     flex;
   align-items: center;
-  gap: 0;
+  flex-wrap:   wrap;
+  gap:         0;
 }
 
 .nav__link {
-  color: rgba(255, 255, 255, 0.85);
-  font-family: var(--font-base);
-  font-weight: 500;
-  font-size: var(--fs-sm);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  color:           rgba(255, 255, 255, 0.85);
+  font-family:     var(--font-base);
+  font-weight:     500;
+  font-size:       var(--fs-sm);
+  text-transform:  uppercase;
+  letter-spacing:  1px;
   text-decoration: none;
-  padding: 1rem 1.5rem;
-  position: relative;
-  transition: color var(--transition);
+  padding:         1rem 1.5rem;
+  position:        relative;
+  transition:      color var(--transition);
 }
 
 .nav__link:hover {
@@ -62,13 +84,13 @@
 
 /* Soulignement animé */
 .nav__link::after {
-  content: "";
-  position: absolute;
-  bottom: 0.7rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 2px;
+  content:    "";
+  position:   absolute;
+  bottom:     0.7rem;
+  left:       50%;
+  transform:  translateX(-50%);
+  width:      0;
+  height:     2px;
   background: var(--color-accent);
   transition: width var(--transition);
 }
@@ -78,20 +100,20 @@
   width: 40%;
 }
 
-/* État actif */
 .nav__link--active {
-  color: white;
+  color:       white;
   font-weight: 600;
 }
 
 /* ---------------------------------
-   Controls (langue + burger)
+   Controls — langue + burger
 ---------------------------------- */
 
 .site-header__controls {
-  display: flex;
+  display:     flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap:         var(--spacing-sm);
+  flex-shrink: 0;
 }
 
 /* ---------------------------------
@@ -99,18 +121,18 @@
 ---------------------------------- */
 
 .lang-switcher {
-  display: flex;
+  display:     flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap:         var(--spacing-xs);
 }
 
 .lang-switcher a {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: var(--fs-xs);
-  font-weight: 500;
-  letter-spacing: 1px;
+  color:           rgba(255, 255, 255, 0.7);
+  font-size:       var(--fs-xs);
+  font-weight:     500;
+  letter-spacing:  1px;
   text-decoration: none;
-  transition: color var(--transition);
+  transition:      color var(--transition);
 }
 
 .lang-switcher a:hover {
@@ -118,65 +140,85 @@
 }
 
 .lang-switcher a.lang--active {
-  color: white;
-  font-weight: 600;
-border-bottom: 1px solid var(--color-accent);
+  color:         white;
+  font-weight:   600;
+  border-bottom: 1px solid var(--color-accent);
 }
+
 /* ---------------------------------
-   Burger — caché en desktop
+   Burger — masqué desktop
 ---------------------------------- */
 
 .burger {
-  display: none;
-  flex-direction: column;
+  display:         none;
+  flex-direction:  column;
   justify-content: center;
-  gap: 5px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
+  gap:             5px;
+  background:      transparent;
+  border:          none;
+  cursor:          pointer;
+  padding:         var(--spacing-xs);
 }
 
 .burger__bar {
-  display: block;
-  width: 24px;
-  height: 2px;
-  background: white;
+  display:       block;
+  width:         24px;
+  height:        2px;
+  background:    white;
   border-radius: 2px;
-  transition: transform var(--transition), opacity var(--transition);
+  transition:    transform var(--transition), opacity var(--transition);
 }
 
-/* ---------------------------------
-   Responsive — mobile
----------------------------------- */
+.burger--open .burger__bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.burger--open .burger__bar:nth-child(2) {
+  opacity: 0;
+}
+
+.burger--open .burger__bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* =================================
+   MOBILE — max 768px
+================================= */
 
 @media (max-width: 768px) {
 
-  .burger {
-    display: flex;   /* ← visible uniquement sur mobile */
+  .site-header {
+    flex-wrap: wrap;
+    padding:   var(--spacing-sm);
   }
 
   .site-nav {
-    display: none;
+    display:        none;
     flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: var(--color-primary);
-    padding: var(--spacing-sm) 0;
-    z-index: 100;
+    width:          100%;
+    border-top:     1px solid rgba(255, 255, 255, 0.1);
+    order:          3;
   }
 
-  .site-nav.is-open {
+  .site-nav--open {
     display: flex;
   }
 
-  .site-header {
-    position: relative;
+  .nav__link {
+    width:         100%;
+    text-align:    center;
+    padding:       1.2rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .lang-switcher {
-    display: none;  /* masqué sur mobile, visible dans le menu burger si besoin */
+  .nav__link::after {
+    display: none;
   }
+
+  .burger {
+    display: flex;
+  }
+
+  .site-header__logo { order: 1; }
+  .site-header__controls { order: 2; }
 }
