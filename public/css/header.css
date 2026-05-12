@@ -53,6 +53,13 @@
 .site-header__logo:hover img {
   transform: scale(1.02);
 }
+/* ---------------------------------
+Titre header
+-----------------------------------*/
+.header-title{
+color: var(--color-accent);
+  font-size: 36px;
+}
 
 /* ---------------------------------
    Nav

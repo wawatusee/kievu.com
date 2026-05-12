@@ -3,6 +3,7 @@
   <a href="?page=<?= $pagesDuMenus[0] ?>" class="site-header__logo" aria-label="Accueil">
     <img src="img/deco/logo.svg" alt="<?= htmlspecialchars($str_titleWebSite) ?>">
   </a>
+  <div class="header-title"><?php echo $str_titleWebSite ?></div>
 
   <nav class="site-nav" id="siteNav" aria-label="Menu principal">
     <?php
