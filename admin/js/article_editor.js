@@ -22,7 +22,7 @@ const BlockTemplates = {
         <div class="field-group">
             <label>Niveau</label>
             <select class="block-level">
-                ${[1,2,3,4,5,6].map(n => `<option value="${n}" ${(data?.level || 2) == n ? 'selected' : ''}>H${n}</option>`).join('')}
+                ${[1, 2, 3, 4, 5, 6].map(n => `<option value="${n}" ${(data?.level || 2) == n ? 'selected' : ''}>H${n}</option>`).join('')}
             </select>
         </div>
         ${generateLangInputs(id, 'input', 'Titre', data)}
@@ -55,7 +55,7 @@ const BlockTemplates = {
 function generateLangInputs(blockId, tag, placeholder, blockData = null) {
     return SUPPORTED_LANGS.map(lang => {
         let val = '';
-        
+
         // Récupérer la valeur depuis 'data' (format v2)
         if (blockData?.data?.[lang] !== undefined) {
             val = blockData.data[lang];
@@ -153,12 +153,12 @@ function addBlock(type, data = null) {
 
 function switchEditorLang(lang) {
     activeLang = lang;
-    
+
     // Mise à jour des onglets
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.lang === lang);
     });
-    
+
     // Affichage des champs correspondants
     document.querySelectorAll('.lang-field').forEach(field => {
         field.style.display = field.dataset.lang === lang ? 'block' : 'none';
@@ -193,7 +193,7 @@ function collectArticleData() {
     };
 
     const blocks = document.querySelectorAll('.block-item');
-    
+
     blocks.forEach(block => {
         const type = block.dataset.type;
         const blockObj = { type };
@@ -211,12 +211,12 @@ function collectArticleData() {
 
         // Collecte des données multilingues (format unifié 'data')
         blockObj.data = {};
-        
+
         SUPPORTED_LANGS.forEach(lang => {
             const field = block.querySelector(`.block-data[data-lang="${lang}"]`);
             if (field) {
                 let value = field.value;
-                
+
                 // Convertir en tableau pour les listes
                 if (type === 'list') {
                     blockObj.data[lang] = value
@@ -243,7 +243,7 @@ function collectArticleData() {
 async function loadArticle(filename) {
     try {
         const response = await fetch(`${API_BASE}get_article.php?file=${encodeURIComponent(filename)}`);
-        
+
         if (!response.ok) {
             throw new Error(`Erreur HTTP: ${response.status}`);
         }
@@ -305,7 +305,7 @@ async function saveArticle() {
         if (result.success) {
             currentFilename = result.filename;
             showNotification('Article enregistré !', 'success');
-            
+
             // Recharger la sidebar
             setTimeout(() => location.reload(), 1000);
         } else {
@@ -360,11 +360,11 @@ function resetEditor() {
 
     originalCreationDate = null;
     currentFilename = null;
-    
+
     document.getElementById('article-title').value = '';
     document.getElementById('generated-id').textContent = '--';
     document.getElementById('blocks-workspace').innerHTML = '';
-    
+
     window.scrollTo(0, 0);
     showNotification('Nouvel article', 'info');
 }

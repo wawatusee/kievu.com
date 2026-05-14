@@ -147,7 +147,7 @@ class BlockRegistry
                     $errors[] = "Langue '{$lang}' manquante dans 'data'";
                 } else {
                     $langValue = $block['data'][$lang];
-                    
+
                     // Vérification du type de données
                     if ($def['dataType'] === 'array' && !is_array($langValue)) {
                         $errors[] = "'{$lang}' doit être un tableau pour le type '{$block['type']}'";
@@ -189,7 +189,7 @@ class BlockRegistry
         }
 
         $emptyValue = $def['dataType'] === 'array' ? [] : '';
-        
+
         foreach ($langs as $lang) {
             if (!isset($block['data'][$lang])) {
                 $block['data'][$lang] = $emptyValue;

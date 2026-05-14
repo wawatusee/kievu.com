@@ -1,104 +1,122 @@
 <?php
+/**
+ * ImageUploader — Upload et traitement d'images de contenu
+ * Nucleus CMS
+ *
+ * Entrée  : fichier uploadé + nom de répertoire (ex: 'home')
+ * Sortie  : ['base' => 'home/photo', 'ext' => 'jpg']
+ *
+ * Structure produite :
+ *   public/img/content/{dir}/photo.jpg        ← grand format (max 1280px)
+ *   public/img/content/{dir}/thumbs/photo.jpg ← miniature (400px)
+ *
+ * Prérequis : les dossiers {dir}/ et {dir}/thumbs/ doivent exister.
+ */
 class ImageUploader
 {
-    private $galleryPath;
+    private const MAX_WIDTH_FULL  = 1280;
+    private const MAX_WIDTH_THUMB = 400;
+    private const QUALITY_JPG     = 85;
 
-    public function __construct($galleryPath)
+    private string $baseDir;
+    private string $dir;
+
+    /**
+     * @param string $contentDir  Chemin absolu vers public/img/content/
+     * @param string $dir         Nom du répertoire cible (ex: 'home')
+     */
+    public function __construct(string $contentDir, string $dir)
     {
-        // On attend ici le chemin vers le dossier parent de la galerie
-        $this->galleryPath = rtrim($galleryPath, '/\\') . DIRECTORY_SEPARATOR;
+        $this->baseDir = rtrim($contentDir, '/\\') . DIRECTORY_SEPARATOR;
+        $this->dir     = trim($dir, '/\\');
     }
 
-    public function upload($file)
+    /**
+     * Traite et enregistre le fichier uploadé
+     *
+     * @param array $file  Entrée $_FILES['...']
+     * @return array ['base' => 'home/photo', 'ext' => 'jpg']
+     * @throws Exception
+     */
+    public function upload(array $file): array
     {
-        if (!isset($file) || $file['error'] != 0) {
-            throw new Exception("Erreur upload: " . $file['error']);
+        // 1. Validation
+        if (!isset($file['tmp_name']) || $file['error'] !== UPLOAD_ERR_OK) {
+            throw new Exception("Erreur upload : code " . ($file['error'] ?? 'inconnu'));
         }
 
         $fileInfo = getimagesize($file['tmp_name']);
-        if (!$fileInfo)
-            throw new Exception("Fichier non image.");
-
-        $extension = image_type_to_extension($imageType = $fileInfo[2]);
-        $cleanName = $this->slugify(pathinfo($file['name'], PATHINFO_FILENAME)) . $extension;
-
-        $targetOriginal = $this->galleryPath . 'original' . DIRECTORY_SEPARATOR . $cleanName;
-        $targetThumb = $this->galleryPath . 'thumbs' . DIRECTORY_SEPARATOR . $cleanName;
-
-        if (move_uploaded_file($file['tmp_name'], $targetOriginal)) {
-            // 1. Optimisation de l'original (max 1280px)
-            $this->processResize($targetOriginal, $targetOriginal, 1280);
-            // 2. Création auto de la miniature (400px)
-            $this->processResize($targetOriginal, $targetThumb, 400);
-
-            return $cleanName;
+        if (!$fileInfo) {
+            throw new Exception("Le fichier n'est pas une image valide.");
         }
-        return false;
+
+        $imageType = $fileInfo[2];
+        if (!in_array($imageType, [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_WEBP], true)) {
+            throw new Exception("Format non supporté — JPEG, PNG ou WebP uniquement.");
+        }
+
+        // 2. Nom de fichier
+        $slug     = $this->slugify(pathinfo($file['name'], PATHINFO_FILENAME));
+        $filename = $slug . '.jpg';
+
+        // 3. Chemins cibles
+        $pathFull  = $this->baseDir . $this->dir . DIRECTORY_SEPARATOR . $filename;
+        $pathThumb = $this->baseDir . $this->dir . DIRECTORY_SEPARATOR . 'thumbs' . DIRECTORY_SEPARATOR . $filename;
+
+        // 4. Traitement
+        $this->processResize($file['tmp_name'], $pathFull,  self::MAX_WIDTH_FULL,  $imageType);
+        $this->processResize($file['tmp_name'], $pathThumb, self::MAX_WIDTH_THUMB, $imageType);
+
+        // 5. Retourne ce que le JSON attend
+        return [
+            'base' => $this->dir . '/' . $slug,
+            'ext'  => 'jpg'
+        ];
     }
 
-    private function processResize($input, $output, $width)
+    /**
+     * Redimensionne et convertit en JPG
+     */
+    private function processResize(string $input, string $output, int $maxWidth, int $imageType): void
     {
-        $info = getimagesize($input);
-        $type = $info[2];
-
-        switch ($type) {
-            case IMAGETYPE_JPEG:
-                $img = imagecreatefromjpeg($input);
-                break;
-            case IMAGETYPE_PNG:
-                $img = imagecreatefrompng($input);
-                break;
-            case IMAGETYPE_GIF:
-                $img = imagecreatefromgif($input);
-                break;
-            default:
-                return;
-        }
+        $img = match ($imageType) {
+            IMAGETYPE_JPEG => imagecreatefromjpeg($input),
+            IMAGETYPE_PNG  => imagecreatefrompng($input),
+            IMAGETYPE_WEBP => imagecreatefromwebp($input),
+            default        => throw new Exception("Type d'image non supporté.")
+        };
 
         $origW = imagesx($img);
         $origH = imagesy($img);
-        $ratio = $origW / $origH;
-        $newW = min($width, $origW);
-        $newH = round($newW / $ratio);
+        $newW  = min($maxWidth, $origW);
+        $newH  = (int) round($newW * $origH / $origW);
 
-        $tmp = imagecreatetruecolor($newW, $newH);
+        $canvas = imagecreatetruecolor($newW, $newH);
 
-        // Gestion de la transparence pour PNG/GIF
-        if ($type == IMAGETYPE_PNG || $type == IMAGETYPE_GIF) {
-            imagealphablending($tmp, false);
-            imagesavealpha($tmp, true);
-        }
+        // Fond blanc — gère la transparence PNG/WebP
+        $white = imagecolorallocate($canvas, 255, 255, 255);
+        imagefill($canvas, 0, 0, $white);
 
-        imagecopyresampled($tmp, $img, 0, 0, 0, 0, $newW, $newH, $origW, $origH);
-
-        // On définit l'extension de sortie de manière unique
-        $output = preg_replace('/\.(png|gif|jpeg|jpg)$/i', '.jpg', $output);
-
-        switch ($type) {
-            case IMAGETYPE_JPEG:
-                imagejpeg($tmp, $output, 85);
-                break;
-            case IMAGETYPE_PNG:
-                // Créer un fond blanc pour la transparence du PNG
-                $background = imagecreatetruecolor(imagesx($tmp), imagesy($tmp));
-                $white = imagecolorallocate($background, 255, 255, 255);
-                imagefill($background, 0, 0, $white);
-                imagecopyresampled($background, $tmp, 0, 0, 0, 0, imagesx($tmp), imagesy($tmp), imagesx($tmp), imagesy($tmp));
-
-                imagejpeg($background, $output, 85); // On sauvegarde en JPG
-                imagedestroy($background);
-                break;
-            case IMAGETYPE_GIF:
-                imagejpeg($tmp, $output, 85); // Le GIF se convertit facilement en JPG
-                break;
-        }
+        imagecopyresampled($canvas, $img, 0, 0, 0, 0, $newW, $newH, $origW, $origH);
+        imagejpeg($canvas, $output, self::QUALITY_JPG);
 
         imagedestroy($img);
-        imagedestroy($tmp);
+        imagedestroy($canvas);
     }
 
-    private function slugify($text)
+    /**
+     * Produit un nom de fichier propre
+     */
+    private function slugify(string $text): string
     {
-        return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $text), '-'));
+        $text = strtolower(trim($text));
+        $text = preg_replace('/[àáâãäå]/u', 'a', $text);
+        $text = preg_replace('/[èéêë]/u',   'e', $text);
+        $text = preg_replace('/[ìíîï]/u',   'i', $text);
+        $text = preg_replace('/[òóôõö]/u',  'o', $text);
+        $text = preg_replace('/[ùúûü]/u',   'u', $text);
+        $text = preg_replace('/[ç]/u',      'c', $text);
+        $text = preg_replace('/[^a-z0-9]+/', '-', $text);
+        return trim($text, '-');
     }
 }

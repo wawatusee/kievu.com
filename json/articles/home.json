@@ -41,6 +41,18 @@
                 "fr": "Mascarede-officiel",
                 "en": ""
             }
+        },
+        {
+            "type": "figure",
+            "src": "home/photo.jpg",
+            "alt": {
+                "fr": "Description",
+                "en": "Description"
+            },
+            "caption": {
+                "fr": "Légende optionnelle",
+                "en": "Optional caption"
+            }
         }
     ]
 }

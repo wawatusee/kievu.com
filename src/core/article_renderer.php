@@ -14,7 +14,8 @@ class ArticleRenderer
     {
         $blocks = $article['content'] ?? [];
 
-        if (empty($blocks)) return;
+        if (empty($blocks))
+            return;
 
         $id = $article['meta']['id'] ?? '';
 
@@ -52,27 +53,30 @@ class ArticleRenderer
 
     private static function renderTitle(array $block, string $lang): void
     {
-        $text  = self::t($block, $lang);
-        $level = isset($block['level']) ? (int)$block['level'] : 2;
+        $text = self::t($block, $lang);
+        $level = isset($block['level']) ? (int) $block['level'] : 2;
         $level = max(1, min(6, $level)); // sécurité h1-h6
 
-        if (!$text) return;
+        if (!$text)
+            return;
         echo "<h{$level} class=\"nucleus-title\">" . htmlspecialchars($text) . "</h{$level}>\n";
     }
 
     private static function renderText(array $block, string $lang): void
     {
         $text = self::t($block, $lang);
-        if (!$text) return;
+        if (!$text)
+            return;
         // Autorise le HTML basique (gras, italique, liens)
         echo '<p class="nucleus-text">' . nl2br(htmlspecialchars($text)) . "</p>\n";
     }
 
     private static function renderList(array $block, string $lang): void
     {
-        $src   = isset($block['data']) ? $block['data'] : $block;
+        $src = isset($block['data']) ? $block['data'] : $block;
         $items = $src[$lang] ?? $src['fr'] ?? [];
-        if (empty($items)) return;
+        if (empty($items))
+            return;
 
         echo '<ul class="nucleus-list">' . "\n";
         foreach ($items as $item) {
@@ -84,8 +88,9 @@ class ArticleRenderer
     private static function renderLink(array $block, string $lang): void
     {
         $label = self::t($block, $lang);
-        $href  = $block['url'] ?? $block['href'] ?? '#';
-        if (!$label) return;
+        $href = $block['url'] ?? $block['href'] ?? '#';
+        if (!$label)
+            return;
 
         $target = !empty($block['external']) ? ' target="_blank" rel="noopener"' : '';
         echo '<p class="nucleus-link"><a href="' . htmlspecialchars($href) . '"' . $target . '>'

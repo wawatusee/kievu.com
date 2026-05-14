@@ -3,7 +3,7 @@
     "meta": {
         "id": "home-introduction",
         "created": "2026-04-13",
-        "updated": "2026-05-10",
+        "updated": "2026-05-14",
         "status": "draft"
     },
     "content": [
@@ -28,6 +28,22 @@
                 "fr": "Georges Braque : « Contentons nous de faire réfléchir, n'essayons pas de convaincre ! »",
                 "en": ""
             }
+        },
+        {
+            "type": "figure",
+            "src": {
+                "base": "",
+                "ext": "png"
+            },
+            "alt": {
+                "fr": "Qu'elle est belle cette photo",
+                "en": ""
+            },
+            "caption": {
+                "fr": "",
+                "en": ""
+            },
+            "data": []
         }
     ]
 }

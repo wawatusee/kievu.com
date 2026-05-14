@@ -135,3 +135,28 @@ h6.nucleus-title {
 .nucleus-list li::marker {
   color: var(--color-accent);
 }
+/* ---------------------------------
+   Figure — image + légende optionnelle
+---------------------------------- */
+
+.nucleus-figure {
+  margin: var(--spacing-md) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.nucleus-figure__img {
+  max-width:     100%;
+  height:        auto;
+  border-radius: var(--radius);
+  display:       block;
+}
+
+.nucleus-figure__caption {
+  font-size:  var(--fs-xs);
+  color:      var(--color-muted);
+  font-style: italic;
+  text-align: center;
+}
