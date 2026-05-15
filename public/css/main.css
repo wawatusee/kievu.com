@@ -136,27 +136,19 @@ h6.nucleus-title {
   color: var(--color-accent);
 }
 /* ---------------------------------
-   Figure — image + légende optionnelle
+   Image
 ---------------------------------- */
 
-.nucleus-figure {
-  margin: var(--spacing-md) 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-xs);
-}
-
-.nucleus-figure__img {
+.nucleus-image {
+  display:       block;
   max-width:     100%;
   height:        auto;
   border-radius: var(--radius);
-  display:       block;
+  margin:        var(--spacing-md) 0;
 }
 
-.nucleus-figure__caption {
-  font-size:  var(--fs-xs);
-  color:      var(--color-muted);
-  font-style: italic;
-  text-align: center;
+/* Image suivie d'un texte ou d'un lien — réduit l'espace */
+.nucleus-image + .nucleus-text,
+.nucleus-image + .nucleus-link {
+  margin-top: calc(var(--spacing-xs) * -1);
 }

@@ -71,10 +71,30 @@ $existingArticles = array_diff(scandir($articlesDir), array('..', '.'));
                         <option value="title">Titre (H2)</option>
                         <option value="list">Liste à puces</option>
                         <option value="link">Lien / Bouton</option>
+                        <option value="image">Image</option>
                     </select>
                     <button type="button" id="add-block-trigger" class="btn-secondary">
                         + Ajouter un bloc
                     </button>
+                </div>
+                <!-- Modale navigateur médias — avant le <script> final -->
+                <div id="media-browser"
+                    style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center;">
+                    <div
+                        style="background:white; border-radius:8px; padding:24px; width:800px; max-width:95vw; max-height:85vh; display:flex; flex-direction:column; gap:16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h3 style="margin:0;">Choisir une image</h3>
+                            <button type="button" id="media-browser-close"
+                                style="background:none; border:none; font-size:1.5rem; cursor:pointer;">×</button>
+                        </div>
+                        <div style="display:flex; gap:8px; align-items:center;">
+                            <label>Répertoire :</label>
+                            <select id="media-dir-select" style="flex:1;"></select>
+                        </div>
+                        <div id="media-grid"
+                            style="display:grid; grid-template-columns:repeat(auto-fill, minmax(120px, 1fr)); gap:12px; overflow-y:auto; flex:1;">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="save-controls">

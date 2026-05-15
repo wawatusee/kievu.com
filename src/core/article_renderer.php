@@ -48,6 +48,10 @@ class ArticleRenderer
                 break;
             default:
                 break;
+
+            case 'image':
+                self::renderImage($block);
+                break;
         }
     }
 
@@ -95,6 +99,22 @@ class ArticleRenderer
         $target = !empty($block['external']) ? ' target="_blank" rel="noopener"' : '';
         echo '<p class="nucleus-link"><a href="' . htmlspecialchars($href) . '"' . $target . '>'
             . htmlspecialchars($label) . "</a></p>\n";
+    }
+    private static function renderImage(array $block): void
+    {
+        $src = $block['src'] ?? null;
+        if (!$src)
+            return;
+
+        $alt = $block['alt'] ?? '';
+        $imgPath = '/public/img/content/' . htmlspecialchars($src);
+
+        echo '<img'
+            . ' class="nucleus-image"'
+            . ' src="' . $imgPath . '"'
+            . ' alt="' . htmlspecialchars($alt) . '"'
+            . ' loading="lazy"'
+            . '>' . "\n";
     }
 
     /**
