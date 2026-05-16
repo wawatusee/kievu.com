@@ -3,7 +3,7 @@
     "meta": {
         "id": "home-introduction",
         "created": "2026-04-13",
-        "updated": "2026-05-14",
+        "updated": "2026-05-16",
         "status": "draft"
     },
     "content": [
@@ -30,19 +30,9 @@
             }
         },
         {
-            "type": "figure",
-            "src": {
-                "base": "",
-                "ext": "png"
-            },
-            "alt": {
-                "fr": "Qu'elle est belle cette photo",
-                "en": ""
-            },
-            "caption": {
-                "fr": "",
-                "en": ""
-            },
+            "type": "image",
+            "src": "home/default-taquin-image.jpg",
+            "alt": "",
             "data": []
         }
     ]

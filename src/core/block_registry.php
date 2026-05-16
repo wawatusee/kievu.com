@@ -41,6 +41,20 @@ class BlockRegistry
                 ]
             ],
             'dataType' => 'string'
+        ],
+        'image' => [
+            'label' => 'Image',
+            'fields' => [
+                'src' => [
+                    'type' => 'string',
+                    'required' => true
+                ],
+                'alt' => [
+                    'type' => 'string',
+                    'required' => false
+                ]
+            ],
+            'dataType' => null   // pas de champ data multilingue
         ]
     ];
 
@@ -138,22 +152,23 @@ class BlockRegistry
             }
         }
 
-        // 3. Validation du champ 'data' multilingue
-        if (!isset($block['data']) || !is_array($block['data'])) {
-            $errors[] = "Champ 'data' manquant ou invalide";
-        } else {
-            foreach ($langs as $lang) {
-                if (!array_key_exists($lang, $block['data'])) {
-                    $errors[] = "Langue '{$lang}' manquante dans 'data'";
-                } else {
-                    $langValue = $block['data'][$lang];
+        // 3. Validation du champ 'data' multilingue — seulement si dataType défini
+        if ($def['dataType'] !== null) {
+            if (!isset($block['data']) || !is_array($block['data'])) {
+                $errors[] = "Champ 'data' manquant ou invalide";
+            } else {
+                foreach ($langs as $lang) {
+                    if (!array_key_exists($lang, $block['data'])) {
+                        $errors[] = "Langue '{$lang}' manquante dans 'data'";
+                    } else {
+                        $langValue = $block['data'][$lang];
 
-                    // Vérification du type de données
-                    if ($def['dataType'] === 'array' && !is_array($langValue)) {
-                        $errors[] = "'{$lang}' doit être un tableau pour le type '{$block['type']}'";
-                    }
-                    if ($def['dataType'] === 'string' && !is_string($langValue)) {
-                        $errors[] = "'{$lang}' doit être une chaîne pour le type '{$block['type']}'";
+                        if ($def['dataType'] === 'array' && !is_array($langValue)) {
+                            $errors[] = "'{$lang}' doit être un tableau pour le type '{$block['type']}'";
+                        }
+                        if ($def['dataType'] === 'string' && !is_string($langValue)) {
+                            $errors[] = "'{$lang}' doit être une chaîne pour le type '{$block['type']}'";
+                        }
                     }
                 }
             }
@@ -183,16 +198,16 @@ class BlockRegistry
             }
         }
 
-        // S'assurer que toutes les langues sont présentes
-        if (!isset($block['data'])) {
-            $block['data'] = [];
-        }
-
-        $emptyValue = $def['dataType'] === 'array' ? [] : '';
-
-        foreach ($langs as $lang) {
-            if (!isset($block['data'][$lang])) {
-                $block['data'][$lang] = $emptyValue;
+        // S'assurer que toutes les langues sont présentes — seulement si dataType défini
+        if ($def['dataType'] !== null) {
+            if (!isset($block['data'])) {
+                $block['data'] = [];
+            }
+            $emptyValue = $def['dataType'] === 'array' ? [] : '';
+            foreach ($langs as $lang) {
+                if (!isset($block['data'][$lang])) {
+                    $block['data'][$lang] = $emptyValue;
+                }
             }
         }
 

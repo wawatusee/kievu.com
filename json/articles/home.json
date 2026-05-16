@@ -3,7 +3,7 @@
     "meta": {
         "id": "home",
         "created": "2026-04-11",
-        "updated": "2026-04-13",
+        "updated": "2026-05-16",
         "status": "draft"
     },
     "content": [
@@ -43,16 +43,18 @@
             }
         },
         {
-            "type": "figure",
-            "src": "home/photo.jpg",
-            "alt": {
-                "fr": "Description",
-                "en": "Description"
-            },
-            "caption": {
-                "fr": "Légende optionnelle",
-                "en": "Optional caption"
+            "type": "title",
+            "level": 4,
+            "data": {
+                "fr": "lapin",
+                "en": ""
             }
+        },
+        {
+            "type": "image",
+            "src": "home/default-taquin-image.jpg",
+            "alt": "",
+            "data": []
         }
     ]
 }

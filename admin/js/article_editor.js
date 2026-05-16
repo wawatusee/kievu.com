@@ -44,7 +44,25 @@ const BlockTemplates = {
         </div>
         <label class="field-label">Texte du lien</label>
         ${generateLangInputs(id, 'input', 'Texte du lien', data)}
-    `)
+    `),
+    // Dans BlockTemplates — ajouter après link:
+    image: (id, data = null) => createBlockWrapper(id, 'image', 'Image', `
+    <div class="field-group">
+        <label>Chemin de l'image</label>
+        <div style="display:flex; gap:8px;">
+            <input type="text" class="block-src" placeholder="home/photo.jpg"
+                   value="${escapeHtml(data?.src || '')}" style="flex:1;">
+            <button type="button" class="btn-browse-media btn-secondary">Parcourir</button>
+        </div>
+    </div>
+    <div class="field-group">
+        <label>Texte alternatif</label>
+        <input type="text" class="block-alt" placeholder="Description de l'image"
+               value="${escapeHtml(data?.alt || '')}">
+    </div>
+    ${data?.src ? `<img src="/public/img/content/${escapeHtml(data.src)}"
+                        style="max-width:200px; margin-top:8px; border-radius:4px;">` : ''}
+`)
 };
 
 // === FONCTIONS UTILITAIRES ===
@@ -207,6 +225,11 @@ function collectArticleData() {
         if (type === 'link') {
             const urlInput = block.querySelector('.block-url');
             blockObj.url = urlInput?.value || '#';
+        }
+        // Dans collectArticleData() — ajouter dans le forEach des blocs
+        if (type === 'image') {
+            blockObj.src = block.querySelector('.block-src')?.value || '';
+            blockObj.alt = block.querySelector('.block-alt')?.value || '';
         }
 
         // Collecte des données multilingues (format unifié 'data')
@@ -466,5 +489,113 @@ document.addEventListener('DOMContentLoaded', () => {
             const filename = btn.dataset.filename;
             deleteArticle(filename);
         });
+    });
+    // Navigateur de médias — ajouter avant la fermeture du DOMContentLoaded
+
+    // Répertoire suggéré — extrait du premier article chargé ou de l'URL
+    let suggestedDir = '';
+
+    // Ouvrir la modale au clic sur "Parcourir"
+    document.getElementById('blocks-workspace').addEventListener('click', async (e) => {
+        const btn = e.target.closest('.btn-browse-media');
+        if (!btn) return;
+
+        // Mémoriser le champ src à remplir
+        window._targetSrcInput = btn.closest('.block-item').querySelector('.block-src');
+
+        const modal = document.getElementById('media-browser');
+        modal.style.display = 'flex';
+
+        await loadMediaDirs();
+    });
+
+    // Fermer la modale
+    document.getElementById('media-browser-close').addEventListener('click', () => {
+        document.getElementById('media-browser').style.display = 'none';
+    });
+
+    // Chargement des répertoires
+    async function loadMediaDirs() {
+        try {
+            const res = await fetch('api/list_images.php');
+            const data = await res.json();
+
+            if (!data.success) return;
+
+            const select = document.getElementById('media-dir-select');
+            select.innerHTML = '';
+
+            // Suggérer le répertoire de la page en cours si possible
+            const dirs = data.dirs;
+            if (suggestedDir && dirs.includes(suggestedDir)) {
+                dirs.splice(dirs.indexOf(suggestedDir), 1);
+                dirs.unshift(suggestedDir);
+            }
+
+            dirs.forEach(dir => {
+                const opt = document.createElement('option');
+                opt.value = dir;
+                opt.textContent = dir;
+                select.appendChild(opt);
+            });
+
+            await loadMediaImages(dirs[0]);
+
+        } catch (e) {
+            console.error('Erreur chargement répertoires:', e);
+        }
+    }
+
+    // Chargement des images d'un répertoire
+    async function loadMediaImages(dir) {
+        const grid = document.getElementById('media-grid');
+        grid.innerHTML = '<p>Chargement...</p>';
+
+        try {
+            const res = await fetch(`api/list_images.php?dir=${encodeURIComponent(dir)}`);
+            const data = await res.json();
+
+            if (!data.success || !data.images.length) {
+                grid.innerHTML = '<p>Aucune image dans ce répertoire.</p>';
+                return;
+            }
+
+            grid.innerHTML = '';
+            data.images.forEach(filename => {
+                const src = `/public/img/content/${dir}/thumbs/${filename}`;
+                const full = `${dir}/${filename}`;
+
+                const fig = document.createElement('figure');
+                fig.style.cssText = 'margin:0; cursor:pointer; border:2px solid transparent; border-radius:4px; overflow:hidden;';
+                fig.innerHTML = `
+                <img src="${src}" alt="${filename}"
+                     style="width:100%; height:90px; object-fit:cover; display:block;">
+                <figcaption style="font-size:0.7rem; padding:4px; text-align:center;
+                                   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                    ${filename}
+                </figcaption>
+            `;
+
+                fig.addEventListener('mouseenter', () => fig.style.borderColor = '#1f4b99');
+                fig.addEventListener('mouseleave', () => fig.style.borderColor = 'transparent');
+
+                fig.addEventListener('click', () => {
+                    if (window._targetSrcInput) {
+                        window._targetSrcInput.value = full;
+                    }
+                    document.getElementById('media-browser').style.display = 'none';
+                });
+
+                grid.appendChild(fig);
+            });
+
+        } catch (e) {
+            grid.innerHTML = '<p>Erreur de chargement.</p>';
+        }
+    }
+
+    // Changement de répertoire
+    document.getElementById('media-dir-select').addEventListener('change', (e) => {
+        loadMediaImages(e.target.value);
     });
 });

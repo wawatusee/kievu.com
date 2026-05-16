@@ -3,7 +3,7 @@
     "meta": {
         "id": "home",
         "status": "draft",
-        "updated": "2026-05-10"
+        "updated": "2026-05-16"
     },
     "layout": [
         {
@@ -13,6 +13,10 @@
         {
             "type": "article_ref",
             "filename": "events-nos-activites.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "home.json"
         }
     ]
 }
