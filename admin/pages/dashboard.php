@@ -15,8 +15,11 @@
         <li>
             <a href="index.php?page=articles">➡ Gérer les articles</a>
         </li>
+                <li>
+            <a href="index.php?page=medias">Gérer les medias</a>
+        </li>
         <li>
-            <a href="index.php?page=galleries"></a>
+            <a href="index.php?page=menus">Gérer les menus</a>
         </li>
     </ul>
 
