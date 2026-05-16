@@ -1,0 +1,30 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "accueil-commerce",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Commerce",
+                "nl": "Handel",
+                "en": "Business",
+                "tr": "Ticaret"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Votre vitrine en ligne, dans la langue de vos clients. Photos, horaires, actualités — livré sur le web et sur clé USB. Sans abonnement, sans surprise.",
+                "nl": "Uw online etalage, in de taal van uw klanten. Foto's, openingsuren, nieuws — geleverd op het web en op usb-stick. Zonder abonnement, zonder verrassingen.",
+                "en": "Your online shopfront, in your customers' language. Photos, opening hours, news — delivered on the web and on USB key. No subscription, no surprises.",
+                "tr": "Müşterilerinizin dilinde çevrimiçi vitrininiz. Fotoğraflar, çalışma saatleri, haberler — web'de ve USB bellekte teslim edilir. Abonelik yok, sürpriz yok."
+            }
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "services-cadre",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Cadre",
+                "nl": "Kader",
+                "en": "Frame",
+                "tr": "Çerçeve"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Votre création définit l'espace. Je construis un cadre sur mesure, neutre et précis, pour que votre œuvre se déploie sans contrainte.",
+                "nl": "Uw creatie bepaalt de ruimte. Ik bouw een maatgericht, neutraal en precies kader, zodat uw werk zich vrij kan ontplooien.",
+                "en": "Your creation defines the space. I build a bespoke, neutral and precise frame so your work can unfold without constraint.",
+                "tr": "Eseriniz alanı tanımlar. Çalışmanızın özgürce açılabilmesi için özel, nötr ve hassas bir çerçeve inşa ediyorum."
+            }
+        }
+    ]
+}

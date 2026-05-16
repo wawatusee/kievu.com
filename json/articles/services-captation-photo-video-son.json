@@ -1,0 +1,30 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "services-captation-photo-video-son",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Captation — Photo, vidéo, son",
+                "nl": "Opname — Foto, video, geluid",
+                "en": "Capture — Photo, video, sound",
+                "tr": "Çekim — Fotoğraf, video, ses"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Chaque support est choisi pour mettre en valeur votre production. In situ, en studio ou en extérieur, seul ou avec une équipe constituée selon les exigences du projet.",
+                "nl": "Elk medium wordt gekozen om uw productie te doen uitschijnen. Op locatie, in studio of buiten, alleen of met een team samengesteld volgens de vereisten van het project.",
+                "en": "Every medium is chosen to showcase your production. On location, in studio or outdoors, alone or with a team assembled to match the demands of the project.",
+                "tr": "Her ortam, üretiminizi en iyi şekilde sergilemek için seçilir. Yerinde, stüdyoda veya dışarıda, projenin gereksinimlerine göre oluşturulmuş bir ekiple ya da tek başıma."
+            }
+        }
+    ]
+}

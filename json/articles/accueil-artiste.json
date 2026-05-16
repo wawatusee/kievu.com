@@ -1,0 +1,30 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "accueil-artiste",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Artistes",
+                "nl": "Kunstenaars",
+                "en": "Artists",
+                "tr": "Sanatçılar"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Kievu conçoit un espace adapté à votre œuvre. Reproduction, captation, diffusion — photo, vidéo, son, web — un seul interlocuteur, du tournage à la mise en ligne.",
+                "nl": "Kievu ontwerpt een ruimte die is afgestemd op uw werk. Reproductie, opname, verspreiding — foto, video, geluid, web — één aanspreekpunt, van opname tot publicatie.",
+                "en": "Kievu builds a space tailored to your work. Reproduction, capture, distribution — photo, video, sound, web — one single contact, from shooting to going live.",
+                "tr": "Kievu, eserinize uygun bir alan tasarlar. Yeniden üretim, çekim, yayın — fotoğraf, video, ses, web — çekimden yayına kadar tek bir muhatap."
+            }
+        }
+    ]
+}

@@ -1,0 +1,75 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "catalogue-niveau5-produits",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Niveau 5 — Catalogue produits",
+                "nl": "Niveau 5 — Productcatalogus",
+                "en": "Level 5 — Product catalogue",
+                "tr": "Seviye 5 — Ürün kataloğu"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Votre gamme en ligne, accessible à tout moment.\nVos produits présentés, décrits, mis à jour par vous-même. Pas de boutique en ligne — un catalogue clair et professionnel que vos clients consultent avant de venir ou de vous appeler. Chaque produit a sa photo, son descriptif, son prix si vous le souhaitez.\nIdéal pour : la boutique qui veut montrer sa gamme, l'artisan qui présente ses créations, le grossiste qui travaille sur commande.",
+                "nl": "Uw gamma online, op elk moment toegankelijk.\nUw producten gepresenteerd, beschreven, bijgewerkt door uzelf. Geen webshop — een duidelijke en professionele catalogus die uw klanten raadplegen voor ze langskomen of u bellen. Elk product heeft zijn foto, zijn beschrijving, zijn prijs als u dat wenst.\nIdeaal voor : de winkel die zijn gamma wil tonen, de ambachtsman die zijn creaties presenteert, de groothandelaar die op bestelling werkt.",
+                "en": "Your range online, accessible at any time.\nYour products presented, described, updated by you. No online shop — a clear and professional catalogue your clients consult before coming in or calling. Each product has its photo, its description, its price if you wish.\nIdeal for: the shop that wants to show its range, the craftsperson presenting their creations, the wholesaler working on order.",
+                "tr": "Ürün yelpazeniz çevrimiçi, her zaman erişilebilir.\nÜrünleriniz sunulur, tanımlanır, sizin tarafınızdan güncellenir. Çevrimiçi mağaza yok — müşterilerinizin gelmeden veya sizi aramadan önce incelediği net ve profesyonel bir katalog. Her ürünün fotoğrafı, açıklaması, isterseniz fiyatı vardır.\nİdeal kişiler: ürün yelpazesini göstermek isteyen mağaza, eserlerini sunan zanaatkâr, siparişle çalışan toptancı."
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Tout le niveau Dynamique, plus :\nCatalogue produits — Vos produits organisés par catégories, filtrables, consultables sur mobile comme sur ordinateur.\n(image) — prix : 400 — 600€",
+                "nl": "Alles van niveau Dynamisch, plus :\nProductcatalogus — Uw producten georganiseerd per categorie, filterbaar, raadpleegbaar op mobiel en computer.\n(afbeelding) — prijs : 400 — 600€",
+                "en": "Everything in the Dynamic level, plus:\nProduct catalogue — Your products organised by category, filterable, viewable on mobile and desktop.\n(image) — price: 400 — 600€",
+                "tr": "Dinamik seviyesindeki her şey, artı:\nÜrün kataloğu — Ürünleriniz kategorilere göre düzenlenmiş, filtrelenebilir, mobil ve bilgisayarda görüntülenebilir.\n(görsel) — fiyat: 400 — 600€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Fiche produit — Photo, description, prix, disponibilité — chaque produit a sa propre page.\n(image) — prix : 200 — 300€",
+                "nl": "Productfiche — Foto, beschrijving, prijs, beschikbaarheid — elk product heeft zijn eigen pagina.\n(afbeelding) — prijs : 200 — 300€",
+                "en": "Product sheet — Photo, description, price, availability — each product has its own page.\n(image) — price: 200 — 300€",
+                "tr": "Ürün sayfası — Fotoğraf, açıklama, fiyat, uygunluk — her ürünün kendi sayfası vardır.\n(görsel) — fiyat: 200 — 300€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Gestion du catalogue — Vous ajoutez, modifiez, archivez vos produits depuis votre espace d'administration.\n(image) — prix : 300 — 400€",
+                "nl": "Catalogusbeheer — U voegt producten toe, wijzigt ze en archiveert ze vanuit uw beheersruimte.\n(afbeelding) — prijs : 300 — 400€",
+                "en": "Catalogue management — You add, edit and archive your products from your admin space.\n(image) — price: 300 — 400€",
+                "tr": "Katalog yönetimi — Ürünlerinizi yönetim alanınızdan ekler, düzenler ve arşivlersiniz.\n(görsel) — fiyat: 300 — 400€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Formulaire de commande ou de demande — Vos clients vous contactent directement depuis la fiche produit.\n(image) — prix : 150 — 200€",
+                "nl": "Bestel- of aanvraagformulier — Uw klanten nemen rechtstreeks contact met u op via de productfiche.\n(afbeelding) — prijs : 150 — 200€",
+                "en": "Order or enquiry form — Your clients contact you directly from the product page.\n(image) — price: 150 — 200€",
+                "tr": "Sipariş veya talep formu — Müşterileriniz doğrudan ürün sayfasından sizinle iletişime geçer.\n(görsel) — fiyat: 150 — 200€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Fourchette totale : 3500 — 6000€\nDémo : sur demande",
+                "nl": "Totale prijsvork : 3500 — 6000€\nDemo : op aanvraag",
+                "en": "Total range: 3500 — 6000€\nDemo: on request",
+                "tr": "Toplam aralık: 3500 — 6000€\nDemo: talep üzerine"
+            }
+        }
+    ]
+}

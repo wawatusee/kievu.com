@@ -1,0 +1,30 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "accueil-services",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Services",
+                "nl": "Diensten",
+                "en": "Services",
+                "tr": "Hizmetler"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Développement web, captation multimédia, administration simple ou tableau de bord — tout est modulable, tout est livrable clé en main.",
+                "nl": "Webontwikkeling, multimedia-opname, eenvoudig beheer of dashboard — alles is moduleerbaar, alles wordt kant-en-klaar geleverd.",
+                "en": "Web development, multimedia capture, simple admin or dashboard — everything is modular, everything delivered turnkey.",
+                "tr": "Web geliştirme, multimedya çekimi, basit yönetim veya gösterge paneli — her şey modüler, her şey anahtar teslim sunulur."
+            }
+        }
+    ]
+}

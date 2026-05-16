@@ -1,0 +1,93 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "catalogue-niveau1-essentiel",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Niveau 1 — Essentiel",
+                "nl": "Niveau 1 — Essentieel",
+                "en": "Level 1 — Essential",
+                "tr": "Seviye 1 — Temel"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Une présence claire, immédiate, sans superflu.",
+                "nl": "Een heldere, directe aanwezigheid, zonder overbodige elementen.",
+                "en": "A clear, immediate presence, with nothing unnecessary.",
+                "tr": "Net, anında bir varlık — gereksiz hiçbir şey olmadan."
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Une page, votre message, vos coordonnées. C'est le point de départ — sobre, propre, efficace. Vos clients savent qui vous êtes et comment vous joindre.",
+                "nl": "Één pagina, uw boodschap, uw contactgegevens. Dit is het startpunt — sober, helder, doeltreffend. Uw klanten weten wie u bent en hoe ze u kunnen bereiken.",
+                "en": "One page, your message, your contact details. The starting point — clean, simple, effective. Your clients know who you are and how to reach you.",
+                "tr": "Bir sayfa, mesajınız, iletişim bilgileriniz. Başlangıç noktası — sade, temiz, etkili. Müşterileriniz kim olduğunuzu ve nasıl ulaşacaklarını bilir."
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Idéal pour : l'artisan qui démarre, l'indépendant qui veut exister en ligne sans se compliquer la vie.",
+                "nl": "Ideaal voor : de ambachtsman die start, de zelfstandige die online aanwezig wil zijn zonder gedoe.",
+                "en": "Ideal for: the craftsperson just starting out, the freelancer who wants an online presence without the hassle.",
+                "tr": "İdeal kişiler: işe yeni başlayan zanaatkâr, hayatını karmaşıklaştırmadan çevrimiçi var olmak isteyen serbest çalışan."
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Modules inclus\nEn-tête — Votre nom, votre logo, votre accroche. La première chose que voit votre visiteur.\n(image) — prix : 50 — 100€",
+                "nl": "Inbegrepen modules\nKoptekst — Uw naam, uw logo, uw slagzin. Het eerste wat uw bezoeker ziet.\n(afbeelding) — prijs : 50 — 100€",
+                "en": "Included modules\nHeader — Your name, your logo, your tagline. The first thing your visitor sees.\n(image) — price: 50 — 100€",
+                "tr": "Dahil edilen modüller\nÜstbilgi — Adınız, logonuz, sloganınız. Ziyaretçinizin ilk gördüğü şey.\n(görsel) — fiyat: 50 — 100€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Pied de page — Vos coordonnées, vos réseaux, vos mentions légales.\n(image) — prix : 50€\nPage de contenu — Texte et images pour présenter votre activité.\n(image) — prix : 100 — 200€",
+                "nl": "Voettekst — Uw contactgegevens, uw netwerken, uw wettelijke vermeldingen.\n(afbeelding) — prijs : 50€\nInhoudspagina — Tekst en afbeeldingen om uw activiteit voor te stellen.\n(afbeelding) — prijs : 100 — 200€",
+                "en": "Footer — Your contact details, your social links, your legal notices.\n(image) — price: 50€\nContent page — Text and images to present your activity.\n(image) — price: 100 — 200€",
+                "tr": "Altbilgi — İletişim bilgileriniz, ağlarınız, yasal bildirimleriniz.\n(görsel) — fiyat: 50€\nİçerik sayfası — Faaliyetinizi tanıtmak için metin ve görseller.\n(görsel) — fiyat: 100 — 200€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Formulaire de contact — Vos clients vous écrivent directement depuis le site.\n(image) — prix : 100 — 150€",
+                "nl": "Contactformulier — Uw klanten schrijven u rechtstreeks via de site.\n(afbeelding) — prijs : 100 — 150€",
+                "en": "Contact form — Your clients write to you directly from the site.\n(image) — price: 100 — 150€",
+                "tr": "İletişim formu — Müşterileriniz doğrudan siteden size yazar.\n(görsel) — fiyat: 100 — 150€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Mise en ligne — Déploiement sur votre hébergement ou le nôtre.\n(image) — prix : 100€",
+                "nl": "Online plaatsing — Implementatie op uw hosting of de onze.\n(afbeelding) — prijs : 100€",
+                "en": "Launch — Deployment on your hosting or ours.\n(image) — price: 100€",
+                "tr": "Yayına alma — Sizin veya bizim barındırma hizmetinizde dağıtım.\n(görsel) — fiyat: 100€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Fourchette totale : 400 — 600€\nDémo : sur demande",
+                "nl": "Totale prijsvork : 400 — 600€\nDemo : op aanvraag",
+                "en": "Total range: 400 — 600€\nDemo: on request",
+                "tr": "Toplam aralık: 400 — 600€\nDemo: talep üzerine"
+            }
+        }
+    ]
+}

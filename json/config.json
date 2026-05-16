@@ -1,10 +1,28 @@
 {
     "singlepage": false,
-    "titleWebsite": ["kievu", ".com", ""],
+    "titleWebsite": [
+        "kievu",
+        ".com",
+        ""
+    ],
     "repImg": "content",
     "repImgDeco": "deco",
     "langs": [
-        {"code": "fr", "label": "Français"},
-        {"code": "en", "label": "Anglais"}
+        {
+            "code": "fr",
+            "label": "Français"
+        },
+        {
+            "code": "nl",
+            "label": "Nederlands"
+        },
+        {
+            "code": "en",
+            "label": "English"
+        },
+        {
+            "code": "tr",
+            "label": "Türkçe"
+        }
     ]
 }
