@@ -1,0 +1,30 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "accueil-autonomie",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Autonomie",
+                "nl": "Autonomie",
+                "en": "Autonomy",
+                "tr": "Bağımsızlık"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Site acheté, livré — aucun abonnement. Pas de plugin qui lâche un dimanche soir. Pas de plateforme qui vous retient en otage. Un site construit pour durer, livré en ligne et sur clé USB.",
+                "nl": "Site gekocht, geleverd — geen abonnement. Geen plugin die op zondagavond uitvalt. Geen platform dat u gegijzeld houdt. Een site gebouwd om te blijven, geleverd online en op usb-stick.",
+                "en": "Bought, delivered — no subscription. No plugin breaking on a Sunday night. No platform holding you hostage. A site built to last, delivered online and on USB key.",
+                "tr": "Satın alındı, teslim edildi — abonelik yok. Pazar akşamı çöken eklenti yok. Sizi rehin tutan platform yok. Kalıcı inşa edilmiş bir site, çevrimiçi ve USB bellek üzerinde teslim edilir."
+            }
+        }
+    ]
+}

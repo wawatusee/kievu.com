@@ -1,0 +1,38 @@
+{
+    "type": "page",
+    "meta": {
+        "id": "catalogue",
+        "status": "draft",
+        "updated": "2026-05-11"
+    },
+    "layout": [
+        {
+            "type": "article_ref",
+            "filename": "catalogue-introduction.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "catalogue-niveau1-essentiel.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "catalogue-vitrine.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "catalogue-niveau3-multilingue.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "catalogue-niveau4-dynamique.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "catalogue-niveau5-produits.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "catalogue-niveau6-sur-mesure.json"
+        }
+    ]
+}

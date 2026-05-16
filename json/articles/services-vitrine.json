@@ -1,0 +1,30 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "services-vitrine",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Vitrine",
+                "nl": "Etalage",
+                "en": "Shopfront",
+                "tr": "Vitrin"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Vos produits méritent d'être vus. Une photo juste, une description claire, des horaires à jour — vos clients trouvent ce qu'ils cherchent avant même de pousser votre porte.",
+                "nl": "Uw producten verdienen het om gezien te worden. Een treffende foto, een heldere beschrijving, actuele openingsuren — uw klanten vinden wat ze zoeken nog voor ze uw deur openen.",
+                "en": "Your products deserve to be seen. The right photo, a clear description, up-to-date hours — your clients find what they're looking for before they even step through your door.",
+                "tr": "Ürünleriniz görülmeyi hak ediyor. Doğru fotoğraf, net açıklama, güncel saatler — müşterileriniz kapınızı açmadan önce aradıklarını bulur."
+            }
+        }
+    ]
+}

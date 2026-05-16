@@ -57,6 +57,8 @@
 Titre header
 -----------------------------------*/
 .header-title{
+  display: flex;
+  flex-direction: row-reverse;
 color: var(--color-accent);
   font-size: 36px;
 }

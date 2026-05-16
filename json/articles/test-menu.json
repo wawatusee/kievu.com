@@ -1,0 +1,36 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "test-menu",
+        "created": "2026-05-16",
+        "updated": "2026-05-16",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "test menu",
+                "nl": "",
+                "en": "",
+                "tr": ""
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Hou qu'il est beau ce menu!",
+                "nl": "",
+                "en": "What a beautiful menu",
+                "tr": ""
+            }
+        },
+        {
+            "type": "image",
+            "src": "home/default-taquin-image.jpg",
+            "alt": "test menu",
+            "data": []
+        }
+    ]
+}

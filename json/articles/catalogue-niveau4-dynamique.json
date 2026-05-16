@@ -1,0 +1,75 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "catalogue-niveau4-dynamique",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Niveau 4 — Dynamique",
+                "nl": "Niveau 4 — Dynamisch",
+                "en": "Level 4 — Dynamic",
+                "tr": "Seviye 4 — Dinamik"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Votre site vit au rythme de votre activité.\nVous changez vos prix, vous ajoutez une photo, vous annoncez une promotion — sans appeler personne. Un espace d'administration simple, conçu pour être pris en main sans formation. Vous gérez votre contenu comme vous gérez votre commerce.\nIdéal pour : le commerce avec des actualités fréquentes, le prestataire dont les tarifs évoluent, l'artisan qui alimente régulièrement sa galerie.",
+                "nl": "Uw site leeft in het ritme van uw activiteit.\nU wijzigt uw prijzen, voegt een foto toe, kondigt een promotie aan — zonder iemand te bellen. Een eenvoudige beheersruimte, ontworpen om zonder opleiding in gebruik te nemen. U beheert uw inhoud zoals u uw zaak beheert.\nIdeaal voor : de winkel met frequent nieuws, de dienstverlener wiens tarieven evolueren, de ambachtsman die regelmatig zijn galerij voedt.",
+                "en": "Your site lives at the pace of your activity.\nYou update your prices, add a photo, announce a promotion — without calling anyone. A simple admin space, designed to be used without training. You manage your content the way you manage your business.\nIdeal for: the business with frequent updates, the provider whose rates change, the craftsperson who regularly adds to their gallery.",
+                "tr": "Siteniz faaliyetinizin ritmiyle yaşar.\nFiyatlarınızı değiştirirsiniz, fotoğraf eklersiniz, promosyon duyurursunuz — kimseyi aramadan. Eğitim gerektirmeyen basit bir yönetim alanı. İçeriğinizi işletmenizi yönetir gibi yönetirsiniz.\nİdeal kişiler: sık güncellemesi olan işletme, tarifeleri değişen hizmet sağlayıcı, galerisini düzenli olarak besleyen zanaatkâr."
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Tout le niveau Multilingue, plus :\nEspace d'administration — Votre tableau de bord personnel. Vous modifiez textes, images et informations en quelques clics.\n(image) — prix : 400 — 600€",
+                "nl": "Alles van niveau Meertalig, plus :\nBeheersruimte — Uw persoonlijk dashboard. U wijzigt teksten, afbeeldingen en informatie met enkele klikken.\n(afbeelding) — prijs : 400 — 600€",
+                "en": "Everything in the Multilingual level, plus:\nAdmin space — Your personal dashboard. You edit texts, images and information in a few clicks.\n(image) — price: 400 — 600€",
+                "tr": "Çok Dilli seviyesindeki her şey, artı:\nYönetim alanı — Kişisel kontrol paneliniz. Metinleri, görselleri ve bilgileri birkaç tıklamayla düzenlersiniz.\n(görsel) — fiyat: 400 — 600€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Gestion des actualités — Vous publiez vos nouveautés, vos promotions, vos événements directement depuis votre interface.\n(image) — prix : 200 — 300€",
+                "nl": "Beheer van nieuws — U publiceert uw nieuwigheden, promoties en evenementen rechtstreeks vanuit uw interface.\n(afbeelding) — prijs : 200 — 300€",
+                "en": "News management — You publish your news, promotions and events directly from your interface.\n(image) — price: 200 — 300€",
+                "tr": "Haber yönetimi — Yeniliklerinizi, promosyonlarınızı ve etkinliklerinizi doğrudan arayüzünüzden yayınlarsınız.\n(görsel) — fiyat: 200 — 300€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Gestion de la galerie — Vous ajoutez, retirez, réorganisez vos photos sans toucher au code.\n(image) — prix : 200 — 300€",
+                "nl": "Beheer van de galerij — U voegt foto's toe, verwijdert ze en herorganiseert ze zonder de code aan te raken.\n(afbeelding) — prijs : 200 — 300€",
+                "en": "Gallery management — You add, remove and reorganise your photos without touching the code.\n(image) — price: 200 — 300€",
+                "tr": "Galeri yönetimi — Koda dokunmadan fotoğraflarınızı ekler, kaldırır ve yeniden düzenlersiniz.\n(görsel) — fiyat: 200 — 300€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Gestion des horaires — Vos horaires sont à jour en permanence, modifiables en un clic.\n(image) — prix : 100€",
+                "nl": "Beheer van openingsuren — Uw openingsuren zijn altijd up-to-date, aanpasbaar met één klik.\n(afbeelding) — prijs : 100€",
+                "en": "Hours management — Your opening hours are always up to date, editable in one click.\n(image) — price: 100€",
+                "tr": "Saat yönetimi — Çalışma saatleriniz her zaman güncel, tek tıklamayla düzenlenebilir.\n(görsel) — fiyat: 100€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Fourchette totale : 2500 — 4000€\nDémo : sur demande",
+                "nl": "Totale prijsvork : 2500 — 4000€\nDemo : op aanvraag",
+                "en": "Total range: 2500 — 4000€\nDemo: on request",
+                "tr": "Toplam aralık: 2500 — 4000€\nDemo: talep üzerine"
+            }
+        }
+    ]
+}

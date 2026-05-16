@@ -1,0 +1,30 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "accueil-contact",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Contact",
+                "nl": "Contact",
+                "en": "Contact",
+                "tr": "İletişim"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Je suis indépendant, je travaille à Bruxelles, je me déplace dans le quartier.",
+                "nl": "Ik ben zelfstandig, ik werk in Brussel en ik kom langs in de buurt.",
+                "en": "I work independently, based in Brussels, and I come to you in the neighbourhood.",
+                "tr": "Bağımsız çalışıyorum, Brüksel'de faaliyet gösteriyorum ve mahalleye geliyorum."
+            }
+        }
+    ]
+}

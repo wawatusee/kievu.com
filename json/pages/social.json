@@ -3,16 +3,10 @@
     "meta": {
         "id": "social",
         "status": "draft",
-        "updated": "2026-05-10"
+        "updated": "2026-04-13"
     },
     "layout": [
-        {
-            "type": "article_ref",
-            "filename": "social-nos-valeurs.json"
-        },
-        {
-            "type": "article_ref",
-            "filename": "social-equipe-et-moyens.json"
-        }
+        { "type": "article_ref", "filename": "social-nos-valeurs.json" },
+        { "type": "article_ref", "filename": "social-equipe-et-moyens.json" }
     ]
 }

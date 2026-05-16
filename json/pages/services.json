@@ -1,0 +1,30 @@
+{
+    "type": "page",
+    "meta": {
+        "id": "services",
+        "status": "draft",
+        "updated": "2026-05-11"
+    },
+    "layout": [
+        {
+            "type": "article_ref",
+            "filename": "services-vitrine.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "services-diffusion.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "services-simplicite.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "services-cadre.json"
+        },
+        {
+            "type": "article_ref",
+            "filename": "services-captation-photo-video-son.json"
+        }
+    ]
+}

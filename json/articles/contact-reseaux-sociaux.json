@@ -3,7 +3,7 @@
     "meta": {
         "id": "contact-reseaux-sociaux",
         "created": "2026-04-13",
-        "updated": "2026-04-13",
+        "updated": "2026-05-11",
         "status": "draft"
     },
     "content": [
@@ -12,7 +12,9 @@
             "level": 2,
             "data": {
                 "fr": "Suivez-nous",
-                "en": ""
+                "nl": "",
+                "en": "",
+                "tr": ""
             }
         },
         {
@@ -20,31 +22,19 @@
             "url": "https://www.facebook.com/thisismascarade",
             "data": {
                 "fr": "Facebook - thisismascarade",
-                "en": ""
+                "nl": "",
+                "en": "",
+                "tr": ""
             }
         },
         {
             "type": "link",
             "url": "https://www.instagram.com/kievu_web/",
             "data": {
-                "fr": "Instagram - kievu.com",
-                "en": ""
-            }
-        },
-        {
-            "type": "link",
-            "url": "https://twitter.com/thisismascarade",
-            "data": {
-                "fr": "Twitter - thisismascarade",
-                "en": ""
-            }
-        },
-        {
-            "type": "link",
-            "url": "https://www.linkedin.com/company/association-mascarade",
-            "data": {
-                "fr": "LinkedIn - Association Mascarade",
-                "en": ""
+                "fr": "kievu_web",
+                "nl": "",
+                "en": "",
+                "tr": ""
             }
         }
     ]

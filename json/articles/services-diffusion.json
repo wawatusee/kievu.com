@@ -1,0 +1,30 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "services-diffusion",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Diffusion",
+                "nl": "Verspreiding",
+                "en": "Distribution",
+                "tr": "Yayın"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Votre savoir-faire dépasse votre quartier. Un site multilingue le rend accessible à tous vos clients, qu'ils cherchent en français, en néerlandais, en anglais ou en turc.",
+                "nl": "Uw vakkennis reikt verder dan uw buurt. Een meertalige site maakt die toegankelijk voor al uw klanten, of ze nu zoeken in het Frans, Nederlands, Engels of Turks.",
+                "en": "Your expertise reaches beyond your neighbourhood. A multilingual site makes it accessible to all your clients, whether they search in French, Dutch, English or Turkish.",
+                "tr": "Uzmanlığınız mahallenizin ötesine geçer. Çok dilli bir site, Fransızca, Flemenkçe, İngilizce veya Türkçe arayan tüm müşterilerinize erişilebilir kılar."
+            }
+        }
+    ]
+}

@@ -1,0 +1,48 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "catalogue-niveau6-sur-mesure",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Niveau 6 — Sur mesure",
+                "nl": "Niveau 6 — Op maat",
+                "en": "Level 6 — Bespoke",
+                "tr": "Seviye 6 — Özel yapım"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Un projet complexe demande un interlocuteur qui comprend l'ensemble.\nConception, consultance, captation, développement — j'interviens à chaque étape ou sur la partie qui le demande. Sur site ou en télétravail, seul ou en équipe constituée.\nIdéal pour : l'institution culturelle, le festival, la plateforme éducative, le projet interactif, l'entreprise qui sort du standard.",
+                "nl": "Een complex project vraagt een gesprekspartner die het geheel begrijpt.\nOntwerp, consultancy, opname, ontwikkeling — ik grijp in op elke stap of op het deel dat het vraagt. Op locatie of op afstand, alleen of met een samengesteld team.\nIdeaal voor : de culturele instelling, het festival, het educatief platform, het interactief project, het bedrijf dat buiten de standaard treedt.",
+                "en": "A complex project requires someone who understands the whole picture.\nDesign, consultancy, capture, development — I step in at every stage or wherever needed. On site or remote, alone or with a assembled team.\nIdeal for: the cultural institution, the festival, the educational platform, the interactive project, the business that goes beyond the standard.",
+                "tr": "Karmaşık bir proje, bütünü anlayan bir muhatap gerektirir.\nTasarım, danışmanlık, çekim, geliştirme — her aşamada veya gereken bölümde devreye girerim. Yerinde veya uzaktan, tek başıma veya oluşturulmuş bir ekiple.\nİdeal kişiler: kültürel kurum, festival, eğitim platformu, interaktif proje, standart dışına çıkan işletme."
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Ce que je couvre\nConsultance — Audit, conseil, cadrage de projet, accompagnement d'équipe.\nCaptation événementielle — Tournage, diffusion en direct, régie OBS, prise de son, montage.\nE-learning — Modules pédagogiques interactifs, parcours utilisateur, contenu multimédia intégré.\nAnimations et expériences web — Interfaces immersives, Three.js, visualisations de données, jeux en ligne.\nArchitecture sur mesure — Headless, PHP, JavaScript, JSON, GIT — construit pour durer et évoluer.",
+                "nl": "Wat ik dek\nConsultancy — Audit, advies, projectkader, teamondersteuning.\nEvenementsopname — Filmen, live uitzending, OBS-regie, geluidsopname, montage.\nE-learning — Interactieve leermodules, gebruikerstraject, geïntegreerde multimediainhoud.\nAnimaties en webervaringen — Immersieve interfaces, Three.js, datavisualisaties, online spellen.\nMaatwerkarchitectuur — Headless, PHP, JavaScript, JSON, GIT — gebouwd om te duren en te evolueren.",
+                "en": "What I cover\nConsultancy — Audit, advice, project scoping, team support.\nEvent capture — Filming, live streaming, OBS direction, sound recording, editing.\nE-learning — Interactive learning modules, user journeys, integrated multimedia content.\nAnimations and web experiences — Immersive interfaces, Three.js, data visualisations, online games.\nBespoke architecture — Headless, PHP, JavaScript, JSON, GIT — built to last and evolve.",
+                "tr": "Kapsadıklarım\nDanışmanlık — Denetim, tavsiye, proje çerçeveleme, ekip desteği.\nEtkinlik çekimi — Çekim, canlı yayın, OBS yönetimi, ses kaydı, kurgu.\nE-öğrenme — İnteraktif öğrenme modülleri, kullanıcı yolculuğu, entegre multimedya içeriği.\nAnimasyonlar ve web deneyimleri — İmersif arayüzler, Three.js, veri görselleştirmeleri, çevrimiçi oyunlar.\nÖzel mimari — Headless, PHP, JavaScript, JSON, GIT — kalıcı ve gelişmeye hazır inşa edilmiş."
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Prestations à la journée, sur site ou en télétravail.\nDevis sur demande.\nIntervention en français, anglais, espagnol.",
+                "nl": "Diensten per dag, op locatie of op afstand.\nOfferte op aanvraag.\nInterventie in het Frans, Engels, Spaans.",
+                "en": "Day-rate services, on site or remote.\nQuote on request.\nAvailable in French, English, Spanish.",
+                "tr": "Günlük ücretli hizmetler, yerinde veya uzaktan.\nTeklif talep üzerine.\nFransızca, İngilizce, İspanyolca olarak hizmet verilir."
+            }
+        }
+    ]
+}

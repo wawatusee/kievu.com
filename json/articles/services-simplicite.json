@@ -1,0 +1,30 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "services-simplicite",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Simplicité",
+                "nl": "Eenvoud",
+                "en": "Simplicity",
+                "tr": "Sadelik"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Vous gérez votre contenu vous-même, comme vous réorganisez votre vitrine. Sans technique, sans intermédiaire, à votre rythme.",
+                "nl": "U beheert uw inhoud zelf, zoals u uw etalage herorganiseert. Zonder technische kennis, zonder tussenpersoon, op uw eigen tempo.",
+                "en": "You manage your own content, just as you rearrange your shopfront. No technical knowledge, no middleman, at your own pace.",
+                "tr": "İçeriğinizi tıpkı vitrinizi yeniden düzenler gibi kendiniz yönetirsiniz. Teknik bilgi gerekmez, aracı yok, kendi hızınızda."
+            }
+        }
+    ]
+}

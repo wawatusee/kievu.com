@@ -3,7 +3,7 @@
     "meta": {
         "id": "home",
         "created": "2026-04-11",
-        "updated": "2026-05-16",
+        "updated": "2026-04-13",
         "status": "draft"
     },
     "content": [
@@ -41,20 +41,6 @@
                 "fr": "Mascarede-officiel",
                 "en": ""
             }
-        },
-        {
-            "type": "title",
-            "level": 4,
-            "data": {
-                "fr": "lapin",
-                "en": ""
-            }
-        },
-        {
-            "type": "image",
-            "src": "home/default-taquin-image.jpg",
-            "alt": "",
-            "data": []
         }
     ]
 }

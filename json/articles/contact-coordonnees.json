@@ -3,7 +3,7 @@
     "meta": {
         "id": "contact-coordonnees",
         "created": "2026-04-13",
-        "updated": "2026-04-13",
+        "updated": "2026-05-10",
         "status": "draft"
     },
     "content": [
@@ -18,31 +18,15 @@
         {
             "type": "text",
             "data": {
-                "fr": "Yannig PLESSIS, Directeur",
+                "fr": "Kieran Labarrère, Directeur",
                 "en": ""
             }
         },
         {
             "type": "link",
-            "url": "mailto:yannig.plessis@mascarade-bdx.fr",
+            "url": "https://www.kievu.com/",
             "data": {
-                "fr": "yannig.plessis@mascarade-bdx.fr",
-                "en": ""
-            }
-        },
-        {
-            "type": "link",
-            "url": "tel:+33760458005",
-            "data": {
-                "fr": "+33 7 60 45 80 05",
-                "en": ""
-            }
-        },
-        {
-            "type": "link",
-            "url": "https://www.mascarade-bdx.fr",
-            "data": {
-                "fr": "www.mascarade-bdx.fr",
+                "fr": "https://www.kievu.com/",
                 "en": ""
             }
         }

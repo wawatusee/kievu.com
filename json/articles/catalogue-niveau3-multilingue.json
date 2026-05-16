@@ -1,0 +1,75 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "catalogue-niveau3-multilingue",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Niveau 3 — Multilingue",
+                "nl": "Niveau 3 — Meertalig",
+                "en": "Level 3 — Multilingual",
+                "tr": "Seviye 3 — Çok Dilli"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Vos clients vous cherchent dans leur langue. Parlez-leur.\nLe même site, quatre langues, une seule mise à jour. Français, néerlandais, anglais, turc — chaque visiteur navigue dans sa langue sans effort. À Bruxelles, c'est une évidence que peu de commerçants locaux ont encore saisie.",
+                "nl": "Uw klanten zoeken u in hun taal. Spreek hen aan.\nDezelfde site, vier talen, één enkele update. Frans, Nederlands, Engels, Turks — elke bezoeker navigeert moeiteloos in zijn eigen taal. In Brussel is dat een evidentie die weinig lokale handelaars al hebben begrepen.",
+                "en": "Your clients are searching for you in their language. Speak to them.\nThe same site, four languages, one single update. French, Dutch, English, Turkish — every visitor navigates in their own language effortlessly. In Brussels, it's an obvious move that few local businesses have made yet.",
+                "tr": "Müşterileriniz sizi kendi dillerinde arıyor. Onlara seslenin.\nAynı site, dört dil, tek bir güncelleme. Fransızca, Flemenkçe, İngilizce, Türkçe — her ziyaretçi kendi dilinde zahmetsizce gezinir. Brüksel'de bu, yerel işletmelerin henüz pek azının fark ettiği bir fırsattır."
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Idéal pour : le commerce de quartier à Bruxelles, l'indépendant qui veut élargir sa portée sans multiplier les sites.",
+                "nl": "Ideaal voor : de buurtwinkel in Brussel, de zelfstandige die zijn bereik wil vergroten zonder meerdere sites te beheren.",
+                "en": "Ideal for: the neighbourhood business in Brussels, the freelancer who wants to reach further without managing multiple sites.",
+                "tr": "İdeal kişiler: Brüksel'deki mahalle işletmesi, birden fazla site yönetmeden erişimini genişletmek isteyen serbest çalışan."
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Tout le niveau Vitrine, plus :\nSélecteur de langue — Un clic, la langue change. Le contenu suit automatiquement.\n(image) — prix : 100€",
+                "nl": "Alles van niveau Etalage, plus :\nTaalkeuze — Één klik, de taal verandert. De inhoud volgt automatisch.\n(afbeelding) — prijs : 100€",
+                "en": "Everything in the Showcase level, plus:\nLanguage selector — One click, the language changes. Content follows automatically.\n(image) — price: 100€",
+                "tr": "Vitrin seviyesindeki her şey, artı:\nDil seçici — Bir tıklama, dil değişir. İçerik otomatik olarak takip eder.\n(görsel) — fiyat: 100€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Traduction et intégration du contenu — Vos textes traduits et intégrés dans chaque langue. Vous fournissez le contenu, je m'occupe du reste.\n(image) — prix : 150 — 300€ selon volume",
+                "nl": "Vertaling en integratie van inhoud — Uw teksten vertaald en geïntegreerd in elke taal. U levert de inhoud, ik regel de rest.\n(afbeelding) — prijs : 150 — 300€ volgens volume",
+                "en": "Content translation and integration — Your texts translated and integrated in each language. You provide the content, I handle the rest.\n(image) — price: 150 — 300€ depending on volume",
+                "tr": "İçerik çevirisi ve entegrasyonu — Metinleriniz her dilde çevrilip entegre edilir. İçeriği siz sağlayın, gerisini ben hallederim.\n(görsel) — fiyat: 150 — 300€ hacme göre"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Structure multilingue — Chaque langue dispose de sa propre URL, lisible par les moteurs de recherche.\n(image) — prix : 200 — 300€",
+                "nl": "Meertalige structuur — Elke taal heeft zijn eigen URL, leesbaar door zoekmachines.\n(afbeelding) — prijs : 200 — 300€",
+                "en": "Multilingual structure — Each language has its own URL, readable by search engines.\n(image) — price: 200 — 300€",
+                "tr": "Çok dilli yapı — Her dilin kendi URL'si vardır, arama motorları tarafından okunabilir.\n(görsel) — fiyat: 200 — 300€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Fourchette totale : 1500 — 2500€\nDémo : sur demande",
+                "nl": "Totale prijsvork : 1500 — 2500€\nDemo : op aanvraag",
+                "en": "Total range: 1500 — 2500€\nDemo: on request",
+                "tr": "Toplam aralık: 1500 — 2500€\nDemo: talep üzerine"
+            }
+        }
+    ]
+}

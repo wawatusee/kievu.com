@@ -1,0 +1,84 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "catalogue-vitrine",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "title",
+            "level": 2,
+            "data": {
+                "fr": "Niveau 2 — Vitrine",
+                "nl": "Niveau 2 — Etalage",
+                "en": "Level 2 — Showcase",
+                "tr": "Seviye 2 — Vitrin"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Votre activité mérite plus qu'une carte de visite.\nPlusieurs pages, une navigation claire, vos produits ou prestations mis en valeur. Vos clients explorent, comprennent ce que vous faites, et savent comment venir.\nIdéal pour : le restaurant qui affiche son menu, le coiffeur qui présente ses prestations, le commerce qui veut montrer ce qu'il vend.",
+                "nl": "Uw activiteit verdient meer dan een visitekaartje.\nMeerdere pagina's, een duidelijke navigatie, uw producten of diensten in de kijker. Uw klanten verkennen, begrijpen wat u doet en weten hoe ze komen.\nIdeaal voor : het restaurant dat zijn menu toont, de kapper die zijn diensten presenteert, de winkel die wil laten zien wat hij verkoopt.",
+                "en": "Your business deserves more than a business card.\nMultiple pages, clear navigation, your products or services highlighted. Your clients explore, understand what you do, and know how to find you.\nIdeal for: the restaurant displaying its menu, the hairdresser presenting their services, the shop that wants to show what it sells.",
+                "tr": "Faaliyetiniz bir kartvizitinden fazlasını hak ediyor.\nBirden fazla sayfa, net navigasyon, ürün veya hizmetleriniz ön planda. Müşterileriniz keşfeder, ne yaptığınızı anlar ve nasıl geleceklerini bilir.\nİdeal kişiler: menüsünü gösteren restoran, hizmetlerini sunan kuaför, ne sattığını göstermek isteyen ticari işletme."
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Modules inclus\nTout le niveau Essentiel, plus :\nMenu de navigation — Vos visiteurs trouvent ce qu'ils cherchent en un clic.\n(image) — prix : 100 — 150€",
+                "nl": "Inbegrepen modules\nAlles van niveau Essentieel, plus :\nNavigatiemenu — Uw bezoekers vinden wat ze zoeken met één klik.\n(afbeelding) — prijs : 100 — 150€",
+                "en": "Included modules\nEverything in the Essential level, plus:\nNavigation menu — Your visitors find what they're looking for in one click.\n(image) — price: 100 — 150€",
+                "tr": "Dahil edilen modüller\nTemel seviyedeki her şey, artı:\nGezinme menüsü — Ziyaretçileriniz aradıklarını tek tıklamayla bulur.\n(görsel) — fiyat: 100 — 150€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Pages supplémentaires — Chaque page dédiée à une facette de votre activité.\n(image) — prix : 100 — 150€ par page",
+                "nl": "Extra pagina's — Elke pagina gewijd aan een aspect van uw activiteit.\n(afbeelding) — prijs : 100 — 150€ per pagina",
+                "en": "Additional pages — Each page dedicated to one facet of your activity.\n(image) — price: 100 — 150€ per page",
+                "tr": "Ek sayfalar — Her sayfa faaliyetinizin bir yönüne ayrılmış.\n(görsel) — fiyat: 100 — 150€ sayfa başına"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Galerie photos — Vos produits, votre espace, votre ambiance — montrés avant la visite.\n(image) — prix : 150 — 250€",
+                "nl": "Fotogalerij — Uw producten, uw ruimte, uw sfeer — getoond vóór het bezoek.\n(afbeelding) — prijs : 150 — 250€",
+                "en": "Photo gallery — Your products, your space, your atmosphere — shown before the visit.\n(image) — price: 150 — 250€",
+                "tr": "Fotoğraf galerisi — Ürünleriniz, mekanınız, atmosferiniz — ziyaretten önce gösterilir.\n(görsel) — fiyat: 150 — 250€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Horaires et localisation — Une carte, vos heures d'ouverture, votre adresse. Toujours à jour.\n(image) — prix : 100€",
+                "nl": "Openingsuren en locatie — Een kaart, uw openingsuren, uw adres. Altijd up-to-date.\n(afbeelding) — prijs : 100€",
+                "en": "Hours and location — A map, your opening hours, your address. Always up to date.\n(image) — price: 100€",
+                "tr": "Saatler ve konum — Bir harita, çalışma saatleriniz, adresiniz. Her zaman güncel.\n(görsel) — fiyat: 100€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Liens réseaux sociaux — Votre site et vos réseaux se parlent.\n(image) — prix : 50€",
+                "nl": "Links sociale netwerken — Uw site en uw netwerken spreken met elkaar.\n(afbeelding) — prijs : 50€",
+                "en": "Social media links — Your site and your networks talk to each other.\n(image) — price: 50€",
+                "tr": "Sosyal medya bağlantıları — Siteniz ve ağlarınız birbiriyle konuşur.\n(görsel) — fiyat: 50€"
+            }
+        },
+        {
+            "type": "text",
+            "data": {
+                "fr": "Fourchette totale : 800 — 1500€\nDémo : sur demande",
+                "nl": "Totale prijsvork : 800 — 1500€\nDemo : op aanvraag",
+                "en": "Total range: 800 — 1500€\nDemo: on request",
+                "tr": "Toplam aralık: 800 — 1500€\nDemo: talep üzerine"
+            }
+        }
+    ]
+}

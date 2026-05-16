@@ -1,0 +1,20 @@
+{
+    "type": "article",
+    "meta": {
+        "id": "catalogue-introduction",
+        "created": "2026-05-11",
+        "updated": "2026-05-11",
+        "status": "draft"
+    },
+    "content": [
+        {
+            "type": "text",
+            "data": {
+                "fr": "Composez votre site comme vous composez votre offre.\nPas de formule imposée. Vous choisissez les modules dont vous avez besoin, vous voyez ce que vous payez avant de vous engager. Chaque site est construit sur une base solide — rapide, durable, livré sur le web et sur clé USB. Si votre activité évolue, votre site évolue avec elle.",
+                "nl": "Stel uw site samen zoals u uw aanbod samenstelt.\nGeen opgelegde formule. U kiest de modules die u nodig heeft, u ziet wat u betaalt voordat u zich engageert. Elke site is gebouwd op een solide basis — snel, duurzaam, geleverd op het web en op usb-stick. Als uw activiteit evolueert, evolueert uw site mee.",
+                "en": "Build your site the way you build your offer.\nNo imposed formula. You choose the modules you need, you see what you pay before you commit. Every site is built on a solid foundation — fast, durable, delivered on the web and on USB key. If your activity grows, your site grows with it.",
+                "tr": "Sitenizi teklifinizi oluşturur gibi oluşturun.\nDayatılmış formül yok. İhtiyacınız olan modülleri seçiyorsunuz, taahhüt etmeden önce ne ödediğinizi görüyorsunuz. Her site sağlam bir temele inşa edilmiştir — hızlı, kalıcı, web'de ve USB bellekte teslim edilir. Faaliyetiniz büyüdükçe siteniz de büyür."
+            }
+        }
+    ]
+}
