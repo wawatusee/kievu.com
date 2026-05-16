@@ -8,6 +8,7 @@ if (!isset($_SESSION['user'])) {
 }
 
 require_once ROOT_PATH . 'src/utils/json_handler.php';
+require_once ROOT_PATH . 'src/core/page_model.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -30,9 +31,9 @@ if (!isset($data['RS_menu']) || !is_array($data['RS_menu'])) {
     exit;
 }
 
-// Validation des entrées Main_menu
-$langs   = array_column(ConfigModel::getLangs(), 'code');
-$errors  = [];
+// Validation des entrées
+$langs  = array_column(ConfigModel::getLangs(), 'code');
+$errors = [];
 
 foreach ($data['Main_menu'] as $i => $entry) {
     $num = $i + 1;
@@ -61,7 +62,7 @@ if (!empty($errors)) {
 
 // Normalisation — on ne garde que les langues de config.json
 foreach ($data['Main_menu'] as &$entry) {
-    $titre = $entry['titre'] ?? [];
+    $titre      = $entry['titre'] ?? [];
     $normalized = [];
     foreach ($langs as $lang) {
         $normalized[$lang] = $titre[$lang] ?? '';
@@ -70,12 +71,30 @@ foreach ($data['Main_menu'] as &$entry) {
 }
 unset($entry);
 
-// Sauvegarde
+// Création des pages manquantes
+$pageModel = new PageModel(JSON_PAGES_DIR);
+$created   = [];
+
+foreach ($data['Main_menu'] as $entry) {
+    $pageId = $entry['page'];
+    if (!$pageModel->exists($pageId)) {
+        $newPage = $pageModel->createEmpty($pageId);
+        $result  = $pageModel->save($newPage);
+        if ($result['success']) {
+            $created[] = $pageId;
+        }
+    }
+}
+
+// Sauvegarde menus.json
 $path = DIR_JSON . 'menus.json';
 
 try {
     JsonHandler::save($path, $data);
-    echo json_encode(['success' => true]);
+    echo json_encode([
+        'success' => true,
+        'created' => $created
+    ]);
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }

@@ -1,59 +1,59 @@
 {
-  "Main_menu": [
-    {
-      "page": "accueil",
-      "titre": {
-        "fr": "Accueil",
-        "nl": "Home",
-        "en": "Home",
-        "tr": "Ana Sayfa"
-      }
-    },
-    {
-      "page": "services",
-      "titre": {
-        "fr": "Services",
-        "nl": "Diensten",
-        "en": "Services",
-        "tr": "Hizmetler"
-      }
-    },
-    {
-      "page": "catalogue",
-      "titre": {
-        "fr": "Catalogue",
-        "nl": "Catalogus",
-        "en": "Catalogue",
-        "tr": "Katalog"
-      }
-    },
-    {
-      "page": "portfolio",
-      "titre": {
-        "fr": "Portfolio",
-        "nl": "Portfolio",
-        "en": "Portfolio",
-        "tr": "Portföy"
-      }
-    },
-    {
-      "page": "contact",
-      "titre": {
-        "fr": "Contact",
-        "nl": "Contact",
-        "en": "Contact",
-        "tr": "İletişim"
-      }
-    }
-  ],
-  "RS_menu": [
-    {
-      "page": "https://www.facebook.com/kievu",
-      "titre": "facebook"
-    },
-    {
-      "page": "https://www.instagram.com/kievu/",
-      "titre": "instagram"
-    }
-  ]
+    "Main_menu": [
+        {
+            "page": "accueil",
+            "titre": {
+                "fr": "Accueil",
+                "nl": "Home",
+                "en": "Home",
+                "tr": "Ana Sayfa"
+            }
+        },
+        {
+            "page": "services",
+            "titre": {
+                "fr": "Services",
+                "nl": "Diensten",
+                "en": "Service",
+                "tr": "Hizmetler"
+            }
+        },
+        {
+            "page": "catalogue",
+            "titre": {
+                "fr": "Catalogue",
+                "nl": "Catalogus",
+                "en": "Catalogue",
+                "tr": "Katalog"
+            }
+        },
+        {
+            "page": "portfolio",
+            "titre": {
+                "fr": "Portfolio",
+                "nl": "Portfolio",
+                "en": "Portfolio",
+                "tr": "Portföy"
+            }
+        },
+        {
+            "page": "contact",
+            "titre": {
+                "fr": "Contact",
+                "nl": "Contact",
+                "en": "Contact",
+                "tr": "İletişim"
+            }
+        }
+    ],
+    "RS_menu": [
+        {
+            "page": "https://www.facebook.com/kievu",
+            "titre": "facebook"
+        },
+        {
+            "page": "https://www.instagram.com/kievu/",
+            "titre": "instagram"
+        }
+    ]
 }

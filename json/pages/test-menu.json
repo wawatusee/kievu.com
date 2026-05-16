@@ -1,0 +1,14 @@
+{
+    "type": "page",
+    "meta": {
+        "id": "test-menu",
+        "status": "draft",
+        "updated": "2026-05-16"
+    },
+    "layout": [
+        {
+            "type": "article_ref",
+            "filename": "test-menu.json"
+        }
+    ]
+}

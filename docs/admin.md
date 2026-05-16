@@ -17,26 +17,29 @@
 
 ```
 admin/
-├── api/                  ← Endpoints API actifs
+├── api/
+│   ├── create_page_file.php  ← crée inc/pages/{id}.php standard
 │   ├── delete_article.php
 │   ├── delete_image.php
 │   ├── delete_page.php
 │   ├── get_article.php
 │   ├── get_page.php
 │   ├── list_articles.php
-│   ├── list_images.php      ← lecture seule, répertoires + thumbs
+│   ├── list_images.php
 │   ├── list_pages.php
 │   ├── rename_image.php
 │   ├── save_article.php
+│   ├── save_menus.php        ← sauvegarde menus.json + crée pages manquantes
 │   ├── save_page.php
 │   └── upload_image.php
 ├── css/
-│   ├── admin.css            ← classes génériques partagées
+│   ├── admin.css             ← classes génériques partagées
 │   ├── login.css
 │   └── pages/
 │       ├── articles.css
-│       ├── medias.css       ← spécifique medias.php
-│       ├── medias_images.css ← spécifique medias_images.php
+│       ├── medias.css
+│       ├── medias_images.css
+│       ├── menus.css
 │       └── pages.css
 ├── inc/
 │   ├── footer.php
@@ -44,19 +47,19 @@ admin/
 │   ├── header.php
 │   └── main.php
 ├── js/
-│   ├── article_editor.js    ← éditeur articles + navigateur médias
+│   ├── article_editor.js
 │   └── page_builder.js
 ├── pages/
 │   ├── articles.php
 │   ├── dashboard.php
-│   ├── galleries.php
-│   ├── medias.php           ← gestion des répertoires
-│   ├── medias_images.php    ← gestion des images d'un répertoire
+│   ├── medias.php
+│   ├── medias_images.php
+│   ├── menus.php
 │   └── pages.php
 ├── src/
-│   ├── folder_manager.class.php   ← CRUD répertoires + thumbs/
+│   ├── folder_manager.class.php
 │   ├── gallery_manager.class.php  ← à auditer
-│   ├── image_uploader.class.php   ← upload + resize + thumbs
+│   ├── image_uploader.class.php
 │   └── model/
 │       └── config_model.php       ← doublon — à supprimer
 ├── tests/
@@ -72,24 +75,17 @@ admin/
 ```
 
 **Fichiers partagés front/admin (dans `src/`) :**
-- `src/core/component_model.php` — CRUD générique, utilisé par les API articles
+- `src/core/component_model.php` — CRUD générique articles
 - `src/core/page_model.php` — CRUD pages
-- `src/core/block_registry.php` — validation des blocs (types : title, text, list, link, image)
-- `src/model/config_model.php` — source unique pour les langues et la config
+- `src/core/block_registry.php` — types : title, text, list, link, image
+- `src/model/config_model.php` — source unique langues et config
 - `src/utils/json_handler.php` — lecture/écriture JSON atomique
 
 ---
 
 ## Configuration — `config_admin.php`
 
-Responsabilités :
-- Inclure `config.php` (socle front — chemins, modèles, langues, menus)
-- Définir les chemins propres à l'admin (`ADMIN_PATH`, `JSON_PAGES_DIR`, `JSON_ARTICLES_DIR`, `GALLERIES_DIR`)
-- Déclarer la whitelist des pages admin (`ADMIN_PAGES`)
-- Configurer et démarrer la session PHP
-- Définir les limites et types d'upload autorisés
-
-**Convention** : tout fichier admin charge `config_admin.php` en première ligne — jamais `config.php` directement, jamais après une vérification de session.
+**Convention** : tout fichier admin charge `config_admin.php` en première ligne.
 
 ### Constantes exposées
 
@@ -99,7 +95,7 @@ Responsabilités :
 | `JSON_PAGES_DIR` | `DIR_JSON . 'pages/'` |
 | `JSON_ARTICLES_DIR` | `DIR_JSON . 'articles/'` |
 | `GALLERIES_DIR` | `DIR_IMG_CONTENT . 'galleries/'` |
-| `ADMIN_PAGES` | `['dashboard', 'pages', 'articles', 'medias', 'medias_images']` |
+| `ADMIN_PAGES` | `['dashboard', 'pages', 'articles', 'medias', 'medias_images', 'menus']` |
 | `SESSION_LIFETIME` | `3600` |
 | `UPLOAD_MAX_SIZE` | `2 Mo` |
 | `UPLOAD_ALLOWED_TYPES` | `jpeg, png, webp` |
@@ -109,51 +105,33 @@ Responsabilités :
 ## Modèles
 
 ### `ConfigModel` — `src/model/config_model.php`
-Partagé avec le front. Utilisable dans les deux contextes.
-
 - `getLangs()` → `[['code' => 'fr', 'label' => 'Français'], ...]`
 - `getDefaultLang()` → `$langs[0]['code'] ?? 'fr'`
-- `clearCache()` disponible pour les tests
+- Source de vérité pour les langues — pilote l'éditeur de menus et les blocs multilingues
 
 > `admin/src/model/config_model.php` est un doublon — à supprimer.
 
 ### `ComponentModel` — `src/core/component_model.php`
-CRUD générique pour les composants (articles, tout futur type).
-
-- Constructeur : `new ComponentModel($storageDir, $langs, $componentType)`
+- `new ComponentModel($storageDir, $langs, $componentType)`
 - `$langs` → `array_column(ConfigModel::getLangs(), 'code')`
-- Délègue la validation à `BlockRegistry`
 
 ### `PageModel` — `src/core/page_model.php`
-CRUD pour les layouts de pages.
-
-- Types de références autorisés : `article_ref`, `gallery_ref`
+- Types de références : `article_ref`, `gallery_ref`
+- `createEmpty($title)` — page vide en `draft`
+- `exists($id)` — vérifié par `save_menus.php` avant création
 
 ### `FolderManager` — `admin/src/folder_manager.class.php`
-CRUD répertoires de médias.
-
-- `create($name)` — crée le répertoire + `thumbs/` systématiquement
-- `rename($old, $new)`, `delete($name)`, `list()`, `exists($name)`
-- `basename()` sur tous les chemins entrants — sécurisé
+- `create($name)` — répertoire + `thumbs/` systématique
+- `rename`, `delete`, `list`, `exists`
 
 ### `ImageUploader` — `admin/src/image_uploader.class.php`
-Upload et traitement d'images.
-
-- Entrée : `$_FILES` + nom de répertoire
-- Sortie : `['base' => 'home/photo', 'ext' => 'jpg']`
-- Grand format (1280px) + miniature (400px) générés automatiquement
-- Conversion JPG systématique — PNG/WebP avec fond blanc
-- Ne crée pas les dossiers — `FolderManager` s'en charge
+- Retourne `['base' => 'home/photo', 'ext' => 'jpg']`
+- Grand format 1280px + miniature 400px
+- Conversion JPG systématique
 
 ---
 
 ## API — `admin/api/`
-
-Tous les endpoints suivent le même contrat :
-- `config_admin.php` chargé en **première ligne**
-- Auth vérifiée immédiatement après (`$_SESSION['user']`)
-- `Content-Type: application/json` systématique
-- Réponse unifiée `['success' => bool, ...]`
 
 **Articles**
 
@@ -161,8 +139,8 @@ Tous les endpoints suivent le même contrat :
 |---|---|---|
 | `list_articles.php` | GET | Liste les articles |
 | `get_article.php` | GET | Charge un article |
-| `save_article.php` | POST | Crée ou met à jour un article |
-| `delete_article.php` | POST | Supprime un article |
+| `save_article.php` | POST | Crée ou met à jour |
+| `delete_article.php` | POST | Supprime |
 
 **Pages**
 
@@ -170,17 +148,50 @@ Tous les endpoints suivent le même contrat :
 |---|---|---|
 | `list_pages.php` | GET | Liste les layouts |
 | `get_page.php` | GET | Charge un layout |
-| `save_page.php` | POST | Crée ou met à jour un layout |
-| `delete_page.php` | POST | Supprime un layout |
+| `save_page.php` | POST | Crée ou met à jour |
+| `delete_page.php` | POST | Supprime |
+| `create_page_file.php` | POST | Crée `inc/pages/{id}.php` standard |
+
+**Menus**
+
+| Fichier | Méthode | Rôle |
+|---|---|---|
+| `save_menus.php` | POST | Sauvegarde `menus.json` + crée pages manquantes |
 
 **Images**
 
 | Fichier | Méthode | Rôle |
 |---|---|---|
-| `list_images.php` | GET | Liste répertoires ou images d'un répertoire |
-| `upload_image.php` | POST | Upload + resize via `ImageUploader` |
+| `list_images.php` | GET | Liste répertoires ou images |
+| `upload_image.php` | POST | Upload + resize |
 | `delete_image.php` | POST | Supprime original + thumb |
-| `rename_image.php` | POST | Renomme original + thumb avec slugify |
+| `rename_image.php` | POST | Renomme original + thumb |
+
+---
+
+## Menus — `menus.php` + `save_menus.php`
+
+- Deux sections sur une page — `Main_menu` et `RS_menu`
+- Langues pilotées par `config.json` — les langues orphelines sont perdues à la sauvegarde
+- Réordonnement par boutons ↑↓
+- **Création automatique** — si une entrée `Main_menu` n'a pas de `json/pages/{page}.json`, `save_menus.php` crée la page vide en `draft` via `PageModel::createEmpty()`
+- La réponse inclut `created` — liste des pages créées, affichée dans le feedback JS
+
+---
+
+## Pages — `pages.php` + `create_page_file.php`
+
+- Sidebar liste les layouts `json/pages/`
+- Indicateur par page : `📄` si `inc/pages/{page}.php` absent, `✓` si présent
+- Clic `📄` → `create_page_file.php` → crée le fichier standard sans rechargement
+- Le fichier créé contient l'appel `PageRenderer::render('{page}')` — remplaçable par du PHP libre
+
+**Coexistence des deux modèles :**
+```
+inc/main.php
+  → inc/pages/{page}.php existe ? → charge le fichier PHP (logique libre)
+  → sinon                          → PageRenderer depuis json/pages/{page}.json
+```
 
 ---
 
@@ -190,37 +201,25 @@ Tous les endpoints suivent le même contrat :
 {
     "type": "image",
     "src": "home/photo.jpg",
-    "alt": "Description de l'image"
+    "alt": "Description"
 }
 ```
 
 - `src` — chemin relatif depuis `public/img/content/`
-- `alt` — obligatoire pour l'accessibilité
-- Pas de champ `data` multilingue — `dataType: null` dans `BlockRegistry`
-
-**Rendu front** — `ArticleRenderer::renderImage()` :
-```html
-<img class="nucleus-image" src="/public/img/content/home/photo.jpg" alt="..." loading="lazy">
-```
-
-**Workflow** :
-1. Upload via `medias_images.php` + `upload_image.php`
-2. Sélection via navigateur médias dans l'éditeur (`btn-browse-media`)
-3. Stockage du chemin dans le JSON article
-4. Rendu par `ArticleRenderer`
+- `dataType: null` dans `BlockRegistry` — pas de champ `data` multilingue
+- Rendu : `<img class="nucleus-image" src="..." alt="..." loading="lazy">`
 
 ---
 
 ## Module contacts — fermé
 
-Les coordonnées sont des articles standards via `ArticleRenderer`. API, page et JS contacts supprimés.
+Coordonnées gérées via articles standards. API, page et JS contacts supprimés.
 
 ---
 
 ## Langues
 
 ```php
-// Pattern à utiliser partout
 $langKeys = array_column(ConfigModel::getLangs(), 'code');
 
 foreach (ConfigModel::getLangs() as $langue) {
@@ -229,13 +228,9 @@ foreach (ConfigModel::getLangs() as $langue) {
 }
 ```
 
-> L'ancienne forme `array_keys` / `foreach ($langs as $code => $label)` est abandonnée.
-
 ---
 
 ## Sessions
-
-Gérées exclusivement dans `config_admin.php` :
 
 ```php
 ini_set('session.cookie_httponly', 1);
@@ -245,34 +240,29 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 ```
 
-`login.class.php` utilise `session_status() === PHP_SESSION_NONE` pour éviter le double démarrage.
-
 ---
 
 ## CSS
 
 | Fichier | Rôle |
 |---|---|
-| `admin.css` | Reset, variables, layout, boutons, inputs — toutes pages |
-| `css/pages/articles.css` | Éditeur articles |
-| `css/pages/medias.css` | Spécifique `medias.php` — noms de répertoires |
-| `css/pages/medias_images.css` | Spécifique `medias_images.php` — thumbnails |
-| `css/pages/pages.css` | Page builder |
+| `admin.css` | Layout, boutons, inputs, messages — toutes pages |
+| `pages/articles.css` | Éditeur articles |
+| `pages/medias.css` | Noms de répertoires |
+| `pages/medias_images.css` | Thumbnails, renommage |
+| `pages/pages.css` | Page builder |
 
 ---
 
 ## JavaScript
 
 ### `article_editor.js`
-- `SUPPORTED_LANGS` depuis `data-config` du DOM
+- Types : `title`, `text`, `list`, `link`, `image`
+- Navigateur médias — modale, `list_images.php`, sélection → `block-src`
 - `API_BASE = 'api/'`
-- Types de blocs : `title`, `text`, `list`, `link`, `image`
-- Navigateur médias intégré — modale, `list_images.php`, sélection → remplit `block-src`
-- `addEventListener` uniquement, `escapeHtml()` via `textContent`
 
 ### `page_builder.js`
-- Architecture classe `PageEditor`
-- Registry pattern — `article_ref`, `gallery_ref`, `ui_component`
+- Classe `PageEditor`, registry pattern
 - `window.availableGalleries` injecté par `pages.php`
 
 ---
@@ -280,24 +270,29 @@ if (session_status() === PHP_SESSION_NONE) {
 ## Ce qui a été fait
 
 ### Session 4 — 2026-05-08
-- Audit `config_admin.php`, `config_model.php` — versions corrigées
-- Correction langue `code`/`label` dans les endpoints et `articles.php`
-- Cartographie arborescence — vestiges identifiés
+- Audit `config_admin.php`, `config_model.php`
+- Correction langue `code`/`label`
+- Cartographie arborescence
 
 ### Session 5 — 2026-05-10
-- Application des corrections — config, session, chemins
-- Migration `admin/api/v2/` → `admin/api/`
+- Application corrections — config, session, chemins
+- Migration `api/v2/` → `api/`
 - Fermeture module contacts
-- Tests complets articles et pages ✅
+- Tests complets ✅
 
 ### Session 6 — 2026-05-16
-- `FolderManager` — classe générique CRUD répertoires
-- `ImageUploader` — réécriture, WebP supporté, retourne `{base, ext}`
-- Pages `medias.php` et `medias_images.php` — fragments admin
-- API images — `upload_image.php`, `delete_image.php`, `rename_image.php`, `list_images.php`
-- Bloc `image` intégré — `BlockRegistry`, `ArticleRenderer`, `article_editor.js`
-- Navigateur médias dans l'éditeur articles
-- CSS factorisé — commun dans `admin.css`, spécifiques dans `css/pages/`
+- `FolderManager`, `ImageUploader` réécrits
+- Pages `medias.php`, `medias_images.php`
+- API images complète
+- Bloc `image` — `BlockRegistry`, `ArticleRenderer`, `article_editor.js`
+- Navigateur médias dans l'éditeur
+- CSS factorisé
+
+### Session 7 — 2026-05-16
+- Éditeur de menus `menus.php` + `save_menus.php`
+- Création automatique des pages à la sauvegarde des menus
+- `pages.php` — indicateur `📄` / `✓` + `create_page_file.php`
+- Coexistence PHP libre / PageRenderer documentée
 
 ---
 
@@ -309,33 +304,31 @@ if (session_status() === PHP_SESSION_NONE) {
 - [ ] Nettoyer `admin/pages/galleries.php` — bloc session commenté
 
 ### Moyen terme
-- [ ] Auditer `admin/tests/` — cinq fichiers à vérifier
-- [ ] Auditer `gallery_manager.class.php` — statut inconnu
-- [ ] Migrer CSS inline de `showNotification()` vers classes
+- [ ] Auditer `admin/tests/`
+- [ ] Auditer `gallery_manager.class.php`
+- [ ] Migrer CSS inline `showNotification()` vers classes
 - [ ] Sécuriser uploads — vérification MIME réelle
 - [ ] `login.php` — nettoyer HTML, passer en français
+- [ ] Page "Configuration" — éditer `config.json` (titre, langues)
 
 ---
 
 ## Ambitions — pistes ouvertes
 
 ### Routing automatique
-Fallback dans `inc/main.php` — si aucun `.php` dédié, `PageRenderer` prend le relais.
+Fallback dans `inc/main.php` — si aucun `.php` dédié, `PageRenderer` prend le relais. Simplifie la suppression de pages.
 
-### Éditeur de menus
-Créer une page et l'ajouter au menu en une opération — cohérence garantie.
-
-### Types de pages
-Pages JSON via `PageRenderer` + pages statiques PHP — les deux coexistent.
+### PHP libre dans l'éditeur
+Éditer le contenu de `inc/pages/{page}.php` directement depuis l'admin — phase 2 de `create_page_file.php`.
 
 ### Brouillons
-`status: draft` déjà dans le modèle — logique front à implémenter.
+`status: draft` dans le modèle — logique front à implémenter.
 
 ---
 
 ## Tests — `admin/tests/`
 
-| Fichier | Composant testé |
+| Fichier | Composant |
 |---|---|
 | `test_api_v2.php` | Endpoints API |
 | `test_audit.php` | Audit général |
@@ -345,5 +338,5 @@ Pages JSON via `PageRenderer` + pages statiques PHP — les deux coexistent.
 
 ---
 
-*Dernière mise à jour : session 6 — 2026-05-16*  
-*Prochaine session : nettoyage vestiges + audit tests.*
+*Dernière mise à jour : session 7 — 2026-05-16*  
+*Prochaine session : nettoyage vestiges + routing automatique.*
