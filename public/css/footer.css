@@ -11,7 +11,7 @@
   --footer-bg:          var(--color-primary);
   --footer-color:       white;
   --footer-link-color:  rgba(255, 255, 255, 0.8);
-  --footer-logo-height: 64px;
+  --footer-logo-height: 50px;
   --footer-padding:     var(--spacing-lg) var(--spacing-md);
   --footer-gap:         var(--spacing-lg);
   --footer-col-min:     200px;
@@ -174,7 +174,21 @@
 .site-footer__logo img:hover {
   opacity: 1;
 }
+/* Header */
+.site-header .decor-logo {
+    --logo-fill:   var(--color-accent);
+    --logo-stroke: var(--color-primary-dark);
+}
 
+/* Footer */
+.site-footer .decor-logo {
+    --logo-fill:   var(--color-accent);
+    --logo-stroke: var(--color-primary-dark);
+}
+.decor-logo svg {
+   
+    height: 64px;  /* hérite du conteneur */
+}
 /* =================================
    MOBILE
 ================================= */

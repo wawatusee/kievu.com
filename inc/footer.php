@@ -69,8 +69,10 @@ $menuFooter_view  = $menusViewFooter->getViewMainMenu($menuMain);
   </nav>
 
   <!-- Logo -->
-  <div class="site-footer__logo">
-    <img src="img/deco/logo.svg" alt="<?= htmlspecialchars($str_titleWebSite) ?>">
-  </div>
+<div class="site-footer__logo">
+    <div class="decor-logo">
+        <?php echo file_get_contents(DIR_IMG_DECO . 'logo.svg'); ?>
+    </div>
+</div>
 
 </footer>
