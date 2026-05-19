@@ -134,7 +134,7 @@
 .rs-link:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: white;
-  color: white;
+  color: var(--color-accent);
 }
 
 .rs-icon {
