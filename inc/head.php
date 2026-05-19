@@ -37,6 +37,6 @@
     }
     ?>
 
-    <link rel="shortcut icon" type="image/png" href="favicon.ico">
+    <link rel="shortcut icon" type="image/png" href="favicon.svg">
     <title><?= htmlspecialchars($str_titleWebSite) ?></title>
 </head>
