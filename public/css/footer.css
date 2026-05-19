@@ -126,7 +126,7 @@
   height:          40px;
   border-radius:   50%;
   border:          1px solid rgba(255, 255, 255, 0.3);
-  color:           var(--footer-link-color);
+  
   text-decoration: none;
   transition:      all var(--transition);
 }
@@ -145,14 +145,7 @@
   background-position: center;
 }
 
-/* Icônes RS — remplacer par les SVG disponibles */
-.rs-icon--facebook {
-  background-image: url("../img/deco/icon-facebook.svg");
-}
 
-.rs-icon--instagram {
-  background-image: url("../img/deco/icon-instagram.svg");
-}
 
 /* ---------------------------------
    Logo centré
