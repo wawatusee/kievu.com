@@ -579,3 +579,43 @@ php -S localhost:8000 -t public
 
 *Dernière mise à jour : session 8 — 2026-05-20*  
 *Prochaine session : minigalerie + admin logo.*
+
+---
+
+## Galerie — `gallery_ref`
+
+Composant de page — pas d'article. Déclaré dans `json/pages/{page}.json` :
+
+```json
+{
+    "type": "gallery_ref",
+    "folder": "accueil"
+}
+```
+
+`folder` correspond au sous-dossier dans `public/img/content/`.
+
+### Workflow
+1. Créer un répertoire via l'admin médias
+2. Uploader les images — thumbs générés automatiquement
+3. Ajouter une `gallery_ref` dans le layout de la page
+
+### Rendu — `PageRenderer::renderGalleryRef()`
+- Affiche les thumbs si `{folder}/thumbs/` existe, sinon les originaux
+- Lien vers le full size sur chaque image
+- `loading="lazy"` natif
+- Classes BEM : `.nucleus-gallery`, `.gallery-grid`, `.gallery-item`, `.gallery-item__link`, `.gallery-item__img`
+
+### Lightbox — `public/js/lightbox.js`
+- Chargé globalement dans `head.php`
+- S'active uniquement si des `.gallery-item__link` sont présents
+- Fermeture : clic fond, bouton ×, touche Escape
+- Isolé — remplaçable par toute autre librairie sans toucher au HTML
+
+### Constante ajoutée — `config.php`
+```php
+define('PUBLIC_IMG_CONTENT', PUBLIC_IMG . 'content/');
+```
+
+*Dernière mise à jour : session 8 — 2026-05-21*  
+*Prochaine session : admin logo + balises OG.*
