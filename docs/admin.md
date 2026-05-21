@@ -302,6 +302,7 @@ if (session_status() === PHP_SESSION_NONE) {
 - [ ] Supprimer `admin/src/model/config_model.php` — doublon
 - [ ] Déplacer modale médias hors du `<form>` dans `articles.php`
 - [ ] Nettoyer `admin/pages/galleries.php` — bloc session commenté
+- [ ] Supprimer `admin/js/article_editor.old.js`, `admin/js/page_builder.old.js`, `admin/src/image_uploader.class.old.php` — vestiges
 
 ### Moyen terme
 - [ ] Auditer `admin/tests/`
@@ -310,6 +311,9 @@ if (session_status() === PHP_SESSION_NONE) {
 - [ ] Sécuriser uploads — vérification MIME réelle
 - [ ] `login.php` — nettoyer HTML, passer en français
 - [ ] Page "Configuration" — éditer `config.json` (titre, langues)
+- [ ] Admin logo — interface upload et remplacement du logo
+- [ ] Balises OG — alimentées depuis le JSON de la page ou de l'article courant
+- [ ] `.htaccess` — sécuriser `/config/`, `/json/`, `/src/`
 
 ---
 
@@ -317,6 +321,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
 ### Routing automatique
 Fallback dans `inc/main.php` — si aucun `.php` dédié, `PageRenderer` prend le relais. Simplifie la suppression de pages.
+
+### Bloc gallery
+`ArticleRenderer` et `BlockRegistry` recevront un type `gallery` — minigalerie intégrée dans un article. Côté admin : template dans `article_editor.js`, sélection d'un répertoire via le navigateur de médias. En attente de l'implémentation front.
 
 ### PHP libre dans l'éditeur
 Éditer le contenu de `inc/pages/{page}.php` directement depuis l'admin — phase 2 de `create_page_file.php`.
@@ -338,5 +345,5 @@ Fallback dans `inc/main.php` — si aucun `.php` dédié, `PageRenderer` prend l
 
 ---
 
-*Dernière mise à jour : session 7 — 2026-05-16*  
-*Prochaine session : nettoyage vestiges + routing automatique.*
+*Dernière mise à jour : session 8 — 2026-05-20*  
+*Prochaine session : bloc gallery + nettoyage vestiges.*

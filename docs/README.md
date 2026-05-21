@@ -36,7 +36,8 @@ Les choix structurants :
 │   ├── js/
 │   │   └── pages/        ← JS spécifique par page (chargé si existant)
 │   └── img/
-│       └── deco/         ← logo.svg et icônes
+│       ├── content/      ← images de contenu — organisées par sous-dossier
+│       └── deco/         ← logo.svg, icônes RS dans deco/rs/
 ├── src/                  ← Logique métier
 │   ├── core/
 │   ├── model/
@@ -66,6 +67,23 @@ Exception future : si un formulaire d'envoi de message est envisagé, il nécess
 
 ### Hiérarchie des titres
 Les articles commencent à `h2` — le `h1` appartient à la page, pas aux articles. Le niveau est piloté par le JSON (`"level": 2`). Le CSS qualifie par niveau HTML (`h2.nucleus-title`, `h3.nucleus-title`) pour préserver l'indépendance de chaque niveau.
+
+### Bloc image — philosophie
+Le JSON stocke l'identité de l'image (`src`), pas ses propriétés d'affichage. Pas de `width`, `height`, ni `align` dans la donnée — le CSS et le contexte décident. L'auteur uploade ses médias via le gestionnaire avant d'écrire son article.
+
+### SVG inline — logo et icônes RS
+Les SVG sont injectés via `file_get_contents()` plutôt qu'en balise `<img>`. Avantages : contrôle CSS total (`fill`, animations, variables), pas de requête HTTP supplémentaire.
+
+Les couleurs sont pilotées par des variables CSS :
+```css
+--logo-fill:   var(--color-accent);
+--logo-stroke: var(--color-primary-dark);
+--logo-text:   var(--color-accent);
+```
+
+Le texte du logo est masqué dans le footer via `.site-footer .decor-logo text { display: none; }`.
+
+Les icônes RS sont injectées depuis `public/img/deco/rs/{titre}.svg` — le nom du fichier correspond au champ `titre` du `RS_menu`.
 
 ### Tests
 Pas de framework de test. Convention : un fichier `tests/test_*.php` par composant critique, écrit au moment de la correction. Zéro dépendance externe.
@@ -99,7 +117,7 @@ Fichiers de test existants :
 ### `config/config.php` — Config technique (dev uniquement)
 
 Responsabilités :
-- Définir toutes les constantes de chemins (`ROOT_PATH`, `DIR_JSON`, `DIR_IMG`...)
+- Définir toutes les constantes de chemins (`ROOT_PATH`, `DIR_JSON`, `DIR_IMG`, `DIR_IMG_DECO`...)
 - Charger et parser `config.json`
 - Dériver les constantes (`SITE_TITLE`, `LANG_DEFAULT`, `PAGE_ARRAY`...)
 - Instancier les modèles (`ConfigModel`, `MenusModel`)
@@ -183,17 +201,30 @@ if (in_array($page, PAGE_ARRAY)) {
 
 ```
 <header class="site-header">
-    <a class="site-header__logo">        ← logo SVG en <img>
-    <nav class="site-nav" id="siteNav">  ← menu principal
-    <div class="site-header__controls">  ← langue + burger
+    <div class="header-title">       ← logo SVG inline + titre
+    <div class="site-header__controls">
+        <nav class="site-nav">       ← menu principal
+        <div class="lang-switcher">  ← sélecteur de langue
+        <button class="burger">      ← burger mobile
 ```
+
+### Logo — SVG inline
+
+```php
+<div class="decor-logo">
+    <?php echo file_get_contents(DIR_IMG_DECO . 'logo.svg'); ?>
+</div>
+```
+
+Le SVG contient le texte du titre et les deux triangles. Les couleurs sont contrôlées via variables CSS. Le titre HTML est supprimé — il vit dans le SVG.
 
 ### Conventions BEM
 
 | Classe | Rôle |
 |---|---|
 | `.site-header` | Block header |
-| `.site-header__logo` | Element logo |
+| `.header-title` | Conteneur logo + titre |
+| `.decor-logo` | Conteneur SVG inline |
 | `.site-header__controls` | Element contrôles |
 | `.site-nav` | Block nav |
 | `.site-nav--open` | Modifier nav ouverte (mobile) |
@@ -217,17 +248,11 @@ if (in_array($page, PAGE_ARRAY)) {
 --header-bg:          var(--color-primary);
 ```
 
-Modifier ces variables pour reconfigurer sans réécrire.
-
-### Logo
-Fichier : `public/img/deco/logo.svg`  
-Intégration : balise `<img>` — pas de SVG inline.
-
 ### Sélecteur de langue
 Construction dynamique avec `http_build_query` — conserve tous les paramètres GET existants en remplaçant uniquement `lang`.
 
 ### Burger mobile
-Animé en CSS pur (trois `<span>` → croix). Le JS toggle uniquement les classes `.site-nav--open` et `.burger--open` et l'attribut `aria-expanded`.
+Animé en CSS pur (trois `<span>` → croix). Le JS toggle `.site-nav--open`, `.burger--open` et `aria-expanded`. Fermeture automatique au clic sur un lien.
 
 ---
 
@@ -235,9 +260,29 @@ Animé en CSS pur (trois `<span>` → croix). Le JS toggle uniquement les classe
 
 - Données de contact chargées depuis `json/articles/contact-coordonnees.json`
 - Menu footer via `ViewMenu(APP_LANG, '')` — pas de lien actif
-- `RS_menu` chargé depuis `$menuRS` disponible via `config.php`
-- Logo centré en `<img>` — pas de SVG inline
-- Grille auto-répartie — `repeat(auto-fit, minmax(200px, 1fr))`
+- Icônes RS — SVG inline depuis `public/img/deco/rs/{titre}.svg`
+- Logo SVG inline — texte masqué via CSS
+
+### Logo footer
+
+```php
+<div class="decor-logo">
+    <?php echo file_get_contents(DIR_IMG_DECO . 'logo.svg'); ?>
+</div>
+```
+
+### Icônes RS
+
+```php
+$svgPath = DIR_IMG_DECO . 'rs/' . $label . '.svg';
+if (file_exists($svgPath)) {
+    echo file_get_contents($svgPath);
+} else {
+    echo '<span class="sr-only">' . $label . '</span>';
+}
+```
+
+Le fichier SVG doit porter le même nom que le champ `titre` du `RS_menu` — ex: `facebook.svg`, `instagram.svg`.
 
 ### Variables locales — `footer.css`
 
@@ -245,7 +290,7 @@ Animé en CSS pur (trois `<span>` → croix). Le JS toggle uniquement les classe
 --footer-bg:          var(--color-primary);
 --footer-color:       white;
 --footer-link-color:  rgba(255, 255, 255, 0.8);
---footer-logo-height: 64px;
+--footer-logo-height: 50px;
 --footer-padding:     var(--spacing-lg) var(--spacing-md);
 --footer-gap:         var(--spacing-lg);
 --footer-col-min:     200px;
@@ -264,7 +309,7 @@ Animé en CSS pur (trois `<span>` → croix). Le JS toggle uniquement les classe
 | `.site-footer__rs` | Bloc réseaux sociaux |
 | `.site-footer__logo` | Logo centré |
 | `.rs-link` | Lien RS — cercle cliquable |
-| `.rs-icon--{nom}` | Icône RS via background-image |
+| `.rs-link--{nom}` | Variante par réseau |
 
 ---
 
@@ -315,15 +360,69 @@ new ViewMenu(APP_LANG, '')      // footer — pas de lien actif
 - Erreurs loggées via `error_log` — silencieuses en prod, traçables
 
 ### `ArticleRenderer`
-- Rendu statique par blocs : `title`, `text`, `list`, `link`
+- Rendu statique par blocs : `title`, `text`, `list`, `link`, `image`
 - Méthode `t()` — fallback `?:` sur chaîne vide
 - Fallback : langue demandée → `fr` → `en` → chaîne vide
-- Bloc `image` non encore implémenté — prévu
+
+### `BlockRegistry`
+- Source de vérité pour les types de blocs valides
+- Chaque type déclare : `label`, `fields`, `dataType`
+- `dataType: null` — pas de champ `data` multilingue (ex: `image`)
+- Validation et normalisation avant sauvegarde
+- Types enregistrés : `title`, `text`, `list`, `link`, `image`
 
 ### `JsonHandler`
 - Lecture sécurisée avec exceptions explicites
 - Écriture atomique via fichier `.tmp`
 - `listFiles`, `exists`, `delete` disponibles
+
+---
+
+## Blocs de contenu — format JSON
+
+### Blocs multilingues
+
+```json
+{"type": "title", "level": 2, "data": {"fr": "Titre", "en": "Title"}}
+{"type": "text", "data": {"fr": "Texte...", "en": "Text..."}}
+{"type": "list", "data": {"fr": ["item1", "item2"], "en": ["item1", "item2"]}}
+{"type": "link", "url": "https://...", "data": {"fr": "Texte", "en": "Text"}}
+```
+
+### Bloc image — sans champ `data`
+
+```json
+{"type": "image", "src": "home/photo.jpg", "alt": "Description"}
+```
+
+- `src` — chemin relatif depuis `public/img/content/`
+- `alt` — texte alternatif — obligatoire pour l'accessibilité
+- Pas de `width`, `height`, `align` — le CSS décide
+- L'auteur uploade via le gestionnaire de médias avant d'éditer
+
+### Association image + texte
+
+```json
+[
+    {"type": "image", "src": "home/photo.jpg", "alt": "..."},
+    {"type": "text", "data": {"fr": "Légende ou texte associé"}}
+]
+```
+
+---
+
+## Gestionnaire de médias — `admin/`
+
+### Workflow
+1. L'auteur uploade ses images via `admin/pages/medias_images.php`
+2. `ImageUploader` génère grand format (1280px) + thumb (400px)
+3. Structure : `public/img/content/{dir}/photo.jpg` + `{dir}/thumbs/photo.jpg`
+4. Dans l'éditeur d'article — bouton "Parcourir" ouvre le navigateur de médias
+5. Clic sur une image → remplit automatiquement le champ `src`
+
+### `admin/api/list_images.php`
+- Sans paramètre → liste les répertoires disponibles
+- `?dir=home` → liste les images du répertoire
 
 ---
 
@@ -333,13 +432,36 @@ new ViewMenu(APP_LANG, '')      // footer — pas de lien actif
 
 | Niveau | Fichier | Rôle |
 |---|---|---|
-| 1 | `style.css` | Variables globales, reset, typo, utilitaires |
+| 1 | `style.css` | Variables globales, reset, typo, utilitaires, décoration SVG |
 | 2 | `header.css` | Header + nav |
 | 2 | `main.css` | Contenant principal + blocs nucleus |
 | 2 | `footer.css` | Pied de page |
 | 3 | `pages/{page}.css` | Surcharges spécifiques à une page |
 
-Chaque niveau 2 expose ses **variables locales** en tête — un seul endroit à modifier pour reconfigurer.
+### Section 12 — `style.css` — Décoration SVG inline
+
+```css
+.decor-logo {
+    --logo-fill:   var(--color-accent);
+    --logo-stroke: var(--color-primary-dark);
+    --logo-text:   var(--color-accent);
+}
+
+.decor-logo svg {
+    width:   auto;
+    height:  100%;
+    display: block;
+}
+```
+
+La hauteur effective est contrôlée par le conteneur dans `header.css` et `footer.css`.
+
+Le texte du logo est masqué dans le footer :
+```css
+.site-footer .decor-logo text {
+    display: none;
+}
+```
 
 ### Classes nucleus — produites par `ArticleRenderer`
 
@@ -353,6 +475,7 @@ Chaque niveau 2 expose ses **variables locales** en tête — un seul endroit à
 | `.nucleus-text` | Paragraphe |
 | `.nucleus-link` | Lien ou bouton |
 | `.nucleus-list` | Liste à puces — marker accent |
+| `.nucleus-image` | Image responsive — lazyload natif |
 
 ### Variables globales clés — `style.css`
 
@@ -398,8 +521,7 @@ Chaque niveau 2 expose ses **variables locales** en tête — un seul endroit à
 ```
 
 - `Main_menu` alimente `PAGE_ARRAY` et la navigation principale
-- `RS_menu` alimente les liens réseaux sociaux
-- Les titres sont multilingues sur `Main_menu`, simples sur `RS_menu`
+- `RS_menu` alimente les icônes RS du footer — le champ `titre` doit correspondre au nom du fichier SVG dans `public/img/deco/rs/`
 
 ---
 
@@ -409,9 +531,6 @@ Chaque niveau 2 expose ses **variables locales** en tête — un seul endroit à
 php -S localhost:8000 -t public
 ```
 
-- `-t public` expose uniquement `/public/` — cohérent avec la prod
-- Ouvrir `http://localhost:8000` dans le navigateur
-
 ---
 
 ## Conventions à respecter
@@ -419,13 +538,16 @@ php -S localhost:8000 -t public
 - **Chemins** : toujours des constantes `DIR_*` (absolus) ou `PUBLIC_*` (navigateur) — jamais de `../` en dur
 - **Nommage CSS** : BEM — `.block__element--modifier`
 - **Variables CSS** : chaque composant expose ses variables locales en tête de fichier
+- **SVG** : inline via `file_get_contents(DIR_IMG_DECO . 'fichier.svg')` — couleurs via variables CSS
 - **Titres** : les articles commencent à `h2` — `h1` appartient à la page
+- **Blocs** : le JSON décrit ce que c'est, le CSS décrit comment ça s'affiche
 - **Nommage JS** : `camelCase`, `addEventListener` uniquement — pas de `onclick` inline
 - **Sécurité** : toujours `htmlspecialchars()` sur les variables affichées, whitelist sur `$page`
 - **Config** : une seule source de vérité — `config.json` pour le métier, `config.php` dérive les constantes
 - **Tests** : tout point de friction corrigé → un `tests/test_*.php` associé
 - **Erreurs** : jamais silencieuses — `error_log` minimum, exception explicite si critique
 - **Langues** : `array_column(getLangs(), 'code')` pour les codes, `foreach ($langs as $langue)` pour itérer
+- **Médias** : uploader avant d'éditer — l'éditeur ne gère que les chemins, pas les fichiers
 
 ---
 
@@ -433,29 +555,27 @@ php -S localhost:8000 -t public
 
 ### Court terme
 
-- [ ] **Bloc `image`** — ajouter le type dans `ArticleRenderer` et `article_editor.js`
-- [ ] **Icônes RS** — SVG facebook et instagram dans `public/img/deco/`
+- [ ] **Minigalerie** — bloc `gallery` dans `ArticleRenderer` et `BlockRegistry`
 - [ ] **Balises OG** — alimentées depuis le JSON de la page ou de l'article courant
 - [ ] **`.htaccess`** — sécuriser `/config/`, `/json/`, `/src/`
-- [ ] **Pages spécifiques** — vérifier si `events`, `social`, `contact` nécessitent du CSS dédié
+- [ ] **Admin logo** — interface upload et remplacement du logo depuis l'admin
 
 ### Moyen terme
 
-- [ ] **Galleries** — auditer `gallery_manager.class.php` et `image_uploader.class.php`
 - [ ] **CSS admin** — migrer le CSS inline de `showNotification()` vers des classes
 - [ ] **Uploads** — vérification MIME réelle, pas seulement l'extension
 - [ ] **`login.php`** — nettoyer le HTML, passer en français
+- [ ] **Nettoyage vestiges** — `article_editor.old.js`, `page_builder.old.js`, `image_uploader.class.old.php`
 
 ### Long terme — ambitions
 
 - [ ] **Routing automatique** — fallback `PageRenderer` si pas de fichier `.php` dédié
-- [ ] **Éditeur de menus** — créer une page et l'ajouter au menu en une opération
 - [ ] **Brouillons** — exploiter `status: draft` côté front
 - [ ] **Internationalisation complète** — traductions des contenus JSON par langue
-- [ ] **Kit de démarrage** — template réutilisable vierge
+- [ ] **Kit de démarrage** — template réutilisable vierge stabilisé
 - [ ] **Tests** — formaliser la couverture sur les composants critiques
 
 ---
 
-*Dernière mise à jour : session 6 — 2026-05-11*  
-*Prochaine session : bloc image + icônes RS + pages spécifiques.*
+*Dernière mise à jour : session 8 — 2026-05-20*  
+*Prochaine session : minigalerie + admin logo.*

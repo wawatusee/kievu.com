@@ -52,21 +52,6 @@ $menuFooter_view  = $menusViewFooter->getViewMainMenu($menuMain);
 
   </div>
 
-  <!-- Réseaux sociaux -->
-  <!--<nav class="site-footer__rs" aria-label="Réseaux sociaux">
-    <?php foreach ($menuRS as $item) :
-      $href  = htmlspecialchars($item->page);
-      $label = htmlspecialchars($item->titre);
-    ?>
-      <a class="rs-link" href="<?= $href ?>"
-         title="<?= $label ?>"
-         target="_blank"
-         rel="noopener noreferrer">
-        <div class="rs-icon rs-icon--<?= $label ?>" aria-hidden="true"></div>
-        <span class="sr-only"><?= $label ?></span>
-      </a>
-    <?php endforeach; ?>
-  </nav>-->
   <nav class="site-footer__rs" aria-label="Réseaux sociaux">
     <?php foreach ($menuRS as $item) :
         $href  = htmlspecialchars($item->page);

@@ -137,14 +137,6 @@
   color: var(--color-accent);
 }
 
-.rs-icon {
-  width:  20px;
-  height: 20px;
-  background-size:     contain;
-  background-repeat:   no-repeat;
-  background-position: center;
-}
-
 
 
 /* ---------------------------------
@@ -161,11 +153,11 @@
 .site-footer .decor-logo {
     --logo-fill:   var(--color-accent);
     --logo-stroke: var(--color-primary-dark);
+    height: 50px;
+
 }
 
-   .site-footer .decor-logo {
-    height: 50px;
-}
+
 .site-footer .decor-logo text {
     display: none;
 }
