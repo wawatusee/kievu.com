@@ -1,0 +1,57 @@
+{
+    "type": "gallery_ref",
+    "folder": "accueil",
+    "title": {
+        "fr": "brigitte",
+        "nl": "",
+        "en": "",
+        "tr": ""
+    },
+    "images": [
+        {
+            "src": "56075877-classique-femme-1960-de-la-mode-avec-la-voiture-de-sport-foulard-de-conduite.jpg",
+            "alt": {
+                "fr": "en voiture",
+                "nl": "",
+                "en": "",
+                "tr": ""
+            },
+            "caption": {
+                "fr": "houlala",
+                "nl": "",
+                "en": "",
+                "tr": ""
+            }
+        },
+        {
+            "src": "bardot-bandeau.jpg",
+            "alt": {
+                "fr": "boudeuse",
+                "nl": "",
+                "en": "",
+                "tr": ""
+            },
+            "caption": {
+                "fr": "elle boude",
+                "nl": "",
+                "en": "",
+                "tr": ""
+            }
+        },
+        {
+            "src": "foulard-anonyme-70.jpg",
+            "alt": {
+                "fr": "stpéfaites",
+                "nl": "",
+                "en": "",
+                "tr": ""
+            },
+            "caption": {
+                "fr": "",
+                "nl": "",
+                "en": "",
+                "tr": ""
+            }
+        }
+    ]
+}
