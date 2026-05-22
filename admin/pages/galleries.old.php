@@ -108,25 +108,6 @@ $langCodes = array_column($langs, 'code');
     </main>
 </div>
 
-<!-- Modale navigateur médias -->
-<div id="gallery-media-browser"
-    style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center;">
-    <div style="background:white; border-radius:8px; padding:24px; width:800px; max-width:95vw; max-height:85vh; display:flex; flex-direction:column; gap:16px;">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3 style="margin:0;">Choisir une image</h3>
-            <button type="button" id="gallery-browser-close"
-                style="background:none; border:none; font-size:1.5rem; cursor:pointer;">×</button>
-        </div>
-        <div style="display:flex; gap:8px; align-items:center;">
-            <label>Répertoire :</label>
-            <select id="gallery-dir-select" style="flex:1;"></select>
-        </div>
-        <div id="gallery-media-grid"
-            style="display:grid; grid-template-columns:repeat(auto-fill, minmax(120px, 1fr)); gap:12px; overflow-y:auto; flex:1;">
-        </div>
-    </div>
-</div>
-
 <script>
 const API        = 'api/';
 const LANG_CODES  = <?= json_encode($langCodes) ?>;
@@ -171,7 +152,6 @@ function tplImageRow(img = {}) {
     div.innerHTML = `
         <div class="gallery-image-row__src">
             <input type="text" class="img-src" placeholder="nom-fichier.jpg" value="${escapeHtml(src)}">
-            <button type="button" class="btn-browse-gallery btn-secondary" title="Parcourir">Parcourir</button>
             <button type="button" class="btn-delete-image-row btn-delete-file" title="Supprimer">🗑️</button>
         </div>
         <div class="gallery-image-row__langs">
@@ -359,84 +339,5 @@ document.getElementById('gallery-image-list').addEventListener('click', (e) => {
     if (e.target.classList.contains('btn-delete-image-row')) {
         e.target.closest('.gallery-image-row').remove();
     }
-    // Parcourir
-    const btnBrowse = e.target.closest('.btn-browse-gallery');
-    if (btnBrowse) {
-        window._galleryTargetInput = btnBrowse.closest('.gallery-image-row').querySelector('.img-src');
-        const modal = document.getElementById('gallery-media-browser');
-        modal.style.display = 'flex';
-        loadGalleryMediaDirs();
-    }
-});
-
-// === MODALE MÉDIAS ===
-document.getElementById('gallery-browser-close').addEventListener('click', () => {
-    document.getElementById('gallery-media-browser').style.display = 'none';
-});
-
-async function loadGalleryMediaDirs() {
-    try {
-        const res  = await fetch(`${API}list_images.php`);
-        const data = await res.json();
-        if (!data.success) return;
-
-        const select = document.getElementById('gallery-dir-select');
-        select.innerHTML = '';
-        data.dirs.forEach(dir => {
-            const opt = document.createElement('option');
-            opt.value = dir;
-            opt.textContent = dir;
-            select.appendChild(opt);
-        });
-
-        if (data.dirs.length) await loadGalleryMediaImages(data.dirs[0]);
-    } catch (e) {
-        console.error('Erreur chargement répertoires :', e);
-    }
-}
-
-async function loadGalleryMediaImages(dir) {
-    const grid = document.getElementById('gallery-media-grid');
-    grid.innerHTML = '<p>Chargement...</p>';
-
-    try {
-        const res  = await fetch(`${API}list_images.php?dir=${encodeURIComponent(dir)}`);
-        const data = await res.json();
-
-        if (!data.success || !data.images.length) {
-            grid.innerHTML = '<p>Aucune image.</p>';
-            return;
-        }
-
-        grid.innerHTML = '';
-        data.images.forEach(filename => {
-            const fig = document.createElement('figure');
-            fig.style.cssText = 'margin:0; cursor:pointer; border:2px solid transparent; border-radius:4px; overflow:hidden;';
-            fig.innerHTML = `
-                <img src="/public/img/content/${dir}/thumbs/${filename}" alt="${filename}"
-                     style="width:100%; height:90px; object-fit:cover; display:block;">
-                <figcaption style="font-size:0.7rem; padding:4px; text-align:center;
-                    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                    ${filename}
-                </figcaption>`;
-
-            fig.addEventListener('mouseenter', () => fig.style.borderColor = '#3b5bdb');
-            fig.addEventListener('mouseleave', () => fig.style.borderColor = 'transparent');
-            fig.addEventListener('click', () => {
-                if (window._galleryTargetInput) {
-                    window._galleryTargetInput.value = filename;
-                }
-                document.getElementById('gallery-media-browser').style.display = 'none';
-            });
-
-            grid.appendChild(fig);
-        });
-    } catch (e) {
-        grid.innerHTML = '<p>Erreur de chargement.</p>';
-    }
-}
-
-document.getElementById('gallery-dir-select').addEventListener('change', (e) => {
-    loadGalleryMediaImages(e.target.value);
 });
 </script>

@@ -25,6 +25,10 @@
         {
             "type": "article_ref",
             "filename": "accueil-contact.json"
+        },
+        {
+            "type": "gallery_ref",
+            "folder": "accueil"
         }
     ]
 }

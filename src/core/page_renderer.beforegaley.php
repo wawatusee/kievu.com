@@ -18,10 +18,10 @@ class PageRenderer
 
     public function __construct(string $lang = 'fr')
     {
-        $this->pagesDir = ROOT_PATH . 'json/pages/';
+        $this->pagesDir    = ROOT_PATH . 'json/pages/';
         $this->articlesDir = ROOT_PATH . 'json/articles/';
-        $this->galleriesDir = DIR_IMG_CONTENT;
-        $this->lang = $lang;
+        $this->galleriesDir = ROOT_PATH . 'public/img/content/galleries/';
+        $this->lang        = $lang;
     }
 
     /**
@@ -82,8 +82,7 @@ class PageRenderer
     private function renderArticleRef(array $entry): void
     {
         $filename = $entry['filename'] ?? null;
-        if (!$filename)
-            return;
+        if (!$filename) return;
 
         $path = $this->articlesDir . $filename;
 
@@ -106,54 +105,37 @@ class PageRenderer
     private function renderGalleryRef(array $entry): void
     {
         $folder = $entry['folder'] ?? null;
-        if (!$folder)
-            return;
+        if (!$folder) return;
 
-        $dir = DIR_IMG_CONTENT . $folder . DIRECTORY_SEPARATOR;
-        $thumbDir = $dir . 'thumbs' . DIRECTORY_SEPARATOR;
-
-        if (!is_dir($dir))
-            return;
-
-        $sourceDir = is_dir($thumbDir) ? $thumbDir : $dir;
+        $dir = $this->galleriesDir . $folder . '/';
+        if (!is_dir($dir)) return;
 
         $images = array_values(array_filter(
-            scandir($sourceDir),
+            scandir($dir),
             fn($f) => preg_match('/\.(jpg|jpeg|png|webp|gif)$/i', $f)
         ));
 
-        if (empty($images))
-            return;
+        if (empty($images)) return;
 
         echo '<section class="nucleus-gallery" data-folder="' . htmlspecialchars($folder) . '">' . "\n";
         echo '  <div class="gallery-grid">' . "\n";
-
         foreach ($images as $img) {
-    $thumb    = PUBLIC_IMG_CONTENT . $folder . '/thumbs/' . $img;
-    $full     = PUBLIC_IMG_CONTENT . $folder . '/' . $img;
-    $useThumb = is_dir($thumbDir);
-
+            $src = '/public/img/content/galleries/' . $folder . '/' . $img;
             echo '    <figure class="gallery-item">' . "\n";
-            echo '      <a href="' . htmlspecialchars($full) . '" class="gallery-item__link">' . "\n";
-            echo '        <img src="' . htmlspecialchars($useThumb ? $thumb : $full) . '"'
-                . ' alt=""'
-                . ' loading="lazy"'
-                . ' class="gallery-item__img">' . "\n";
-            echo '      </a>' . "\n";
+            echo '      <img src="' . htmlspecialchars($src) . '" alt="' . htmlspecialchars($img) . '" loading="lazy">' . "\n";
             echo '    </figure>' . "\n";
         }
-
         echo '  </div>' . "\n";
         echo '</section>' . "\n";
     }
+
     /**
      * Rendu d'un composant UI nommé
      */
     private function renderUiComponent(array $entry): void
     {
         $name = $entry['name'] ?? null;
-        if (!$name)
-            return;
+        if (!$name) return;
 
         $tplPath = ROOT_PATH . 'public/components/' . $name . '.php';
         if (file_exists($tplPath)) {

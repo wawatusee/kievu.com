@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 102 102">
+  <defs>
+    <style>
+      /* Couleurs par défaut (Mode Clair) */
+      :root {
+        --logo-fill: #ff6600;
+        --logo-stroke: #2c5eca;
+      }
+      
+      /* Mode Sombre : Augmentation du contraste sur fond noir */
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --logo-fill: #ff751a;   /* Orange légèrement plus lumineux */
+          --logo-stroke: #5c8ae6; /* Bleu plus clair pour ressortir */
+        }
+      }
+    </style>
+    <path id="path1" d="M 54.58,28.73 55.20,74.78 99.27,74.53 Z" />
+  </defs>
+
+  <g id="logo">
+    <use xlink:href="#path1" 
+         style="fill: var(--logo-fill); stroke: var(--logo-stroke); stroke-width: 2.2;" />
+    
+    <use xlink:href="#path1" 
+         transform="matrix(-1, 0, 0, 1, 102, 0)" 
+         style="fill: var(--logo-fill); stroke: var(--logo-stroke); stroke-width: 2.2;" />
+  </g>
+</svg>
