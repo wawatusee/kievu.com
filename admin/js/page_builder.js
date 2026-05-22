@@ -5,8 +5,9 @@ class PageEditor {
     constructor() {
         // 1. Le "Store"
         this.resources = {
-            articles:  [],
-            galleries: window.availableGalleries || []
+            articles:     [],
+            galleries:    window.availableGalleries || [],
+            galleryJsons: []
         };
 
         // Langues injectées depuis PHP
@@ -24,10 +25,49 @@ class PageEditor {
             },
             gallery_ref: {
                 title: "🖼️ Galerie Photo",
-                render: (id, data) => this.tplSelect(id, 'gallery_ref', 'data-folder',
-                    this.resources.galleries.map(g => ({ id: g, name: g })),
-                    data.folder, "-- Choisir une galerie --"),
-                parse: (el) => ({ folder: el.querySelector('.data-folder').value })
+                render: (id, data) => {
+                    const folderOptions = this.resources.galleries.map(g =>
+                        `<option value="${g}" ${data.folder === g ? 'selected' : ''}>${g}</option>`
+                    ).join('');
+
+                    const galleryOptions = this.resources.galleryJsons
+                        ? this.resources.galleryJsons.map(g =>
+                            `<option value="${g}" ${data.gallery === g ? 'selected' : ''}>${g}</option>`
+                          ).join('')
+                        : '';
+
+                    return `
+                        <div class="block-item" data-id="${id}" data-type="gallery_ref">
+                            <div class="block-header">
+                                <strong>🖼️ Galerie Photo</strong>
+                                <button class="btn-delete-block">×</button>
+                            </div>
+                            <div class="block-body">
+                                <div class="field-group">
+                                    <label>Répertoire d'images</label>
+                                    <select class="data-folder">
+                                        <option value="">-- Choisir un répertoire --</option>
+                                        ${folderOptions}
+                                    </select>
+                                </div>
+                                <div class="field-group">
+                                    <label>Galerie JSON <span style="color:#868e96; font-size:.78rem;">(optionnel — rendu riche)</span></label>
+                                    <select class="data-gallery">
+                                        <option value="">-- Rendu simple --</option>
+                                        ${galleryOptions}
+                                    </select>
+                                </div>
+                                <div class="gallery-preview" style="margin-top:8px;"></div>
+                            </div>
+                        </div>`;
+                },
+                parse: (el) => {
+                    const folder  = el.querySelector('.data-folder')?.value  || '';
+                    const gallery = el.querySelector('.data-gallery')?.value || '';
+                    const result  = { folder };
+                    if (gallery) result.gallery = gallery;
+                    return result;
+                }
             },
             ui_component: {
                 title: "⚙️ Composant UI",
@@ -53,6 +93,8 @@ class PageEditor {
             `<option value="${item.id}" ${selected === item.id ? 'selected' : ''}>${item.name}</option>`
         ).join('');
 
+        const isGallery = type === 'gallery_ref';
+
         return `
             <div class="block-item" data-id="${id}" data-type="${type}">
                 <div class="block-header">
@@ -64,6 +106,7 @@ class PageEditor {
                         ${placeholder ? `<option value="">${placeholder}</option>` : ''}
                         ${options}
                     </select>
+                    ${isGallery ? `<div class="gallery-preview" style="margin-top:8px;"></div>` : ''}
                 </div>
             </div>`;
     }
@@ -210,6 +253,59 @@ class PageEditor {
     }
 
     // =========================================================
+    // PRÉVISUALISATION GALERIE
+    // =========================================================
+
+    async loadGalleryPreview(selectEl) {
+        const blockBody = selectEl.closest('.block-body');
+        const preview   = blockBody?.querySelector('.gallery-preview');
+        if (!preview) return;
+
+        const folder  = blockBody.querySelector('.data-folder')?.value  || '';
+        const gallery = blockBody.querySelector('.data-gallery')?.value || '';
+
+        if (!folder) {
+            preview.innerHTML = '';
+            return;
+        }
+
+        // Mode simple — pas de JSON galerie
+        if (!gallery) {
+            preview.innerHTML = `
+                <div style="background:#f8f9fa; border:1px solid #e2e4e8; border-radius:4px; padding:10px 12px; font-size:.82rem; color:#868e96;">
+                    Rendu simple — toutes les images de <strong>${this.escapeHtml(folder)}/</strong>
+                </div>`;
+            return;
+        }
+
+        preview.innerHTML = '<p style="font-size:.8rem; color:#868e96;">Chargement...</p>';
+
+        try {
+            const res    = await fetch(`api/get_gallery.php?folder=${encodeURIComponent(gallery)}`);
+            const result = await res.json();
+
+            if (result.success === false) {
+                preview.innerHTML = `<p style="font-size:.8rem; color:#e03131;">Galerie JSON introuvable</p>`;
+                return;
+            }
+
+            const title = result.title?.[this.langCodes[0]] || gallery;
+            const count = result.images?.length || 0;
+
+            preview.innerHTML = `
+                <div style="background:#edf2ff; border:1px solid #bac8ff; border-radius:4px; padding:10px 12px; font-size:.82rem;">
+                    <strong>${this.escapeHtml(title)}</strong>
+                    <span style="color:#868e96; margin-left:8px;">${count} image${count > 1 ? 's' : ''}</span>
+                    <a href="?page=galleries" style="display:block; margin-top:6px; color:#3b5bdb; text-decoration:none; font-size:.78rem;">
+                        ✏️ Éditer cette galerie →
+                    </a>
+                </div>`;
+        } catch (e) {
+            preview.innerHTML = `<p style="font-size:.8rem; color:#e03131;">Erreur : ${e.message}</p>`;
+        }
+    }
+
+    // =========================================================
     // ÉVÉNEMENTS
     // =========================================================
 
@@ -229,6 +325,14 @@ class PageEditor {
             if (e.target.classList.contains('btn-add-image')) {
                 const list = e.target.closest('.block-body').querySelector('.gallery-image-list');
                 list.insertAdjacentHTML('beforeend', this.tplImageRow());
+            }
+        });
+
+        // Prévisualisation galerie au changement de sélection
+        container.addEventListener('change', (e) => {
+            if (e.target.classList.contains('data-folder') ||
+                e.target.classList.contains('data-gallery')) {
+                this.loadGalleryPreview(e.target);
             }
         });
 
@@ -279,8 +383,9 @@ class PageEditor {
             ]);
             const articles  = await artRes.json();
             const galleries = await galRes.json();
-            this.resources.articles  = Array.isArray(articles)          ? articles          : [];
-            this.resources.galleries = galleries.success ? galleries.galleries : [];
+            this.resources.articles     = Array.isArray(articles)          ? articles          : [];
+            this.resources.galleries    = galleries.success ? galleries.galleries : [];
+            this.resources.galleryJsons = galleries.success ? galleries.galleries : [];
         } catch (e) {
             console.error("Erreur chargement ressources :", e);
         }
@@ -307,7 +412,16 @@ class PageEditor {
             document.getElementById('page-blocks-container').innerHTML = '';
 
             if (Array.isArray(data.layout)) {
-                data.layout.forEach(blockData => this.addBlock(blockData.type, blockData));
+                data.layout.forEach(blockData => {
+                    this.addBlock(blockData.type, blockData);
+                    // Prévisualisation immédiate pour les gallery_ref
+                    if (blockData.type === 'gallery_ref' && blockData.folder) {
+                        const container = document.getElementById('page-blocks-container');
+                        const lastBlock = container.lastElementChild;
+                        const select    = lastBlock?.querySelector('.data-folder');
+                        if (select) this.loadGalleryPreview(select);
+                    }
+                });
             }
         } catch (e) {
             console.error("Erreur de chargement :", e);

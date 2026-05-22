@@ -33,6 +33,11 @@
         {
             "type": "gallery_ref",
             "folder": "ghitta"
+        },
+        {
+            "type": "gallery_ref",
+            "folder": "ghitta",
+            "gallery": "ghitta"
         }
     ]
 }

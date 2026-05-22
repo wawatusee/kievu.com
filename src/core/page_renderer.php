@@ -103,91 +103,127 @@ class PageRenderer
     /**
      * Rendu d'une galerie photo
      */
-private function renderGalleryRef(array $entry): void
-{
-    $folder = $entry['folder'] ?? null;
-    if (!$folder) return;
+    private function renderGalleryRef(array $entry): void
+    {
+        $folder = $entry['folder'] ?? null;
+        if (!$folder)
+            return;
 
-    $dir      = DIR_IMG_CONTENT . $folder . DIRECTORY_SEPARATOR;
-    $thumbDir = $dir . 'thumbs' . DIRECTORY_SEPARATOR;
+        $dir = DIR_IMG_CONTENT . $folder . DIRECTORY_SEPARATOR;
+        $thumbDir = $dir . 'thumbs' . DIRECTORY_SEPARATOR;
 
-    if (!is_dir($dir)) return;
+        if (!is_dir($dir))
+            return;
 
-    // Titre optionnel multilingue
-    $title = null;
-    if (!empty($entry['title'])) {
-        $title = $entry['title'][$this->lang]
-              ?? $entry['title']['fr']
-              ?? null;
-    }
+        $useThumb = is_dir($thumbDir);
 
-    // Liste explicite ou scan du dossier
-    $imageList = $entry['images'] ?? null;
+        // =========================================================
+        // MODE RICHE — gallery JSON
+        // =========================================================
+        if (isset($entry['gallery'])) {
+            $galleryPath = ROOT_PATH . 'json/galleries/' . $entry['gallery'] . '.json';
 
-    if ($imageList !== null) {
-        $images = $imageList;
-    } else {
-        $sourceDir = is_dir($thumbDir) ? $thumbDir : $dir;
+            if (!file_exists($galleryPath)) {
+                error_log('[Nucleus] gallery_ref : fichier introuvable — ' . $galleryPath);
+                return;
+            }
+
+            try {
+                $data = JsonHandler::load($galleryPath);
+            } catch (Exception $e) {
+                error_log('[Nucleus] gallery_ref : ' . $e->getMessage());
+                return;
+            }
+
+            // Titre multilingue optionnel
+            $title = null;
+            if (!empty($data['title'])) {
+                $t = (array) $data['title'];
+                $title = $t[$this->lang] ?? $t['fr'] ?? null;
+            }
+
+            $images = $data['images'] ?? [];
+            if (empty($images))
+                return;
+
+            echo '<section class="nucleus-gallery" data-folder="' . htmlspecialchars($folder) . '">' . "\n";
+
+            if ($title) {
+                echo '  <h2 class="nucleus-gallery__title">' . htmlspecialchars($title) . '</h2>' . "\n";
+            }
+
+            echo '  <div class="gallery-grid">' . "\n";
+
+            foreach ($images as $item) {
+                $item = (array) $item;
+                $src = $item['src'] ?? null;
+                if (!$src)
+                    continue;
+
+                $altData = (array) ($item['alt'] ?? []);
+                $captionData = (array) ($item['caption'] ?? []);
+
+                $alt = $altData[$this->lang] ?? $altData['fr'] ?? '';
+                $caption = $captionData[$this->lang] ?? $captionData['fr'] ?? '';
+
+                $thumb = PUBLIC_IMG_CONTENT . $folder . '/thumbs/' . $src;
+                $full = PUBLIC_IMG_CONTENT . $folder . '/' . $src;
+
+                echo '    <figure class="gallery-item">' . "\n";
+                echo '      <a href="' . htmlspecialchars($full) . '" class="gallery-item__link">' . "\n";
+                echo '        <img src="' . htmlspecialchars($useThumb ? $thumb : $full) . '"'
+                    . ' alt="' . htmlspecialchars($alt) . '"'
+                    . ' loading="lazy"'
+                    . ' class="gallery-item__img">' . "\n";
+                echo '      </a>' . "\n";
+
+                if ($caption) {
+                    echo '      <figcaption class="gallery-item__caption">'
+                        . htmlspecialchars($caption)
+                        . '</figcaption>' . "\n";
+                }
+
+                echo '    </figure>' . "\n";
+            }
+
+            echo '  </div>' . "\n";
+            echo '</section>' . "\n";
+            return;
+        }
+
+        // =========================================================
+        // MODE SIMPLE — scan du dossier
+        // =========================================================
+        $sourceDir = $useThumb ? $thumbDir : $dir;
+
         $files = array_values(array_filter(
             scandir($sourceDir),
             fn($f) => preg_match('/\.(jpg|jpeg|png|webp|gif)$/i', $f)
         ));
-        // Convertir en format unifié
-        $images = array_map(fn($f) => ['src' => $f], $files);
-    }
 
-    if (empty($images)) return;
+        if (empty($files))
+            return;
 
-    echo '<section class="nucleus-gallery" data-folder="' . htmlspecialchars($folder) . '">' . "\n";
+        echo '<section class="nucleus-gallery" data-folder="' . htmlspecialchars($folder) . '">' . "\n";
+        echo '  <div class="gallery-grid">' . "\n";
 
-    if ($title) {
-        echo '  <h2 class="nucleus-gallery__title">' . htmlspecialchars($title) . '</h2>' . "\n";
-    }
+        foreach ($files as $img) {
+            $thumb = PUBLIC_IMG_CONTENT . $folder . '/thumbs/' . $img;
+            $full = PUBLIC_IMG_CONTENT . $folder . '/' . $img;
 
-    echo '  <div class="gallery-grid">' . "\n";
-
-    foreach ($images as $item) {
-        $item  = (array) $item;
-        $src   = $item['src'] ?? null;
-        if (!$src) continue;
-
-        $alt     = '';
-        $caption = '';
-
-        if (!empty($item['alt'])) {
-            $altData = (array) $item['alt'];
-            $alt     = $altData[$this->lang] ?? $altData['fr'] ?? '';
+            echo '    <figure class="gallery-item">' . "\n";
+            echo '      <a href="' . htmlspecialchars($full) . '" class="gallery-item__link">' . "\n";
+            echo '        <img src="' . htmlspecialchars($useThumb ? $thumb : $full) . '"'
+                . ' alt=""'
+                . ' loading="lazy"'
+                . ' class="gallery-item__img">' . "\n";
+            echo '      </a>' . "\n";
+            echo '    </figure>' . "\n";
         }
 
-        if (!empty($item['caption'])) {
-            $captionData = (array) $item['caption'];
-            $caption     = $captionData[$this->lang] ?? $captionData['fr'] ?? '';
-        }
-
-        $thumb = PUBLIC_IMG_CONTENT . $folder . '/thumbs/' . $src;
-        $full  = PUBLIC_IMG_CONTENT . $folder . '/' . $src;
-        $useThumb = is_dir($thumbDir);
-
-        echo '    <figure class="gallery-item">' . "\n";
-        echo '      <a href="' . htmlspecialchars($full) . '" class="gallery-item__link">' . "\n";
-        echo '        <img src="' . htmlspecialchars($useThumb ? $thumb : $full) . '"'
-           . ' alt="' . htmlspecialchars($alt) . '"'
-           . ' loading="lazy"'
-           . ' class="gallery-item__img">' . "\n";
-        echo '      </a>' . "\n";
-
-        if ($caption) {
-            echo '      <figcaption class="gallery-item__caption">'
-               . htmlspecialchars($caption)
-               . '</figcaption>' . "\n";
-        }
-
-        echo '    </figure>' . "\n";
+        echo '  </div>' . "\n";
+        echo '</section>' . "\n";
     }
-
-    echo '  </div>' . "\n";
-    echo '</section>' . "\n";
-}
     /**
      * Rendu d'un composant UI nommé
      */
