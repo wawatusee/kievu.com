@@ -3,7 +3,7 @@
     "meta": {
         "id": "accueil",
         "status": "draft",
-        "updated": "2026-05-11"
+        "updated": "2026-05-22"
     },
     "layout": [
         {
@@ -28,7 +28,11 @@
         },
         {
             "type": "gallery_ref",
-            "folder": "accueil"
+            "folder": "brigitte"
+        },
+        {
+            "type": "gallery_ref",
+            "folder": "ghitta"
         }
     ]
 }

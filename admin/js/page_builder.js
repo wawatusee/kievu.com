@@ -24,8 +24,10 @@ class PageEditor {
             },
             gallery_ref: {
                 title: "🖼️ Galerie Photo",
-                render: (id, data) => this.tplGallery(id, data),
-                parse: (el)        => this.parseGallery(el)
+                render: (id, data) => this.tplSelect(id, 'gallery_ref', 'data-folder',
+                    this.resources.galleries.map(g => ({ id: g, name: g })),
+                    data.folder, "-- Choisir une galerie --"),
+                parse: (el) => ({ folder: el.querySelector('.data-folder').value })
             },
             ui_component: {
                 title: "⚙️ Composant UI",
@@ -271,11 +273,16 @@ class PageEditor {
 
     async loadResources() {
         try {
-            const res      = await fetch('api/list_articles.php?meta=1');
-            const articles = await res.json();
-            this.resources.articles = Array.isArray(articles) ? articles : [];
+            const [artRes, galRes] = await Promise.all([
+                fetch('api/list_articles.php?meta=1'),
+                fetch('api/list_galleries.php')
+            ]);
+            const articles  = await artRes.json();
+            const galleries = await galRes.json();
+            this.resources.articles  = Array.isArray(articles)          ? articles          : [];
+            this.resources.galleries = galleries.success ? galleries.galleries : [];
         } catch (e) {
-            console.error("Erreur chargement articles :", e);
+            console.error("Erreur chargement ressources :", e);
         }
     }
 
@@ -300,22 +307,7 @@ class PageEditor {
             document.getElementById('page-blocks-container').innerHTML = '';
 
             if (Array.isArray(data.layout)) {
-                // Pour les gallery_ref — charger le JSON galerie depuis json/galleries/
-                for (const blockData of data.layout) {
-                    if (blockData.type === 'gallery_ref' && blockData.folder) {
-                        try {
-                            const gRes  = await fetch(`api/get_gallery.php?folder=${encodeURIComponent(blockData.folder)}`);
-                            const gData = await gRes.json();
-                            if (gData.success !== false) {
-                                this.addBlock('gallery_ref', gData);
-                                continue;
-                            }
-                        } catch (e) {
-                            console.error("Erreur chargement galerie :", e);
-                        }
-                    }
-                    this.addBlock(blockData.type, blockData);
-                }
+                data.layout.forEach(blockData => this.addBlock(blockData.type, blockData));
             }
         } catch (e) {
             console.error("Erreur de chargement :", e);
@@ -334,45 +326,14 @@ class PageEditor {
             ? this.currentFilename.replace('.json', '')
             : this.slugify(titleInput);
 
-        const layout         = [];
-        const galleryPromises = [];
+        const layout = [];
 
         document.querySelectorAll('.block-item').forEach(el => {
             const type = el.dataset.type;
             if (!this.blockRegistry[type]) return;
-
             const parsed = this.blockRegistry[type].parse(el);
-
-            if (type === 'gallery_ref') {
-                // Sauvegarder le JSON galerie séparément
-                const galleryPayload = {
-                    folder: parsed.folder,
-                    title:  parsed.title,
-                    images: parsed.images
-                };
-                galleryPromises.push(
-                    fetch('api/save_gallery.php', {
-                        method:  'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body:    JSON.stringify(galleryPayload)
-                    }).then(r => r.json())
-                );
-                // Dans le layout de la page — référence légère
-                layout.push({ type, folder: parsed.folder });
-            } else {
-                layout.push({ type, ...parsed });
-            }
+            layout.push({ type, ...parsed });
         });
-
-        // Attendre la sauvegarde des galeries
-        if (galleryPromises.length) {
-            const results = await Promise.all(galleryPromises);
-            const errors  = results.filter(r => !r.success).map(r => r.error || 'Erreur galerie');
-            if (errors.length) {
-                alert('Erreurs galeries :\n' + errors.join('\n'));
-                return;
-            }
-        }
 
         const payload = {
             type: 'page',

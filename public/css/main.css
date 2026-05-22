@@ -232,3 +232,17 @@ h6.nucleus-title {
 .lightbox__close:hover {
   opacity: 0.7;
 }
+.nucleus-gallery__title {
+  font-family:   var(--font-title);
+  font-size:     var(--fs-lg);
+  color:         var(--color-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.gallery-item__caption {
+  font-size:  var(--fs-xs);
+  color:      var(--color-muted);
+  font-style: italic;
+  text-align: center;
+  padding:    var(--spacing-xs) 0;
+}

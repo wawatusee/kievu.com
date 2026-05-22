@@ -103,49 +103,91 @@ class PageRenderer
     /**
      * Rendu d'une galerie photo
      */
-    private function renderGalleryRef(array $entry): void
-    {
-        $folder = $entry['folder'] ?? null;
-        if (!$folder)
-            return;
+private function renderGalleryRef(array $entry): void
+{
+    $folder = $entry['folder'] ?? null;
+    if (!$folder) return;
 
-        $dir = DIR_IMG_CONTENT . $folder . DIRECTORY_SEPARATOR;
-        $thumbDir = $dir . 'thumbs' . DIRECTORY_SEPARATOR;
+    $dir      = DIR_IMG_CONTENT . $folder . DIRECTORY_SEPARATOR;
+    $thumbDir = $dir . 'thumbs' . DIRECTORY_SEPARATOR;
 
-        if (!is_dir($dir))
-            return;
+    if (!is_dir($dir)) return;
 
+    // Titre optionnel multilingue
+    $title = null;
+    if (!empty($entry['title'])) {
+        $title = $entry['title'][$this->lang]
+              ?? $entry['title']['fr']
+              ?? null;
+    }
+
+    // Liste explicite ou scan du dossier
+    $imageList = $entry['images'] ?? null;
+
+    if ($imageList !== null) {
+        $images = $imageList;
+    } else {
         $sourceDir = is_dir($thumbDir) ? $thumbDir : $dir;
-
-        $images = array_values(array_filter(
+        $files = array_values(array_filter(
             scandir($sourceDir),
             fn($f) => preg_match('/\.(jpg|jpeg|png|webp|gif)$/i', $f)
         ));
+        // Convertir en format unifié
+        $images = array_map(fn($f) => ['src' => $f], $files);
+    }
 
-        if (empty($images))
-            return;
+    if (empty($images)) return;
 
-        echo '<section class="nucleus-gallery" data-folder="' . htmlspecialchars($folder) . '">' . "\n";
-        echo '  <div class="gallery-grid">' . "\n";
+    echo '<section class="nucleus-gallery" data-folder="' . htmlspecialchars($folder) . '">' . "\n";
 
-        foreach ($images as $img) {
-    $thumb    = PUBLIC_IMG_CONTENT . $folder . '/thumbs/' . $img;
-    $full     = PUBLIC_IMG_CONTENT . $folder . '/' . $img;
-    $useThumb = is_dir($thumbDir);
+    if ($title) {
+        echo '  <h2 class="nucleus-gallery__title">' . htmlspecialchars($title) . '</h2>' . "\n";
+    }
 
-            echo '    <figure class="gallery-item">' . "\n";
-            echo '      <a href="' . htmlspecialchars($full) . '" class="gallery-item__link">' . "\n";
-            echo '        <img src="' . htmlspecialchars($useThumb ? $thumb : $full) . '"'
-                . ' alt=""'
-                . ' loading="lazy"'
-                . ' class="gallery-item__img">' . "\n";
-            echo '      </a>' . "\n";
-            echo '    </figure>' . "\n";
+    echo '  <div class="gallery-grid">' . "\n";
+
+    foreach ($images as $item) {
+        $item  = (array) $item;
+        $src   = $item['src'] ?? null;
+        if (!$src) continue;
+
+        $alt     = '';
+        $caption = '';
+
+        if (!empty($item['alt'])) {
+            $altData = (array) $item['alt'];
+            $alt     = $altData[$this->lang] ?? $altData['fr'] ?? '';
         }
 
-        echo '  </div>' . "\n";
-        echo '</section>' . "\n";
+        if (!empty($item['caption'])) {
+            $captionData = (array) $item['caption'];
+            $caption     = $captionData[$this->lang] ?? $captionData['fr'] ?? '';
+        }
+
+        $thumb = PUBLIC_IMG_CONTENT . $folder . '/thumbs/' . $src;
+        $full  = PUBLIC_IMG_CONTENT . $folder . '/' . $src;
+        $useThumb = is_dir($thumbDir);
+
+        echo '    <figure class="gallery-item">' . "\n";
+        echo '      <a href="' . htmlspecialchars($full) . '" class="gallery-item__link">' . "\n";
+        echo '        <img src="' . htmlspecialchars($useThumb ? $thumb : $full) . '"'
+           . ' alt="' . htmlspecialchars($alt) . '"'
+           . ' loading="lazy"'
+           . ' class="gallery-item__img">' . "\n";
+        echo '      </a>' . "\n";
+
+        if ($caption) {
+            echo '      <figcaption class="gallery-item__caption">'
+               . htmlspecialchars($caption)
+               . '</figcaption>' . "\n";
+        }
+
+        echo '    </figure>' . "\n";
     }
+
+    echo '  </div>' . "\n";
+    echo '</section>' . "\n";
+}
     /**
      * Rendu d'un composant UI nommé
      */

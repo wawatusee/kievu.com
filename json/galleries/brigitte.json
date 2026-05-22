@@ -1,0 +1,27 @@
+{
+    "type": "gallery_ref",
+    "folder": "brigitte",
+    "title": {
+        "fr": "Brigitte",
+        "nl": "Brigitte",
+        "en": "Brigitte",
+        "tr": "Brigitte"
+    },
+    "images": [
+        {
+            "src": "bardot-bandeau.jpg",
+            "alt": {
+                "fr": "Lassive",
+                "nl": "moe meisje",
+                "en": "Tired",
+                "tr": ""
+            },
+            "caption": {
+                "fr": "Houa girl",
+                "nl": "Brigitte hoef",
+                "en": "",
+                "tr": ""
+            }
+        }
+    ]
+}

@@ -3,11 +3,14 @@
 // Éditeur de layouts de pages
 
 $targetDir = JSON_PAGES_DIR;
-$galleriesDir = DIR_IMG_CONTENT . 'galleries/';
-
 $galleryFolders = [];
-if (is_dir($galleriesDir)) {
-    $galleryFolders = array_values(array_diff(scandir($galleriesDir), ['..', '.', 'thumbs', 'original']));
+if (is_dir(JSON_GALLERIES_DIR)) {
+    $files = array_diff(scandir(JSON_GALLERIES_DIR), ['..', '.']);
+    foreach ($files as $file) {
+        if (str_ends_with($file, '.json')) {
+            $galleryFolders[] = str_replace('.json', '', $file);
+        }
+    }
 }
 
 $files = [];
