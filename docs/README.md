@@ -28,12 +28,15 @@ Les choix structurants :
 ├── inc/                  ← Includes front (head, header, main, footer)
 ├── json/                 ← Base de données JSON
 │   ├── articles/
+│   ├── galleries/        ← JSON de galeries riches (titre, alt, caption)
 │   ├── pages/
 │   └── menus.json
 ├── public/               ← Seul dossier exposé au web
 │   ├── index.php         ← Point d'entrée unique
 │   ├── css/
 │   ├── js/
+│   │   ├── menu.js       ← burger responsive
+│   │   ├── lightbox.js   ← lightbox galerie — chargé globalement
 │   │   └── pages/        ← JS spécifique par page (chargé si existant)
 │   └── img/
 │       ├── content/      ← images de contenu — organisées par sous-dossier
@@ -61,8 +64,6 @@ Supprimé de : `config.json`, `config.php`, `config_model.php`, `main.php`, `hea
 ### Module contacts fermé
 Les coordonnées de contact sont des articles comme les autres — `contact-coordonnees.json` fonctionne via `ArticleRenderer` avec des blocs `text` et `link`.
 
-Supprimé : `json/contacts/`, `admin/api/get_contacts_list.php`, `admin/api/save_contact.php`, `admin/pages/contacts.php`, `admin/js/contact_editor.js`.
-
 Exception future : si un formulaire d'envoi de message est envisagé, il nécessitera un composant dédié avec traitement PHP.
 
 ### Hiérarchie des titres
@@ -70,6 +71,9 @@ Les articles commencent à `h2` — le `h1` appartient à la page, pas aux artic
 
 ### Bloc image — philosophie
 Le JSON stocke l'identité de l'image (`src`), pas ses propriétés d'affichage. Pas de `width`, `height`, ni `align` dans la donnée — le CSS et le contexte décident. L'auteur uploade ses médias via le gestionnaire avant d'écrire son article.
+
+### Galerie — composant de page
+La galerie est un composant de page (`gallery_ref`) — pas un bloc d'article. Elle vit dans `json/pages/{page}.json`, pas dans `json/articles/`. Cette séparation préserve la simplicité du système d'articles.
 
 ### SVG inline — logo et icônes RS
 Les SVG sont injectés via `file_get_contents()` plutôt qu'en balise `<img>`. Avantages : contrôle CSS total (`fill`, animations, variables), pas de requête HTTP supplémentaire.
@@ -129,6 +133,19 @@ Responsabilités :
 | `DIR_*` | Chemins absolus serveur |
 | `PUBLIC_*` | Chemins relatifs navigateur |
 | `APP_*` | État de l'application (langue courante...) |
+
+**Constantes disponibles :**
+
+```php
+define('ROOT_PATH',          realpath(...));
+define('DIR_JSON',           ROOT_PATH . 'json/');
+define('DIR_IMG',            ROOT_PATH . 'public/img/');
+define('DIR_IMG_CONTENT',    DIR_IMG . 'content/');
+define('DIR_IMG_DECO',       DIR_IMG . 'deco/');
+define('PUBLIC_PATH',        '/public/');
+define('PUBLIC_IMG',         PUBLIC_PATH . 'img/');
+define('PUBLIC_IMG_CONTENT', PUBLIC_IMG . 'content/');
+```
 
 ### `config/config_admin.php` — Config admin
 
@@ -327,7 +344,6 @@ Le fichier SVG doit porter le même nom que le champ `titre` du `RS_menu` — ex
 - `getDefaultLang()` retourne `$langs[0]['code']`
 - `getTitle()` retourne le titre depuis `titleWebsite`
 - `clearCache()` disponible pour les tests
-- `isSinglePage()` supprimée
 - `tests/test_config_model.php` ✓
 
 ---
@@ -368,7 +384,6 @@ new ViewMenu(APP_LANG, '')      // footer — pas de lien actif
 - Source de vérité pour les types de blocs valides
 - Chaque type déclare : `label`, `fields`, `dataType`
 - `dataType: null` — pas de champ `data` multilingue (ex: `image`)
-- Validation et normalisation avant sauvegarde
 - Types enregistrés : `title`, `text`, `list`, `link`, `image`
 
 ### `JsonHandler`
@@ -398,7 +413,6 @@ new ViewMenu(APP_LANG, '')      // footer — pas de lien actif
 - `src` — chemin relatif depuis `public/img/content/`
 - `alt` — texte alternatif — obligatoire pour l'accessibilité
 - Pas de `width`, `height`, `align` — le CSS décide
-- L'auteur uploade via le gestionnaire de médias avant d'éditer
 
 ### Association image + texte
 
@@ -411,6 +425,66 @@ new ViewMenu(APP_LANG, '')      // footer — pas de lien actif
 
 ---
 
+## Galerie — `gallery_ref`
+
+Composant de page — pas d'article. Déclaré dans `json/pages/{page}.json` :
+
+### Mode simple — scan du dossier
+
+```json
+{"type": "gallery_ref", "folder": "accueil"}
+```
+
+Affiche toutes les images de `public/img/content/accueil/` sans métadonnées.
+
+### Mode riche — JSON de galerie
+
+```json
+{"type": "gallery_ref", "folder": "accueil", "gallery": "accueil-selection"}
+```
+
+Charge `json/galleries/accueil-selection.json` — titre multilingue, sélection d'images, alt et caption par image.
+
+### Structure `json/galleries/{id}.json`
+
+```json
+{
+    "title": {"fr": "Titre", "en": "Title"},
+    "images": [
+        {
+            "src": "photo.jpg",
+            "alt": {"fr": "Description", "en": "Description"},
+            "caption": {"fr": "Légende", "en": "Caption"}
+        }
+    ]
+}
+```
+
+- `title` — optionnel, multilingue
+- `alt` — multilingue, vide accepté
+- `caption` — optionnel, multilingue — absent = pas de `<figcaption>`
+- Le même dossier peut alimenter plusieurs galeries JSON différentes
+
+### Rendu — `PageRenderer::renderGalleryRef()`
+- Thumbs utilisés si `{folder}/thumbs/` existe, sinon originaux
+- Lien vers le full size sur chaque image
+- `loading="lazy"` natif
+- Classes BEM : `.nucleus-gallery`, `.nucleus-gallery__title`, `.gallery-grid`, `.gallery-item`, `.gallery-item__link`, `.gallery-item__img`, `.gallery-item__caption`
+
+### Workflow
+1. Créer un répertoire via l'admin médias
+2. Uploader les images — thumbs générés automatiquement
+3. Mode simple : ajouter `gallery_ref` avec `folder` dans le layout
+4. Mode riche : créer un JSON dans `json/galleries/` via l'admin, référencer avec `gallery`
+
+### Lightbox — `public/js/lightbox.js`
+- Chargé globalement dans `head.php`
+- S'active uniquement si des `.gallery-item__link` sont présents
+- Fermeture : clic fond, bouton ×, touche Escape
+- Isolé — remplaçable par toute autre librairie sans toucher au HTML
+
+---
+
 ## Gestionnaire de médias — `admin/`
 
 ### Workflow
@@ -419,10 +493,6 @@ new ViewMenu(APP_LANG, '')      // footer — pas de lien actif
 3. Structure : `public/img/content/{dir}/photo.jpg` + `{dir}/thumbs/photo.jpg`
 4. Dans l'éditeur d'article — bouton "Parcourir" ouvre le navigateur de médias
 5. Clic sur une image → remplit automatiquement le champ `src`
-
-### `admin/api/list_images.php`
-- Sans paramètre → liste les répertoires disponibles
-- `?dir=home` → liste les images du répertoire
 
 ---
 
@@ -434,7 +504,7 @@ new ViewMenu(APP_LANG, '')      // footer — pas de lien actif
 |---|---|---|
 | 1 | `style.css` | Variables globales, reset, typo, utilitaires, décoration SVG |
 | 2 | `header.css` | Header + nav |
-| 2 | `main.css` | Contenant principal + blocs nucleus |
+| 2 | `main.css` | Contenant principal + blocs nucleus + galerie |
 | 2 | `footer.css` | Pied de page |
 | 3 | `pages/{page}.css` | Surcharges spécifiques à une page |
 
@@ -454,15 +524,6 @@ new ViewMenu(APP_LANG, '')      // footer — pas de lien actif
 }
 ```
 
-La hauteur effective est contrôlée par le conteneur dans `header.css` et `footer.css`.
-
-Le texte du logo est masqué dans le footer :
-```css
-.site-footer .decor-logo text {
-    display: none;
-}
-```
-
 ### Classes nucleus — produites par `ArticleRenderer`
 
 | Classe | Rôle |
@@ -476,6 +537,22 @@ Le texte du logo est masqué dans le footer :
 | `.nucleus-link` | Lien ou bouton |
 | `.nucleus-list` | Liste à puces — marker accent |
 | `.nucleus-image` | Image responsive — lazyload natif |
+
+### Classes galerie — produites par `PageRenderer`
+
+| Classe | Rôle |
+|---|---|
+| `.nucleus-gallery` | Conteneur galerie |
+| `.nucleus-gallery__title` | Titre optionnel |
+| `.gallery-grid` | Grille auto-fill |
+| `.gallery-item` | Figure individuelle |
+| `.gallery-item__link` | Lien vers full size |
+| `.gallery-item__img` | Miniature |
+| `.gallery-item__caption` | Légende optionnelle |
+| `.lightbox` | Overlay lightbox |
+| `.lightbox--open` | Modifier ouvert |
+| `.lightbox__img` | Image plein écran |
+| `.lightbox__close` | Bouton fermeture |
 
 ### Variables globales clés — `style.css`
 
@@ -541,6 +618,7 @@ php -S localhost:8000 -t public
 - **SVG** : inline via `file_get_contents(DIR_IMG_DECO . 'fichier.svg')` — couleurs via variables CSS
 - **Titres** : les articles commencent à `h2` — `h1` appartient à la page
 - **Blocs** : le JSON décrit ce que c'est, le CSS décrit comment ça s'affiche
+- **Galerie** : composant de page uniquement — jamais dans un article
 - **Nommage JS** : `camelCase`, `addEventListener` uniquement — pas de `onclick` inline
 - **Sécurité** : toujours `htmlspecialchars()` sur les variables affichées, whitelist sur `$page`
 - **Config** : une seule source de vérité — `config.json` pour le métier, `config.php` dérive les constantes
@@ -555,7 +633,6 @@ php -S localhost:8000 -t public
 
 ### Court terme
 
-- [ ] **Minigalerie** — bloc `gallery` dans `ArticleRenderer` et `BlockRegistry`
 - [ ] **Balises OG** — alimentées depuis le JSON de la page ou de l'article courant
 - [ ] **`.htaccess`** — sécuriser `/config/`, `/json/`, `/src/`
 - [ ] **Admin logo** — interface upload et remplacement du logo depuis l'admin
@@ -577,45 +654,5 @@ php -S localhost:8000 -t public
 
 ---
 
-*Dernière mise à jour : session 8 — 2026-05-20*  
-*Prochaine session : minigalerie + admin logo.*
-
----
-
-## Galerie — `gallery_ref`
-
-Composant de page — pas d'article. Déclaré dans `json/pages/{page}.json` :
-
-```json
-{
-    "type": "gallery_ref",
-    "folder": "accueil"
-}
-```
-
-`folder` correspond au sous-dossier dans `public/img/content/`.
-
-### Workflow
-1. Créer un répertoire via l'admin médias
-2. Uploader les images — thumbs générés automatiquement
-3. Ajouter une `gallery_ref` dans le layout de la page
-
-### Rendu — `PageRenderer::renderGalleryRef()`
-- Affiche les thumbs si `{folder}/thumbs/` existe, sinon les originaux
-- Lien vers le full size sur chaque image
-- `loading="lazy"` natif
-- Classes BEM : `.nucleus-gallery`, `.gallery-grid`, `.gallery-item`, `.gallery-item__link`, `.gallery-item__img`
-
-### Lightbox — `public/js/lightbox.js`
-- Chargé globalement dans `head.php`
-- S'active uniquement si des `.gallery-item__link` sont présents
-- Fermeture : clic fond, bouton ×, touche Escape
-- Isolé — remplaçable par toute autre librairie sans toucher au HTML
-
-### Constante ajoutée — `config.php`
-```php
-define('PUBLIC_IMG_CONTENT', PUBLIC_IMG . 'content/');
-```
-
-*Dernière mise à jour : session 8 — 2026-05-21*  
-*Prochaine session : admin logo + balises OG.*
+*Dernière mise à jour : session 9 — 2026-05-22*  
+*Prochaine session : balises OG + admin logo.*
