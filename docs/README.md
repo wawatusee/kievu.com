@@ -480,8 +480,22 @@ Charge `json/galleries/accueil-selection.json` — titre multilingue, sélection
 ### Lightbox — `public/js/lightbox.js`
 - Chargé globalement dans `head.php`
 - S'active uniquement si des `.gallery-item__link` sont présents
+- Navigation : flèches ← → dans l'interface + touches `ArrowLeft` / `ArrowRight`
+- Boucle circulaire — dernière image → première
+- Flèches masquées si une seule image
 - Fermeture : clic fond, bouton ×, touche Escape
 - Isolé — remplaçable par toute autre librairie sans toucher au HTML
+
+Classes BEM lightbox :
+
+| Classe | Rôle |
+|---|---|
+| `.lightbox` | Overlay |
+| `.lightbox--open` | Modifier ouvert |
+| `.lightbox__img` | Image plein écran |
+| `.lightbox__close` | Bouton fermeture |
+| `.lightbox__prev` | Flèche précédente |
+| `.lightbox__next` | Flèche suivante |
 
 ---
 
@@ -607,6 +621,100 @@ Charge `json/galleries/accueil-selection.json` — titre multilingue, sélection
 ```powershell
 php -S localhost:8000 -t public
 ```
+
+---
+
+## Déploiement — gestion des chemins navigateur
+
+### Le problème
+
+`PUBLIC_PATH` définie comme constante statique `/public/` suppose que le site est toujours à la racine du domaine. Deux cas cassent cette hypothèse :
+
+- **Windows en local** — `DIRECTORY_SEPARATOR` produit des backslashes qui corrompent les URLs
+- **Déploiement dans un sous-dossier** — `/tao/`, `/nucleus/` — les chemins hardcodés ne remontent pas au bon niveau
+
+### Solution actuelle — détection dynamique via `$_SERVER`
+
+En production sur hébergement mutualisé (OVH) :
+
+```php
+$docRoot  = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']), '/');
+$rootPath = rtrim(str_replace('\\', '/', ROOT_PATH), '/');
+$basePath = str_replace($docRoot, '', $rootPath);
+define('PUBLIC_PATH',        $basePath . '/public/');
+define('PUBLIC_IMG',         PUBLIC_PATH . 'img/');
+define('PUBLIC_IMG_CONTENT', PUBLIC_IMG . 'content/');
+```
+
+Fonctionne sur OVH mutualisé. Fragilité : `DOCUMENT_ROOT` peut varier selon la configuration Apache/Nginx du serveur.
+
+### Solution cible — `config/env.php` ← à implémenter
+
+Un fichier ignoré par git, à créer manuellement à chaque déploiement :
+
+```php
+<?php
+// config/env.php — NE PAS COMMITTER
+define('BASE_PATH', '/sous-dossier');  // vide si racine du domaine
+```
+
+Dans `config.php` :
+
+```php
+require_once __DIR__ . '/env.php';
+define('PUBLIC_PATH',        BASE_PATH . '/public/');
+define('PUBLIC_IMG',         PUBLIC_PATH . 'img/');
+define('PUBLIC_IMG_CONTENT', PUBLIC_IMG . 'content/');
+```
+
+**Avantages :** zéro détection magique, explicite, compatible tous serveurs.  
+**Inconvénient :** une étape manuelle à l'installation — à documenter dans le README de déploiement.
+
+### Redirection `index.php` racine — dynamique
+
+```php
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$host     = $_SERVER['HTTP_HOST'];
+$base     = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+header('Location: ' . $protocol . '://' . $host . $base . '/public/', true, 301);
+exit;
+```
+
+### Injection PHP → JS
+
+Quand une constante `PUBLIC_*` doit traverser la frontière PHP → JS, passer par `data-*` :
+
+```php
+<!-- PHP -->
+data-public-content='<?= htmlspecialchars(PUBLIC_IMG_CONTENT, ENT_QUOTES) ?>'
+```
+
+```javascript
+// JS
+const PUBLIC_CONTENT = document.getElementById('el').dataset.publicContent;
+```
+
+Ne jamais hardcoder `/public/` dans le JS. Toute URL navigateur passe par `PUBLIC_IMG_CONTENT`. Tout chemin serveur passe par `DIR_*`. Ces deux mondes ne se mélangent jamais.
+
+### Fichiers communs à synchroniser entre projets
+
+Lors d'une fusion entre deux projets basés sur Nucleus, ces fichiers sont partagés et doivent être traités avec précaution :
+
+| Fichier | Risque |
+|---|---|
+| `config/config.php` | `PUBLIC_PATH` dynamique vs statique |
+| `public/index.php` | Redirection dynamique |
+| `src/model/config_model.php` | Structure langues |
+| `src/core/block_registry.php` | Types de blocs |
+| `src/core/article_renderer.php` | Rendu blocs |
+| `inc/header.php` | Structure HTML |
+| `public/css/style.css` | Variables CSS |
+| `admin/api/save_article.php` | Langues dynamiques |
+| `admin/api/get_article.php` | Langues dynamiques |
+| `admin/api/delete_article.php` | Langues dynamiques |
+| `admin/api/list_articles.php` | Langues dynamiques |
+| `admin/pages/articles.php` | Interface éditeur |
+| `admin/js/article_editor.js` | Logique éditeur |
 
 ---
 

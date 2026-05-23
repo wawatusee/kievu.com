@@ -26,8 +26,6 @@
     }
     ?>
 
-    <!-- JS générique -->
-    <script src="js/menu.js" defer></script>
     <!-- JS génériques -->
     <script src="js/menu.js" defer></script>
     <script src="js/lightbox.js" defer></script>

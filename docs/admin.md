@@ -20,16 +20,20 @@ admin/
 ├── api/
 │   ├── create_page_file.php  ← crée inc/pages/{id}.php standard
 │   ├── delete_article.php
+│   ├── delete_gallery.php
 │   ├── delete_image.php
 │   ├── delete_page.php
 │   ├── get_article.php
+│   ├── get_gallery.php
 │   ├── get_page.php
 │   ├── list_articles.php
+│   ├── list_galleries.php
 │   ├── list_images.php
 │   ├── list_pages.php
 │   ├── rename_image.php
 │   ├── save_article.php
-│   ├── save_menus.php        ← sauvegarde menus.json + crée pages manquantes
+│   ├── save_gallery.php
+│   ├── save_menus.php
 │   ├── save_page.php
 │   └── upload_image.php
 ├── css/
@@ -52,6 +56,7 @@ admin/
 ├── pages/
 │   ├── articles.php
 │   ├── dashboard.php
+│   ├── galleries.php
 │   ├── medias.php
 │   ├── medias_images.php
 │   ├── menus.php
@@ -67,6 +72,7 @@ admin/
 │   ├── test_audit.php
 │   ├── test_block_registry.php
 │   ├── test_component_model.php
+│   ├── test_hash.php
 │   └── test_json_handler.php
 ├── config_admin.php
 ├── index.php
@@ -77,7 +83,7 @@ admin/
 **Fichiers partagés front/admin (dans `src/`) :**
 - `src/core/component_model.php` — CRUD générique articles
 - `src/core/page_model.php` — CRUD pages
-- `src/core/block_registry.php` — types : title, text, list, link, image
+- `src/core/block_registry.php` — types : title, text, list, link, image (`dataType: null` pour image)
 - `src/model/config_model.php` — source unique langues et config
 - `src/utils/json_handler.php` — lecture/écriture JSON atomique
 
@@ -94,8 +100,9 @@ admin/
 | `ADMIN_PATH` | Chemin absolu vers `/admin/` |
 | `JSON_PAGES_DIR` | `DIR_JSON . 'pages/'` |
 | `JSON_ARTICLES_DIR` | `DIR_JSON . 'articles/'` |
+| `JSON_GALLERIES_DIR` | `DIR_JSON . 'galleries/'` |
 | `GALLERIES_DIR` | `DIR_IMG_CONTENT . 'galleries/'` |
-| `ADMIN_PAGES` | `['dashboard', 'pages', 'articles', 'medias', 'medias_images', 'menus']` |
+| `ADMIN_PAGES` | `['dashboard', 'pages', 'articles', 'medias', 'medias_images', 'menus', 'galleries']` |
 | `SESSION_LIFETIME` | `3600` |
 | `UPLOAD_MAX_SIZE` | `2 Mo` |
 | `UPLOAD_ALLOWED_TYPES` | `jpeg, png, webp` |
@@ -107,7 +114,7 @@ admin/
 ### `ConfigModel` — `src/model/config_model.php`
 - `getLangs()` → `[['code' => 'fr', 'label' => 'Français'], ...]`
 - `getDefaultLang()` → `$langs[0]['code'] ?? 'fr'`
-- Source de vérité pour les langues — pilote l'éditeur de menus et les blocs multilingues
+- Source de vérité pour les langues
 
 > `admin/src/model/config_model.php` est un doublon — à supprimer.
 
@@ -152,6 +159,15 @@ admin/
 | `delete_page.php` | POST | Supprime |
 | `create_page_file.php` | POST | Crée `inc/pages/{id}.php` standard |
 
+**Galeries**
+
+| Fichier | Méthode | Rôle |
+|---|---|---|
+| `list_galleries.php` | GET | Liste les galeries JSON |
+| `get_gallery.php` | GET | Charge une galerie |
+| `save_gallery.php` | POST | Crée ou met à jour |
+| `delete_gallery.php` | POST | Supprime |
+
 **Menus**
 
 | Fichier | Méthode | Rôle |
@@ -169,22 +185,75 @@ admin/
 
 ---
 
+## Galeries JSON — `galleries.php`
+
+Les galeries sont des **composants de pages au même niveau que les articles** — ni l'un n'inclut l'autre. Un layout de page peut contenir des `article_ref` et des `gallery_ref` en parallèle.
+
+### Format `json/galleries/{folder}.json`
+
+```json
+{
+    "type": "gallery_ref",
+    "folder": "ghitta",
+    "title": { "fr": "Titre", "en": "Title" },
+    "images": [
+        {
+            "src": "photo.jpg",
+            "alt":     { "fr": "Description", "en": "Description" },
+            "caption": { "fr": "Légende",     "en": "Caption" }
+        }
+    ]
+}
+```
+
+- `folder` — correspond à un répertoire dans `public/img/content/`
+- `title` — multilingue, piloté par `config.json`
+- `alt` — obligatoire pour l'accessibilité
+- `caption` — optionnel
+
+### Éditeur `galleries.php`
+- Sidebar liste les galeries existantes
+- Sélection du répertoire d'images
+- Titre multilingue avec onglets langue
+- Lignes images — `src` via navigateur médias, `alt` et `caption` multilingues
+
+---
+
+## `gallery_ref` dans le layout de page — deux modes
+
+```json
+{ "type": "gallery_ref", "folder": "ghitta" }
+```
+→ **Mode simple** — toutes les images du répertoire, sans métadonnées
+
+```json
+{ "type": "gallery_ref", "folder": "ghitta", "gallery": "ghitta" }
+```
+→ **Mode riche** — charge `json/galleries/ghitta.json`, titre + alt + caption
+
+`folder` et `gallery` peuvent différer — plusieurs galeries JSON peuvent référencer le même répertoire.
+
+### Dans `page_builder.js`
+- Premier `<select>` — répertoire d'images (`data-folder`)
+- Second `<select>` — galerie JSON optionnelle (`data-gallery`) — "Rendu simple" si vide
+- Prévisualisation — titre + nombre d'images + lien vers `galleries.php`
+
+---
+
 ## Menus — `menus.php` + `save_menus.php`
 
 - Deux sections sur une page — `Main_menu` et `RS_menu`
 - Langues pilotées par `config.json` — les langues orphelines sont perdues à la sauvegarde
 - Réordonnement par boutons ↑↓
-- **Création automatique** — si une entrée `Main_menu` n'a pas de `json/pages/{page}.json`, `save_menus.php` crée la page vide en `draft` via `PageModel::createEmpty()`
-- La réponse inclut `created` — liste des pages créées, affichée dans le feedback JS
+- **Création automatique** — nouvelle entrée → `json/pages/{page}.json` créé en `draft`
 
 ---
 
 ## Pages — `pages.php` + `create_page_file.php`
 
 - Sidebar liste les layouts `json/pages/`
-- Indicateur par page : `📄` si `inc/pages/{page}.php` absent, `✓` si présent
-- Clic `📄` → `create_page_file.php` → crée le fichier standard sans rechargement
-- Le fichier créé contient l'appel `PageRenderer::render('{page}')` — remplaçable par du PHP libre
+- Indicateur : `📄` si `inc/pages/{page}.php` absent, `✓` si présent
+- Clic `📄` → crée le fichier standard sans rechargement
 
 **Coexistence des deux modèles :**
 ```
@@ -213,7 +282,7 @@ inc/main.php
 
 ## Module contacts — fermé
 
-Coordonnées gérées via articles standards. API, page et JS contacts supprimés.
+Coordonnées gérées via articles standards.
 
 ---
 
@@ -263,36 +332,38 @@ if (session_status() === PHP_SESSION_NONE) {
 
 ### `page_builder.js`
 - Classe `PageEditor`, registry pattern
-- `window.availableGalleries` injecté par `pages.php`
+- `loadResources()` — articles + galeries JSON en parallèle
+- Bloc `gallery_ref` — deux selects : répertoire + galerie JSON optionnelle
+- Prévisualisation galerie — mode simple ou riche selon sélection
+- `window.LANG_CODES` et `window.LANG_LABELS` injectés par `pages.php`
 
 ---
 
 ## Ce qui a été fait
 
-### Session 4 — 2026-05-08
-- Audit `config_admin.php`, `config_model.php`
-- Correction langue `code`/`label`
-- Cartographie arborescence
-
-### Session 5 — 2026-05-10
-- Application corrections — config, session, chemins
+### Sessions 4-5 — 2026-05-08/10
+- Audit et correction config, sessions, chemins
 - Migration `api/v2/` → `api/`
 - Fermeture module contacts
-- Tests complets ✅
 
 ### Session 6 — 2026-05-16
-- `FolderManager`, `ImageUploader` réécrits
+- `FolderManager`, `ImageUploader`
 - Pages `medias.php`, `medias_images.php`
-- API images complète
-- Bloc `image` — `BlockRegistry`, `ArticleRenderer`, `article_editor.js`
-- Navigateur médias dans l'éditeur
-- CSS factorisé
+- Bloc `image` complet
 
 ### Session 7 — 2026-05-16
-- Éditeur de menus `menus.php` + `save_menus.php`
-- Création automatique des pages à la sauvegarde des menus
-- `pages.php` — indicateur `📄` / `✓` + `create_page_file.php`
-- Coexistence PHP libre / PageRenderer documentée
+- Éditeur de menus + création automatique de pages
+- `pages.php` — indicateur PHP + `create_page_file.php`
+
+### Session 8 — 2026-05-22
+- Galeries JSON — API complète, `galleries.php`
+- `page_builder.js` — deux modes gallery_ref, prévisualisation
+- Front adapté ✅
+
+### Session 9 — 2026-05-23
+- Architecture galeries validée — composants de pages, pas dans les articles
+- Nettoyage vestiges JS et PHP effectué
+- `admin.md` mis à jour
 
 ---
 
@@ -300,9 +371,12 @@ if (session_status() === PHP_SESSION_NONE) {
 
 ### Court terme
 - [ ] Supprimer `admin/src/model/config_model.php` — doublon
+- [ ] Supprimer `admin/pages/galleries.old.php` — vestige
+- [ ] Supprimer `admin/gallery_image_management.php` — vestige pré-refacto
+- [ ] Supprimer `src/core/page_renderer.beforegaley.php` — backup
+- [ ] Supprimer `public/img/deco/logo-old.svg` et `logo.reold.svg`
 - [ ] Déplacer modale médias hors du `<form>` dans `articles.php`
-- [ ] Nettoyer `admin/pages/galleries.php` — bloc session commenté
-- [ ] Supprimer `admin/js/article_editor.old.js`, `admin/js/page_builder.old.js`, `admin/src/image_uploader.class.old.php` — vestiges
+- [ ] Vérifier `admin/css/pages/contacts.css` — module contacts fermé
 
 ### Moyen terme
 - [ ] Auditer `admin/tests/`
@@ -311,8 +385,8 @@ if (session_status() === PHP_SESSION_NONE) {
 - [ ] Sécuriser uploads — vérification MIME réelle
 - [ ] `login.php` — nettoyer HTML, passer en français
 - [ ] Page "Configuration" — éditer `config.json` (titre, langues)
-- [ ] Admin logo — interface upload et remplacement du logo
-- [ ] Balises OG — alimentées depuis le JSON de la page ou de l'article courant
+- [ ] Admin logo — upload SVG sécurisé (`upload_logo.php` produit, à intégrer)
+- [ ] Balises OG — alimentées depuis JSON page/article courant
 - [ ] `.htaccess` — sécuriser `/config/`, `/json/`, `/src/`
 
 ---
@@ -320,13 +394,13 @@ if (session_status() === PHP_SESSION_NONE) {
 ## Ambitions — pistes ouvertes
 
 ### Routing automatique
-Fallback dans `inc/main.php` — si aucun `.php` dédié, `PageRenderer` prend le relais. Simplifie la suppression de pages.
+Fallback dans `inc/main.php` — si aucun `.php` dédié, `PageRenderer` prend le relais.
 
-### Bloc gallery
-`ArticleRenderer` et `BlockRegistry` recevront un type `gallery` — minigalerie intégrée dans un article. Côté admin : template dans `article_editor.js`, sélection d'un répertoire via le navigateur de médias. En attente de l'implémentation front.
+### Galeries — architecture validée et définitive
+Articles et galeries sont des composants de pages de même niveau. Pas de galerie dans un article.
 
 ### PHP libre dans l'éditeur
-Éditer le contenu de `inc/pages/{page}.php` directement depuis l'admin — phase 2 de `create_page_file.php`.
+Éditer `inc/pages/{page}.php` depuis l'admin — phase 2 de `create_page_file.php`.
 
 ### Brouillons
 `status: draft` dans le modèle — logique front à implémenter.
@@ -341,9 +415,10 @@ Fallback dans `inc/main.php` — si aucun `.php` dédié, `PageRenderer` prend l
 | `test_audit.php` | Audit général |
 | `test_block_registry.php` | `BlockRegistry` |
 | `test_component_model.php` | `ComponentModel` |
+| `test_hash.php` | Hash login |
 | `test_json_handler.php` | `JsonHandler` |
 
 ---
 
-*Dernière mise à jour : session 8 — 2026-05-20*  
-*Prochaine session : bloc gallery + nettoyage vestiges.*
+*Dernière mise à jour : session 9 — 2026-05-23*  
+*Prochaine session : nettoyage vestiges + routing automatique.*

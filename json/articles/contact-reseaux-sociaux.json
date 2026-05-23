@@ -3,7 +3,7 @@
     "meta": {
         "id": "contact-reseaux-sociaux",
         "created": "2026-04-13",
-        "updated": "2026-05-11",
+        "updated": "2026-05-23",
         "status": "draft"
     },
     "content": [
@@ -21,7 +21,7 @@
             "type": "link",
             "url": "https://www.facebook.com/thisismascarade",
             "data": {
-                "fr": "Facebook - thisismascarade",
+                "fr": "Facebook ",
                 "nl": "",
                 "en": "",
                 "tr": ""
