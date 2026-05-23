@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Redirection HTTP → HTTPS (pour tout le monde)
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Redirection non-www → www (après HTTPS)
+RewriteCond %{HTTP_HOST} !^www\.kievu\.com$ [NC]
+RewriteRule ^(.*)$ https://www.kievu.com/$1 [R=301,L]

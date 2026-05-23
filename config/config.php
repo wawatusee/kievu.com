@@ -13,8 +13,13 @@ define('DIR_IMG_DECO',    DIR_IMG . 'deco/');
 // =========================================================
 // CHEMINS PUBLICS (navigateur)
 // =========================================================
-define('PUBLIC_PATH',     '/public/');
-define('PUBLIC_IMG',      PUBLIC_PATH . 'img/');
+// Calcule le chemin public relatif depuis ROOT_PATH
+$docRoot  = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']), '/');
+$rootPath = rtrim(str_replace('\\', '/', ROOT_PATH), '/');
+$basePath = str_replace($docRoot, '', $rootPath);
+
+define('PUBLIC_PATH',        $basePath . '/public/');
+define('PUBLIC_IMG',         PUBLIC_PATH . 'img/');
 define('PUBLIC_IMG_CONTENT', PUBLIC_IMG . 'content/');
 
 // =========================================================

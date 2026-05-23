@@ -3,7 +3,7 @@
     "meta": {
         "id": "accueil-artiste",
         "created": "2026-05-11",
-        "updated": "2026-05-16",
+        "updated": "2026-05-23",
         "status": "draft"
     },
     "content": [
@@ -25,12 +25,6 @@
                 "en": "Kievu builds a space tailored to your work. Reproduction, capture, distribution — photo, video, sound, web — one single contact, from shooting to going live.",
                 "tr": "Kievu, eserinize uygun bir alan tasarlar. Yeniden üretim, çekim, yayın — fotoğraf, video, ses, web — çekimden yayına kadar tek bir muhatap."
             }
-        },
-        {
-            "type": "image",
-            "src": "home/default-taquin-image.jpg",
-            "alt": "",
-            "data": []
         },
         {
             "type": "image",
