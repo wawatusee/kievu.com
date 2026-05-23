@@ -3,13 +3,17 @@
  */
 class PageEditor {
     constructor() {
-        // 1. Le "Store" (Data Context)
+        // 1. Le "Store"
         this.resources = {
-            articles: [],
+            articles:  [],
             galleries: window.availableGalleries || []
         };
 
-        // 2. Le Registre des Blocs (Registry Pattern)
+        // Langues injectées depuis PHP
+        this.langCodes  = window.LANG_CODES  || ['fr'];
+        this.langLabels = window.LANG_LABELS || { fr: 'Français' };
+
+        // 2. Le Registre des Blocs
         this.blockRegistry = {
             article_ref: {
                 title: "📄 Section : Article",
@@ -28,7 +32,7 @@ class PageEditor {
             ui_component: {
                 title: "⚙️ Composant UI",
                 render: (id, data) => this.tplSelect(id, 'ui_component', 'data-comp-name', [
-                    { id: 'hero', name: 'Bannière Hero' },
+                    { id: 'hero',    name: 'Bannière Hero' },
                     { id: 'contact', name: 'Formulaire Contact' },
                     { id: 'gallery', name: 'Grille Galerie' }
                 ], data.name, null),
@@ -36,13 +40,14 @@ class PageEditor {
             }
         };
 
-        // État courant
         this.currentFilename = null;
-
         this.initEventListeners();
     }
 
-    // --- Moteur de Rendu ---
+    // =========================================================
+    // TEMPLATES
+    // =========================================================
+
     tplSelect(id, type, className, list, selected, placeholder) {
         const options = list.map(item =>
             `<option value="${item.id}" ${selected === item.id ? 'selected' : ''}>${item.name}</option>`
@@ -63,53 +68,197 @@ class PageEditor {
             </div>`;
     }
 
-    // --- Gestion des Evénements ---
+    tplGallery(id, data = {}) {
+        const folder      = data.folder || '';
+        const title       = data.title  || {};
+        const images      = data.images || [];
+
+        // Onglets langue pour le titre
+        const titleLangTabs = this.langCodes.map((lang, i) => `
+            <button type="button" class="tab-btn ${i === 0 ? 'active' : ''}"
+                data-lang="${lang}" onclick="editor.switchGalleryLang(this, '${id}')">
+                ${this.langLabels[lang] || lang}
+            </button>
+        `).join('');
+
+        const titleLangFields = this.langCodes.map((lang, i) => `
+            <div class="lang-field" data-lang="${lang}" style="display:${i === 0 ? 'block' : 'none'}">
+                <input type="text" class="gallery-title" data-lang="${lang}"
+                    placeholder="Titre (${lang})"
+                    value="${this.escapeHtml(title[lang] || '')}">
+            </div>
+        `).join('');
+
+        // Images existantes
+        const imageRows = images.map((img, i) => this.tplImageRow(img, i)).join('');
+
+        // Options de sélection du dossier
+        const folderOptions = this.resources.galleries.map(g =>
+            `<option value="${g}" ${folder === g ? 'selected' : ''}>${g}</option>`
+        ).join('');
+
+        return `
+            <div class="block-item block-item--gallery" data-id="${id}" data-type="gallery_ref">
+                <div class="block-header">
+                    <strong>🖼️ Galerie Photo</strong>
+                    <button class="btn-delete-block">×</button>
+                </div>
+                <div class="block-body">
+                    <div class="field-group">
+                        <label>Répertoire</label>
+                        <select class="gallery-folder">
+                            <option value="">-- Choisir un répertoire --</option>
+                            ${folderOptions}
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label>Titre de la galerie</label>
+                        <nav class="lang-tabs-container">${titleLangTabs}</nav>
+                        ${titleLangFields}
+                    </div>
+                    <div class="gallery-images">
+                        <label>Images</label>
+                        <div class="gallery-image-list">${imageRows}</div>
+                        <button type="button" class="btn-add-image btn-secondary">+ Ajouter une image</button>
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    tplImageRow(img = {}, index = null) {
+        const src     = img.src     || '';
+        const alt     = img.alt     || {};
+        const caption = img.caption || {};
+
+        const altFields = this.langCodes.map((lang, i) => `
+            <div class="lang-field" data-lang="${lang}" style="display:${i === 0 ? 'block' : 'none'}">
+                <input type="text" class="img-alt" data-lang="${lang}"
+                    placeholder="Alt (${lang})"
+                    value="${this.escapeHtml(alt[lang] || '')}">
+                <input type="text" class="img-caption" data-lang="${lang}"
+                    placeholder="Légende (${lang}) — optionnel"
+                    value="${this.escapeHtml(caption[lang] || '')}">
+            </div>
+        `).join('');
+
+        return `
+            <div class="gallery-image-row">
+                <div class="gallery-image-row__src">
+                    <input type="text" class="img-src" placeholder="nom-fichier.jpg"
+                        value="${this.escapeHtml(src)}">
+                    <button type="button" class="btn-delete-image-row btn-delete-file" title="Supprimer">🗑️</button>
+                </div>
+                <div class="gallery-image-row__langs">
+                    ${altFields}
+                </div>
+            </div>`;
+    }
+
+    // =========================================================
+    // PARSE GALLERY
+    // =========================================================
+
+    parseGallery(el) {
+        const folder = el.querySelector('.gallery-folder')?.value || '';
+        const title  = {};
+
+        el.querySelectorAll('.gallery-title').forEach(input => {
+            title[input.dataset.lang] = input.value.trim();
+        });
+
+        const images = [];
+        el.querySelectorAll('.gallery-image-row').forEach(row => {
+            const src     = row.querySelector('.img-src')?.value.trim() || '';
+            const alt     = {};
+            const caption = {};
+
+            row.querySelectorAll('.img-alt').forEach(input => {
+                alt[input.dataset.lang] = input.value.trim();
+            });
+            row.querySelectorAll('.img-caption').forEach(input => {
+                caption[input.dataset.lang] = input.value.trim();
+            });
+
+            if (src) images.push({ src, alt, caption });
+        });
+
+        return { folder, title, images };
+    }
+
+    // =========================================================
+    // UTILITAIRES
+    // =========================================================
+
+    escapeHtml(str) {
+        if (typeof str !== 'string') return '';
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    switchGalleryLang(btn, blockId) {
+        const lang  = btn.dataset.lang;
+        const block = document.querySelector(`.block-item[data-id="${blockId}"]`);
+        if (!block) return;
+
+        block.querySelectorAll('.tab-btn').forEach(b =>
+            b.classList.toggle('active', b.dataset.lang === lang)
+        );
+        block.querySelectorAll('.lang-field').forEach(f =>
+            f.style.display = f.dataset.lang === lang ? 'block' : 'none'
+        );
+    }
+
+    // =========================================================
+    // ÉVÉNEMENTS
+    // =========================================================
+
     initEventListeners() {
         const container = document.getElementById('page-blocks-container');
 
-        // Suppression d'un bloc dans le builder
         container.addEventListener('click', (e) => {
+            // Suppression bloc
             if (e.target.classList.contains('btn-delete-block')) {
                 e.target.closest('.block-item').remove();
             }
+            // Suppression ligne image
+            if (e.target.classList.contains('btn-delete-image-row')) {
+                e.target.closest('.gallery-image-row').remove();
+            }
+            // Ajout ligne image
+            if (e.target.classList.contains('btn-add-image')) {
+                const list = e.target.closest('.block-body').querySelector('.gallery-image-list');
+                list.insertAdjacentHTML('beforeend', this.tplImageRow());
+            }
         });
 
-        // Ajout d'un bloc
         document.getElementById('btn-add-block').addEventListener('click', () => {
             const type = document.getElementById('select-block-type').value;
             this.addBlock(type);
         });
 
-        // Sauvegarde
         document.getElementById('btn-save-page').addEventListener('click', () => this.savePage());
 
-        // Nouveau layout vierge
         const btnNew = document.getElementById('btn-new-page');
-        if (btnNew) {
-            btnNew.addEventListener('click', () => this.resetEditor());
-        }
+        if (btnNew) btnNew.addEventListener('click', () => this.resetEditor());
 
-        // Chargement d'une page existante (sidebar)
         const fileList = document.getElementById('file-list');
         if (fileList) {
             fileList.addEventListener('click', (e) => {
-                // Chargement
                 const link = e.target.closest('.load-page-link');
                 if (link) {
                     e.preventDefault();
                     this.loadPageLayout(link.dataset.filename);
                     return;
                 }
-                // Suppression
                 const btnDelete = e.target.closest('.btn-delete-file');
-                if (btnDelete) {
+                if (btnDelete && btnDelete.dataset.filename) {
                     e.preventDefault();
                     this.deletePage(btnDelete.dataset.filename, btnDelete.closest('li'));
                 }
             });
         }
 
-        // Mise à jour du nom de fichier en temps réel
         document.getElementById('page-title').addEventListener('input', (e) => {
             if (!this.currentFilename) {
                 const slug = this.slugify(e.target.value);
@@ -118,20 +267,28 @@ class PageEditor {
         });
     }
 
-    // --- Actions ---
+    // =========================================================
+    // ACTIONS
+    // =========================================================
+
     async loadResources() {
         try {
-            const res = await fetch('api/list_articles.php?meta=1');
-            const articles = await res.json();
-            this.resources.articles = Array.isArray(articles) ? articles : [];
+            const [artRes, galRes] = await Promise.all([
+                fetch('api/list_articles.php?meta=1'),
+                fetch('api/list_galleries.php')
+            ]);
+            const articles  = await artRes.json();
+            const galleries = await galRes.json();
+            this.resources.articles  = Array.isArray(articles)          ? articles          : [];
+            this.resources.galleries = galleries.success ? galleries.galleries : [];
         } catch (e) {
-            console.error("Erreur chargement articles :", e);
+            console.error("Erreur chargement ressources :", e);
         }
     }
 
     addBlock(type, data = {}) {
         if (!this.blockRegistry[type]) return;
-        const id = 'block_' + Date.now();
+        const id   = 'block_' + Date.now();
         const html = this.blockRegistry[type].render(id, data);
         document.getElementById('page-blocks-container').insertAdjacentHTML('beforeend', html);
     }
@@ -144,9 +301,8 @@ class PageEditor {
             const data = await res.json();
             if (data.success === false) throw new Error(data.error || "Erreur inconnue");
 
-            // Mise à jour de l'interface
             this.currentFilename = filename;
-            document.getElementById('page-title').value = data.meta?.id || filename.replace('.json', '');
+            document.getElementById('page-title').value               = data.meta?.id || filename.replace('.json', '');
             document.getElementById('generated-filename').textContent = filename;
             document.getElementById('page-blocks-container').innerHTML = '';
 
@@ -161,7 +317,6 @@ class PageEditor {
 
     async savePage() {
         const titleInput = document.getElementById('page-title').value.trim();
-
         if (!titleInput) {
             alert("Veuillez saisir un nom de page.");
             return;
@@ -172,28 +327,25 @@ class PageEditor {
             : this.slugify(titleInput);
 
         const layout = [];
+
         document.querySelectorAll('.block-item').forEach(el => {
             const type = el.dataset.type;
-            if (this.blockRegistry[type]) {
-                layout.push({ type, ...this.blockRegistry[type].parse(el) });
-            }
+            if (!this.blockRegistry[type]) return;
+            const parsed = this.blockRegistry[type].parse(el);
+            layout.push({ type, ...parsed });
         });
 
-        // Payload compatible avec PageModel::save()
         const payload = {
             type: 'page',
-            meta: {
-                id: id,
-                status: 'draft'
-            },
-            layout: layout
+            meta: { id, status: 'draft' },
+            layout
         };
 
         try {
-            const res = await fetch('api/save_page.php', {
-                method: 'POST',
+            const res    = await fetch('api/save_page.php', {
+                method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body:    JSON.stringify(payload)
             });
             const result = await res.json();
 
@@ -201,7 +353,6 @@ class PageEditor {
                 this.currentFilename = result.filename;
                 document.getElementById('generated-filename').textContent = result.filename;
                 alert('Page enregistrée avec succès !');
-                // Recharger la sidebar si on vient de créer une nouvelle page
                 if (!document.querySelector(`.load-page-link[data-filename="${result.filename}"]`)) {
                     location.reload();
                 }
@@ -218,16 +369,15 @@ class PageEditor {
         if (!confirm(`Supprimer la page "${filename}" ?`)) return;
 
         try {
-            const res = await fetch('api/delete_page.php', {
-                method: 'POST',
+            const res    = await fetch('api/delete_page.php', {
+                method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ filename })
+                body:    JSON.stringify({ filename })
             });
             const result = await res.json();
 
             if (result.success) {
                 liElement?.remove();
-                // Réinitialiser l'éditeur si c'était la page courante
                 if (this.currentFilename === filename) this.resetEditor();
             } else {
                 alert('Erreur suppression : ' + (result.errors || [result.error]).join('\n'));
@@ -240,7 +390,7 @@ class PageEditor {
 
     resetEditor() {
         this.currentFilename = null;
-        document.getElementById('page-title').value = '';
+        document.getElementById('page-title').value               = '';
         document.getElementById('generated-filename').textContent = 'nouveau.json';
         document.getElementById('page-blocks-container').innerHTML = '';
     }
