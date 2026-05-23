@@ -6,7 +6,6 @@ $articlesDir = JSON_ARTICLES_DIR;
 $existingArticles = array_diff(scandir($articlesDir), array('..', '.'));
 
 ?>
-<?php echo '<!-- PUBLIC_IMG_CONTENT = ' . PUBLIC_IMG_CONTENT . ' -->'; ?>
 
 <div class="admin-editor-container">
     <aside class="admin-sidebar">
@@ -46,7 +45,7 @@ $existingArticles = array_diff(scandir($articlesDir), array('..', '.'));
         ?>
         <div class="lang-tabs-wrapper">
             <nav class="lang-tabs-container" id="editor-langs" data-config='<?= json_encode($langKeys) ?>'
-                data-public-content='<?= htmlspecialchars(PUBLIC_IMG_CONTENT, ENT_QUOTES) ?>'
+                data-public-content='<?= htmlspecialchars(PUBLIC_IMG_CONTENT, ENT_QUOTES) ?>'>
 
                 <?php foreach ($langs as $langue): ?>
                     <button type="button" class="tab-btn <?= $langue['code'] === 'fr' ? 'active' : '' ?>"
