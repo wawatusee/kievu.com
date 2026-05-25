@@ -96,6 +96,13 @@ Fichiers de test existants :
 - `tests/test_menus_model.php` ✓
 - `tests/test_view_menus.php` ✓
 - `tests/test_config_model.php` ✓
+- `tests/test_system_health.php` ✓ — santé globale du système
+
+**`test_system_health.php`** — à lancer en cas de doute après un déploiement ou une migration :
+```powershell
+php tests/test_system_health.php
+```
+Vérifie : constantes, chemins serveur, fichiers JSON critiques, modèles, pages, assets publics, cohérence de `PUBLIC_PATH`.
 
 ---
 
@@ -142,7 +149,8 @@ define('DIR_JSON',           ROOT_PATH . 'json/');
 define('DIR_IMG',            ROOT_PATH . 'public/img/');
 define('DIR_IMG_CONTENT',    DIR_IMG . 'content/');
 define('DIR_IMG_DECO',       DIR_IMG . 'deco/');
-define('PUBLIC_PATH',        '/public/');
+// PUBLIC_PATH dérivé depuis env.php — voir section Déploiement
+define('PUBLIC_PATH',        BASE_PATH . '/public/');
 define('PUBLIC_IMG',         PUBLIC_PATH . 'img/');
 define('PUBLIC_IMG_CONTENT', PUBLIC_IMG . 'content/');
 ```
@@ -648,27 +656,33 @@ define('PUBLIC_IMG_CONTENT', PUBLIC_IMG . 'content/');
 
 Fonctionne sur OVH mutualisé. Fragilité : `DOCUMENT_ROOT` peut varier selon la configuration Apache/Nginx du serveur.
 
-### Solution cible — `config/env.php` ← à implémenter
+### Solution cible — `config/env.php` ✓ implémenté
 
 Un fichier ignoré par git, à créer manuellement à chaque déploiement :
 
 ```php
 <?php
 // config/env.php — NE PAS COMMITTER
-define('BASE_PATH', '/sous-dossier');  // vide si racine du domaine
+define('BASE_PATH', '');           // vide si site à la racine du domaine
+// define('BASE_PATH', '/nucleus'); // sous-dossier
 ```
 
 Dans `config.php` :
 
 ```php
-require_once __DIR__ . '/env.php';
+if (!defined('BASE_PATH')) {
+    require_once __DIR__ . '/env.php';
+}
 define('PUBLIC_PATH',        BASE_PATH . '/public/');
 define('PUBLIC_IMG',         PUBLIC_PATH . 'img/');
 define('PUBLIC_IMG_CONTENT', PUBLIC_IMG . 'content/');
 ```
 
-**Avantages :** zéro détection magique, explicite, compatible tous serveurs.  
-**Inconvénient :** une étape manuelle à l'installation — à documenter dans le README de déploiement.
+**Avantages :** zéro détection magique, explicite, compatible tous serveurs, testé local et OVH mutualisé.  
+**Inconvénient :** une étape manuelle à l'installation.  
+**`.gitignore`** : ajouter `config/env.php`
+
+> **Règle de synchronisation** : `config/config.php` est toujours le premier fichier à mettre à jour lors d'un déploiement ou d'une fusion entre projets. Tous les chemins en dépendent.
 
 ### Redirection `index.php` racine — dynamique
 
@@ -744,6 +758,7 @@ Lors d'une fusion entre deux projets basés sur Nucleus, ces fichiers sont parta
 - [ ] **Balises OG** — alimentées depuis le JSON de la page ou de l'article courant
 - [ ] **`.htaccess`** — sécuriser `/config/`, `/json/`, `/src/`
 - [ ] **Admin logo** — interface upload et remplacement du logo depuis l'admin
+- [ ] **Galeries admin** — corriger `json/galleries/` manquant au déploiement — créer automatiquement dans `config_admin.php`
 
 ### Moyen terme
 
@@ -758,9 +773,9 @@ Lors d'une fusion entre deux projets basés sur Nucleus, ces fichiers sont parta
 - [ ] **Brouillons** — exploiter `status: draft` côté front
 - [ ] **Internationalisation complète** — traductions des contenus JSON par langue
 - [ ] **Kit de démarrage** — template réutilisable vierge stabilisé
-- [ ] **Tests** — formaliser la couverture sur les composants critiques
+- [ ] **Tests** — enrichir `test_system_health.php`, couvrir les composants admin
 
 ---
 
-*Dernière mise à jour : session 9 — 2026-05-22*  
-*Prochaine session : balises OG + admin logo.*
+*Dernière mise à jour : session 10 — 2026-05-24*  
+*Prochaine session : balises OG + admin logo + création automatique json/galleries/.*
